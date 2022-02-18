@@ -15,3 +15,6 @@ We should consider using something called boot strap for mobile resizing.
 
 Link to tutorial being followed
 [Flask Basics](https://www.digitalocean.com/community/tutorials/how-to-make-a-web-application-using-flask-in-python-3)
+
+Drag and drop list
+https://webdevtrick.com/html-drag-and-drop-list/

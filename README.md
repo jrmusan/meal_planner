@@ -9,7 +9,7 @@ export FLASK_ENV=development
 flask run
 ```
 
-This will run our little demo on localhost
+This will/should run our little demo on localhost 
 
 We should consider using something called boot strap for mobile resizing. 
 

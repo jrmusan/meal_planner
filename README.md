@@ -1,6 +1,6 @@
 # meal_planner
 
-# To run
+# To run demo
 First cd into project dir
 Type
 ```

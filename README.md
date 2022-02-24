@@ -4,7 +4,7 @@
 First cd into project dir
 Type
 ```
-export FLASK_APP=demo
+export FLASK_APP=app
 export FLASK_ENV=development
 flask run
 ```

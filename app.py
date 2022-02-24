@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sqlite3
-from flask import Flask, render_template
+from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
 
 # This will return a database connection to our SQLite db
@@ -21,6 +21,7 @@ def get_post(post_id):
 	return post
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
 
 # This is just for the base home page route
 @app.route('/')
@@ -40,3 +41,25 @@ def index():
 def post(post_id):
 	post = get_post(post_id)
 	return render_template('recipe.html', post=post)
+
+# This is our route to create a new post
+@app.route('/create', methods=('GET', 'POST'))
+def create():
+	
+	# Checks if a post was sent
+	if request.method == 'POST':
+		# If so grab the input data from the page submitted
+		title = request.form['title']
+		content = request.form['content']
+		
+		if not title:
+			flash('Title is required!')
+		else:
+			# Lets write this to the database!
+			conn = get_db_connection()
+			conn.execute('INSERT INTO posts (title, content) VALUES (?, ?)',
+						(title, content))
+			conn.commit()
+			conn.close()
+			return redirect(url_for('index'))
+	return render_template('create.html')

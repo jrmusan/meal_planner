@@ -5,7 +5,7 @@
     
 <!--Using a jinja for loop, this will loop over each item returned from app.py-->
     {% for post in posts %}
-    <a href="#">
+    <a href="{{ url_for('post', post_id=post['id']) }}">
         <h2>{{ post['title'] }}</h2>
     </a>
     <span class="badge badge-primary">{{ post['created'] }}</span>

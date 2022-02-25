@@ -9,6 +9,11 @@
         <h2>{{ post['title'] }}</h2>
     </a>
     <span class="badge badge-primary">{{ post['created'] }}</span>
+    
+    <!--Adds a edit button to each post-->
+    <a href="{{ url_for('edit', id=post['id']) }}">
+        <span class="badge badge-warning">Edit</span>
+    </a>
     <hr>
     {% endfor %}
     

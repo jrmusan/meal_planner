@@ -29,7 +29,7 @@ app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
 """
 ================================================================================
 |																			   |
-|				    Below are the app routes which give us new we pages		   |
+|				 Below are the app routes which give route us to  pages		   |
 |																			   |
 ================================================================================
 """
@@ -51,14 +51,14 @@ def index():
 	return render_template('index.html', recipes=recipes)
 
 
-#~~~~~~~~This is our route to see a post~~~~~~~~
+#~~~~~~~~This is our route to see a recipe~~~~~~~~
 @app.route('/<int:recipe_id>')
 def recipe(recipe_id):
 	recipe = get_recipe(recipe_id)
 	return render_template('recipe.html', recipe=recipe)
 
 
-#~~~~~~~~This is our route to create a new post~~~~~~~~
+#~~~~~~~~This is our route to create a new recipe~~~~~~~~
 @app.route('/create', methods=('GET', 'POST'))
 def create():
 	

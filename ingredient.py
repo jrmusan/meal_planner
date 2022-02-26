@@ -28,7 +28,7 @@ class Ingredent:
 		Args:
 			conn (Connection): This is the connection to our db
 		Returns:
-			?
+			sqlite3.Row Obj: Ingredient rows 
 		"""
 		
 		with conn:

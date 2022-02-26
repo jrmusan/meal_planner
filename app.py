@@ -17,11 +17,11 @@ def get_recipe(recipe_id):
 	conn = get_db_connection()
 	
 	# This is running a sql command to get a posts by it's id
-	post = conn.execute('SELECT * FROM recipes WHERE id = ?', (post_id,)).fetchone()
+	recipe = conn.execute('SELECT * FROM recipes WHERE id = ?', (recipe_id,)).fetchone()
 	conn.close()
-	if post is None:
+	if recipe is None:
 		abort(404)
-	return post
+	return recipe
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
@@ -52,10 +52,10 @@ def index():
 
 
 #~~~~~~~~This is our route to see a post~~~~~~~~
-@app.route('/<int:post_id>')
-def post(post_id):
-	post = get_post(post_id)
-	return render_template('recipe.html', post=post)
+@app.route('/<int:recipe_id>')
+def recipe(recipe_id):
+	recipe = get_recipe(recipe_id)
+	return render_template('recipe.html', recipe=recipe)
 
 
 #~~~~~~~~This is our route to create a new post~~~~~~~~

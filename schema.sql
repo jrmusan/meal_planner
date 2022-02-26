@@ -19,6 +19,6 @@ CREATE TABLE menu_map (
     quantity INTEGER NOT NULL,
     unit TEXT,
     FOREIGN KEY(ingredient_id) REFERENCES ingredients(id),
-    FOREIGN KEY(recipe_id) REFERENCES recipe(id)
+    FOREIGN KEY(recipe_id) REFERENCES recipes(id)
 );
 

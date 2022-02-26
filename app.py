@@ -13,11 +13,11 @@ def get_db_connection():
 	conn.row_factory = sqlite3.Row
 	return conn
 
-def get_post(post_id):
+def get_recipe(recipe_id):
 	conn = get_db_connection()
 	
 	# This is running a sql command to get a posts by it's id
-	post = conn.execute('SELECT * FROM posts WHERE id = ?', (post_id,)).fetchone()
+	post = conn.execute('SELECT * FROM recipes WHERE id = ?', (post_id,)).fetchone()
 	conn.close()
 	if post is None:
 		abort(404)
@@ -43,7 +43,7 @@ def index():
 	conn = get_db_connection()
 	
 	# Next we select all entries in the (posts) table
-	recipes = conn.execute('SELECT * FROM recipe').fetchall()
+	recipes = conn.execute('SELECT * FROM recipes').fetchall()
 	print(recipes)
 	conn.close()
 	

@@ -6,7 +6,7 @@ CREATE TABLE ingredients (
     category TEXT NOT NULL
 );
 
-CREATE TABLE recipe (
+CREATE TABLE recipes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     notes TEXT

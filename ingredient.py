@@ -16,8 +16,27 @@ class Ingredent:
 		Args:
 			conn (Connection): This is the connection to our db
 		"""
+
+		with conn:
+			c = conn.cursor()
+			c.execute("INSERT INTO ingredients(name, category) VALUES (?, ?)", (self.name, self.category))
+		
+	def list_ingredients(self, conn):
+		"""
+		This will return all the ingredients in our database
+		
+		Args:
+			conn (Connection): This is the connection to our db
+		Returns:
+			?
+		"""
 		
 		with conn:
-			c.execute("INSERT INTO ingredients VALUES(:name, :category)", {'name': self.name, 'category': self.category})
+			c = conn.cursor()
+			ingredients = conn.execute('SELECT * FROM ingredients').fetchall()
+			for ing in ingredients:
+				print(f"Ingredient name: {ing['name']}")
+			
+			return ingredients
 		
 		

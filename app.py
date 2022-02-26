@@ -43,11 +43,12 @@ def index():
 	conn = get_db_connection()
 	
 	# Next we select all entries in the (posts) table
-	posts = conn.execute('SELECT * FROM posts').fetchall()
+	recipes = conn.execute('SELECT * FROM recipe').fetchall()
+	print(recipes)
 	conn.close()
 	
 	# We render this page by passing in the posts we just returned from the db
-	return render_template('index.html', posts=posts)
+	return render_template('index.html', recipes=recipes)
 
 
 #~~~~~~~~This is our route to see a post~~~~~~~~
@@ -97,6 +98,7 @@ def add_ingredient():
 			conn = get_db_connection()
 			ing_obj = Ingredent(name, category)
 			ing_obj.insert_ingredient(conn)
+			ing_obj.list_ingredients(conn) # Just for testing
 			return redirect(url_for('index'))
 	
 	return render_template('add_ingredient.html')

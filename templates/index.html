@@ -4,17 +4,12 @@
     <h1>{% block title %} Lets Meal Plan {% endblock %}</h1>
     
 <!--Using a jinja for loop, this will loop over each item returned from app.py-->
-    {% for post in posts %}
-    <a href="{{ url_for('post', post_id=post['id']) }}">
-        <h2>{{ post['title'] }}</h2>
-    </a>
-    <span class="badge badge-primary">{{ post['created'] }}</span>
-    
-    <!--Adds a edit button to each post-->
-    <a href="{{ url_for('edit', id=post['id']) }}">
-        <span class="badge badge-warning">Edit</span>
-    </a>
-    <hr>
+    {% for recipe in recipes %}
+        <a href="#">
+            <h2>{{ recipe['name'] }}</h2>
+        </a>
+        <span class="badge badge-primary">{{ recipe['name'] }}</span>
+        <hr>
     {% endfor %}
     
 {% endblock %}

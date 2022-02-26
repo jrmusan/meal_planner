@@ -8,13 +8,8 @@ with open('schema.sql') as f:
 
 cur = connection.cursor()
 
-cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
-            ('Yakisoba', 'Content for the first post')
-            )
-
-cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
-            ('Hot pot', 'Content for the second post')
-            )
+cur.execute("INSERT INTO recipe(name, notes) VALUES (?, ?)", ('Fried Chicken', 'Yummy'))
+cur.execute("INSERT INTO ingredients(name, category) VALUES (?, ?)", ('beef', 'protein'))
 
 connection.commit()
 connection.close()

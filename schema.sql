@@ -13,9 +13,12 @@ CREATE TABLE recipe (
 );
 
 CREATE TABLE menu_map (
-    FOREIGN KEY(ingredient_id) REFERENCES ingredients(id),
-    FOREIGN KEY(recipe_id) REFERENCES recipe(id),
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ingredient_id INTEGER,
+    recipe_id INTEGER,
     quantity INTEGER NOT NULL,
-    unit TEXT
+    unit TEXT,
+    FOREIGN KEY(ingredient_id) REFERENCES ingredients(id),
+    FOREIGN KEY(recipe_id) REFERENCES recipe(id)
 );
 

@@ -4,6 +4,8 @@ import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
 
+from ingredient import Ingredent
+
 # This will return a database connection to our SQLite db
 # This will return rows from the db that are just dicts
 def get_db_connection():
@@ -75,6 +77,31 @@ def create():
 			conn.close()
 			return redirect(url_for('index'))
 	return render_template('create.html')
+
+
+#~~~~~~~~This is our route to add a new ingredient~~~~~~~~
+@app.route('/create_ingredient', methods=('GET', 'POST'))
+def add_ingredient():
+	
+	# Checks if a post was sent
+	if request.method == 'POST':
+		# If so grab the input data from the page submitted
+		name = request.form['name']
+		category = request.form['category']
+	
+		if not name:
+			flash('Name is required!')
+			
+		else:
+			# Lets write this to the database!
+			conn = get_db_connection()
+			ing_obj = Ingredent(name, category)
+			ing_obj.insert_ingredient(conn)
+			return redirect(url_for('index'))
+	
+	return render_template('add_ingredient.html')
+		
+	
 
 
 #~~~~~~~~This will edit a recipe~~~~~~~~

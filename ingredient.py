@@ -20,8 +20,9 @@ class Ingredent:
 		with conn:
 			c = conn.cursor()
 			c.execute("INSERT INTO ingredients(name, category) VALUES (?, ?)", (self.name, self.category))
-		
-	def list_ingredients(self, conn):
+			
+	@staticmethod
+	def list_ingredients(conn):
 		"""
 		This will return all the ingredients in our database
 		

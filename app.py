@@ -62,6 +62,10 @@ def recipe(recipe_id):
 @app.route('/create', methods=('GET', 'POST'))
 def create():
 	
+	# Get the ingredients for auto complete
+	conn = get_db_connection()
+	ingredients = Ingredent.list_ingredients(conn)
+		
 	# Checks if a post was sent
 	if request.method == 'POST':
 		# If so grab the input data from the page submitted
@@ -72,12 +76,12 @@ def create():
 			flash('Title is required!')
 		else:
 			# Lets write this to the database!
-			conn = get_db_connection()
 			conn.execute('INSERT INTO posts (title, content) VALUES (?, ?)',(title, content))
 			conn.commit()
 			conn.close()
 			return redirect(url_for('index'))
-	return render_template('create.html')
+		
+	return render_template('create.html', ingredients=ingredients)
 
 
 #~~~~~~~~This is our route to add a new ingredient~~~~~~~~

@@ -4,3 +4,9 @@ h1 {
     text-align: center;
     padding: 10px;
 }
+
+/*I don't think this is being used correctly in create.html*/
+.input-group {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

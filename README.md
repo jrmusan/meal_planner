@@ -18,3 +18,6 @@ Link to tutorial being followed
 
 Drag and drop list
 https://webdevtrick.com/html-drag-and-drop-list/
+
+Dynamically add text boxes
+https://www.codexworld.com/add-remove-input-fields-dynamically-using-jquery/

@@ -2,9 +2,10 @@
 
 class Ingredent:
 	
-	def __init__(self, name, category = "", quantity = 0, unit = ""):
+	def __init__(self, name, id = 0, category = "", quantity = 0, unit = ""):
 	
 		self.name = name
+		self.id = id
 		self.category = category
 		self.quantity = quantity
 		self.unit = unit
@@ -38,9 +39,15 @@ class Ingredent:
 		with conn:
 			c = conn.cursor()
 			ingredients = conn.execute('SELECT * FROM ingredients').fetchall()
-			for ing in ingredients:
-				print(f"Ingredient name: {ing['name']}")
 			
-			return ingredients
+			# Lets turn these into objects
+			ingredient_objs = []
+			
+			for ing in ingredients:
+				ingredient_obj = Ingredent(ing['name'], ing['id'], ing['category'], ing['quantity'], ing['unit'])
+				
+				ingredient_objs.append(ingredient_obj)
+				
+			return ingredient_obj
 		
 		

@@ -43,8 +43,7 @@ def index():
 	# This will open the db connection
 	conn = get_db_connection()
 	
-	# Next we select all entries in the (posts) table
-#	recipes = conn.execute('SELECT * FROM recipes').fetchall()
+	# Next lets get all the recipes
 	recipes = Recipe.list_recipes(conn)
 	
 	# We render this page by passing in the posts we just returned from the db
@@ -77,7 +76,7 @@ def create():
 			flash('Name is required!')
 		else:
 			# Lets write this to the database!
-			recipe_obj = Recipe(name, notes, cuisine)
+			recipe_obj = Recipe(name, notes=notes, cuisine=cuisine)
 			recipe_obj.instert_recipe(conn)
 			return redirect(url_for('index'))
 		

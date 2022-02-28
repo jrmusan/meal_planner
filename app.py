@@ -44,9 +44,8 @@ def index():
 	conn = get_db_connection()
 	
 	# Next we select all entries in the (posts) table
-	recipes = conn.execute('SELECT * FROM recipes').fetchall()
-	print(recipes)
-	conn.close()
+#	recipes = conn.execute('SELECT * FROM recipes').fetchall()
+	recipes = Recipe.list_recipes(conn)
 	
 	# We render this page by passing in the posts we just returned from the db
 	return render_template('index.html', recipes=recipes)

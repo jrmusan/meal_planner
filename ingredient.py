@@ -9,6 +9,9 @@ class Ingredent:
 		self.quantity = quantity
 		self.unit = unit
 		
+	def __str__(self):
+		return self.name
+		
 	def insert_ingredient(self, conn):
 		"""
 		This will insert an ingredient into our database

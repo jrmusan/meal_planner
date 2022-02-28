@@ -3,11 +3,10 @@
 {% block content %}
 <h1>{% block title %} Create a New Recipe {% endblock %}</h1>
 
+<!--This crap is needed for the javascript stuff below-->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">
 </script>  
-
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
 
 
@@ -22,8 +21,8 @@
 
     <div class="form-group">
         <label for="content">Notes</label>
-        <textarea name="recipe" placeholder="Recipe notes"
-                  class="form-control">{{ request.form['recipe'] }}</textarea>
+        <textarea name="notes" placeholder="Recipe notes"
+                  class="form-control">{{ request.form['notes'] }}</textarea>
     </div>
         
     

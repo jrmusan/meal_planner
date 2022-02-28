@@ -69,14 +69,14 @@ def create():
 	# Checks if a post was sent
 	if request.method == 'POST':
 		# If so grab the input data from the page submitted
-		title = request.form['title']
-		content = request.form['content']
+		name = request.form['name']
+		notes = request.form['notes']
 		
-		if not title:
-			flash('Title is required!')
+		if not name:
+			flash('Name is required!')
 		else:
 			# Lets write this to the database!
-			conn.execute('INSERT INTO posts (title, content) VALUES (?, ?)',(title, content))
+			conn.execute('INSERT INTO recipes (name, notes) VALUES (?, ?)',(name, notes))
 			conn.commit()
 			conn.close()
 			return redirect(url_for('index'))

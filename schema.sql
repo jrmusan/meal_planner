@@ -9,7 +9,8 @@ CREATE TABLE ingredients (
 CREATE TABLE recipes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    notes TEXT
+    notes TEXT,
+    cuisine TEXT
 );
 
 CREATE TABLE menu_map (

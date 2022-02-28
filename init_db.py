@@ -8,7 +8,7 @@ with open('schema.sql') as f:
 
 cur = connection.cursor()
 
-cur.execute("INSERT INTO recipes(name, notes) VALUES (?, ?)", ('Fried Chicken', 'Yummy'))
+cur.execute("INSERT INTO recipes(name, notes, cuisine) VALUES (?, ?, ?)", ('Fried Chicken', 'Yummy', 'Merican'))
 cur.execute("INSERT INTO ingredients(name, category) VALUES (?, ?)", ('beef', 'protein'))
 
 connection.commit()

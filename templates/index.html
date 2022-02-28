@@ -8,7 +8,7 @@
         <a href="{{ url_for('recipe', recipe_id=recipe['id']) }}">
             <h2>{{ recipe['name'] }}</h2>
         </a>
-        <span class="badge badge-primary">{{ recipe['name'] }}</span>
+        <span class="badge badge-primary">{{ recipe['cuisine'] }}</span>
         <hr>
     {% endfor %}
     

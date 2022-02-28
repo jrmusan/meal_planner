@@ -99,7 +99,7 @@ def add_ingredient():
 		else:
 			# Lets write this to the database!
 			conn = get_db_connection()
-			ing_obj = Ingredent(name, category)
+			ing_obj = Ingredent(name, category=category)
 			ing_obj.insert_ingredient(conn)
 			return redirect(url_for('index'))
 	

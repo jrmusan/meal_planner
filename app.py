@@ -71,6 +71,8 @@ def create():
 		name = request.form['name']
 		notes = request.form['notes']
 		cuisine = request.form['cuisine']
+		req_ingredients = request.form['text_arr']
+		print(f"{req_ingredients =}")
 		
 		if not name:
 			flash('Name is required!')

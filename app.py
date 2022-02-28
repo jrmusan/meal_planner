@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
 
 from ingredient import Ingredent
+from recipe import Recipe
 
 # This will return a database connection to our SQLite db
 # This will return rows from the db that are just dicts
@@ -71,14 +72,14 @@ def create():
 		# If so grab the input data from the page submitted
 		name = request.form['name']
 		notes = request.form['notes']
+		cuisine = request.form['cuisine']
 		
 		if not name:
 			flash('Name is required!')
 		else:
 			# Lets write this to the database!
-			conn.execute('INSERT INTO recipes (name, notes) VALUES (?, ?)',(name, notes))
-			conn.commit()
-			conn.close()
+			recipe_obj = Recipe(name, notes, cuisine)
+			recipe_obj.instert_recipe(conn)
 			return redirect(url_for('index'))
 		
 	return render_template('create.html', ingredients=ingredients)
@@ -102,7 +103,6 @@ def add_ingredient():
 			conn = get_db_connection()
 			ing_obj = Ingredent(name, category)
 			ing_obj.insert_ingredient(conn)
-			ing_obj.list_ingredients(conn) # Just for testing
 			return redirect(url_for('index'))
 	
 	return render_template('add_ingredient.html')

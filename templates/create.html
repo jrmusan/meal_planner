@@ -24,6 +24,13 @@
         <textarea name="notes" placeholder="Recipe notes"
                   class="form-control">{{ request.form['notes'] }}</textarea>
     </div>
+    
+<!--Lets make this into a drop down using Bootstrap-->
+    <div class="form-group">
+        <label for="content">Cuisine</label>
+        <textarea name="cuisine" placeholder="Cuisine type"
+            class="form-control">{{ request.form['cuisine'] }}</textarea>
+    </div>
         
     
 <!--This is for the dynamic boxes-->

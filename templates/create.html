@@ -3,11 +3,12 @@
 {% block content %}
 <h1>{% block title %} Create a New Recipe {% endblock %}</h1>
 
-<!--This crap is needed for the javascript stuff below-->
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">
-</script>  
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
+<!--Bootstrap searchable drop down-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
 
 <form method="post">
@@ -30,70 +31,13 @@
             class="form-control">{{ request.form['cuisine'] }}</textarea>
     </div>
         
-    
 <!--This is for the dynamic boxes-->
-    
-<!--https://www.kodingmadesimple.com/2017/03/add-remove-textbox-dynamically-using-jquery-php-bootstrap.html-->
+    <select class="selectpicker" multiple data-live-search="true">
+        {% for ingredient in ingredients %}
+            "<option>{{  ingredient.name  }}</option>"
+        {% endfor %}
+    </select>
 
-    <div class="container" style="margin-top: 30px;">
-        <div class="col-xs-6 col-xs-offset-3">
-            <div class="panel panel-success">
-                <div class="panel-body">
-                    <form name="demo-form" method="post">
-                        <div class="textbox-wrapper">
-                            <div class="input-group">
-                                
-                                <!--This is for the auto complete-->
-                                <input type="text" name="text_arr" id="tags" class="form-control"
-                                    value="{{ request.form['text_arr'] }}"/>
-                                
-                                <script type="text/javascript">
-                                    $(function() {
-                                        var availableTags = [
-                                            {% for ingredient in ingredients %}
-                                            "{{  ingredient.name  }}",
-                                            {% endfor %}
-                                        ];
-                                        $( "#tags" ).autocomplete({
-                                            source: availableTags
-                                        });
-                                    } );
-                                </script>
-                                
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-success add-textbox"><i class="glyphicon glyphicon-plus"></i></button>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" name="submit" value="Submit Recipe" class="btn btn-lg btn-block btn-success"/>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var max = 10;
-            var cnt = 1;
-            $(".add-textbox").on("click", function(e){
-                
-                e.preventDefault();
-                if(cnt < max){
-                    cnt++;
-                    $(".textbox-wrapper").append('<div class="input-group"><input type="text" id="tags"><span class="input-group-btn"><button type="button" class="btn btn-danger remove-textbox"><i class="glyphicon glyphicon-minus"></i></button></span></div>');
-                }
-            });
-            
-            $(".textbox-wrapper").on("click",".remove-textbox", function(e){
-                e.preventDefault();
-                $(this).parents(".input-group").remove();
-                cnt--;
-            });
-        });
-    </script>
 </form>
 
 {% endblock %}

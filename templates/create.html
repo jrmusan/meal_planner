@@ -24,19 +24,24 @@
                   class="form-control">{{ request.form['notes'] }}</textarea>
     </div>
     
-<!--Lets make this into a drop down using Bootstrap-->
+    <!--Lets make this into a drop down using Bootstrap-->
     <div class="form-group">
         <label for="content">Cuisine</label>
         <textarea name="cuisine" placeholder="Cuisine type"
             class="form-control">{{ request.form['cuisine'] }}</textarea>
     </div>
         
-<!--This is for the dynamic boxes-->
-    <select class="selectpicker" multiple data-live-search="true">
+    <!--This is for the dynamic boxes-->
+    <select name='ingredients' class="selectpicker" multiple data-live-search="true">
         {% for ingredient in ingredients %}
             "<option>{{  ingredient.name  }}</option>"
         {% endfor %}
-    </select>
+    </select>   
+
+    <!-- Make this into a better looking button -->
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
 
 </form>
 

@@ -37,7 +37,6 @@ class Ingredent:
 		"""
 		
 		with conn:
-			c = conn.cursor()
 			ingredients = conn.execute('SELECT * FROM ingredients').fetchall()
 			
 			# Lets turn these into objects

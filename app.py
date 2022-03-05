@@ -73,14 +73,14 @@ def create():
 		cuisine = request.form['cuisine']
 
 		# Get ingredients from form
-		ingredients = request.values.getlist('ingredients')
-		print(f"{ingredients =}")
+		needed_ingredients = request.values.getlist('ingredients')
+		# print(f"{ingredients =}")
 		
 		if not name:
 			flash('Name is required!')
 		else:
 			# Lets write this to the database!
-			recipe_obj = Recipe(name, notes=notes, cuisine=cuisine)
+			recipe_obj = Recipe(name, ingredients=needed_ingredients, notes=notes, cuisine=cuisine)
 			recipe_obj.instert_recipe(conn)
 			return redirect(url_for('index'))
 		

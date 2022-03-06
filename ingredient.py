@@ -48,5 +48,16 @@ class Ingredent:
 				ingredient_objs.append(ingredient_obj)
 				
 			return ingredient_objs
+
+	@staticmethod
+	def get_ingredient(conn, id, quantity, unit):
+		"""
+		Retruns an ingredient obj
+		"""
 		
-		
+		# Get the data for this ingredient
+		ingredient_row = conn.execute(f"SELECT name, category FROM ingredients where id = '{id}'").fetchone()
+
+		# Instantiate an Ingredent object with eveyrthing it needs
+		ing_obj = Ingredent(ingredient_row['name'], id, ingredient_row['category'], quantity, unit)
+		return ing_obj

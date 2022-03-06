@@ -74,14 +74,18 @@ def create():
 
 		# Get ingredients from form
 		needed_ingredients = request.values.getlist('ingredients')
-		# print(f"{ingredients =}")
 		
 		if not name:
 			flash('Name is required!')
 		else:
-			# Lets write this to the database!
+			# Lets write this to the database!  ~~~~~~THIS IS ADDING THE INGREDIENT AS A STR NOT OBJ~~~~~~
 			recipe_obj = Recipe(name, ingredients=needed_ingredients, notes=notes, cuisine=cuisine)
 			recipe_obj.instert_recipe(conn)
+
+			# Try and get ingredients for this
+			recipe_obj.get_recipe(conn)
+			print(f"{recipe_obj.ingredients = }")
+
 			return redirect(url_for('index'))
 		
 	return render_template('create.html', ingredients=ingredients)

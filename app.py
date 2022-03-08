@@ -53,8 +53,15 @@ def index():
 #~~~~~~~~This is our route to see a recipe~~~~~~~~
 @app.route('/<int:recipe_id>')
 def recipe(recipe_id):
-	recipe = get_recipe(recipe_id)
-	return render_template('recipe.html', recipe=recipe)
+
+	conn = get_db_connection()
+
+	# Get this recipe object
+	recipe_obj = Recipe.get_recipe(conn, recipe_id)
+
+	print(f"{recipe_obj.name = }")
+
+	return render_template('recipe.html', recipe=recipe_obj)
 
 
 #~~~~~~~~This is our route to create a new recipe~~~~~~~~
@@ -79,12 +86,7 @@ def create():
 			flash('Name is required!')
 		else:
 			# Lets write this to the database!  ~~~~~~THIS IS ADDING THE INGREDIENT AS A STR NOT OBJ~~~~~~
-			recipe_obj = Recipe(name, ingredients=needed_ingredients, notes=notes, cuisine=cuisine)
-			recipe_obj.instert_recipe(conn)
-
-			# Try and get ingredients for this
-			recipe_obj.get_recipe(conn)
-			print(f"{recipe_obj.ingredients = }")
+			Recipe.instert_recipe(conn, name, needed_ingredients, notes, cuisine)
 
 			return redirect(url_for('index'))
 		

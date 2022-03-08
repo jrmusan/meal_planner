@@ -4,4 +4,8 @@
     <h2>{% block title %} {{ recipe.name }} {% endblock %}</h2>
     <span class="badge badge-primary">{{ recipe.cuisine }}</span>
     <p>{{ recipe.notes }}</p>
+
+    {% for ingredient in recipe.ingredients %}
+        <option>{{  ingredient.name  }}</option>
+{% endfor %}
 {% endblock %}

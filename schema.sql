@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS posts;
 
 CREATE TABLE ingredients (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,3 +22,8 @@ CREATE TABLE menu_map (
     FOREIGN KEY(recipe_id) REFERENCES recipes(id)
 );
 
+CREATE TABLE selected_meals (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    recipe_id INTEGER,
+    FOREIGN KEY(recipe_id) REFERENCES recipes(id)
+);

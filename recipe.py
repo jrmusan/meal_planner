@@ -89,3 +89,18 @@ class Recipe:
 		recipe_obj = Recipe(recipe_row['name'], id, ingredients_list, recipe_row['notes'], recipe_row['cuisine'])
 
 		return recipe_obj
+
+
+	def add_to_meal_plan(self, conn):
+		"""
+		This will add this recipe to our meal plan for the week
+
+		Args:
+			conn (Connection): This is the connection to our db
+		
+		"""
+
+		# First lets just add the recipe into the recipes table
+		with conn:
+			c = conn.cursor()
+			c.execute("INSERT INTO selected_meals(id) VALUES (?)", (self.id))

@@ -1,18 +1,18 @@
 
-CREATE TABLE ingredients (
+CREATE TABLE IF NOT EXISTS ingredients (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     category TEXT NOT NULL
 );
 
-CREATE TABLE recipes (
+CREATE TABLE IF NOT EXISTS recipes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     notes TEXT,
     cuisine TEXT
 );
 
-CREATE TABLE menu_map (
+CREATE TABLE IF NOT EXISTS menu_map (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     ingredient_id INTEGER,
     recipe_id INTEGER,
@@ -22,7 +22,7 @@ CREATE TABLE menu_map (
     FOREIGN KEY(recipe_id) REFERENCES recipes(id)
 );
 
-CREATE TABLE selected_meals (
+CREATE TABLE IF NOT EXISTS selected_meals (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     recipe_id INTEGER,
     FOREIGN KEY(recipe_id) REFERENCES recipes(id)

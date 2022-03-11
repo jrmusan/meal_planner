@@ -61,11 +61,11 @@ def recipe(recipe_id):
 
 	print(f"{recipe_obj.name = }")
 
-	return render_template('recipe.html', recipe=recipe_obj)
+	return render_template('recipe.html', recipe=recipe)
 
 
 #~~~~~~~~This is our route to create a new recipe~~~~~~~~
-@app.route('/create', methods=('GET', 'POST'))
+@app.route('/create', methods=('GET', 'POST'))  # ~~~~~~~~~~~WHAT IF WE DONT WANT A GET AND JUST A POST?~~~~~~~~~~~
 def create():
 	
 	# Get the ingredients for auto complete
@@ -139,3 +139,22 @@ def edit(id):
 			return redirect(url_for('index'))
 		
 	return render_template('edit.html', post=post)
+
+
+@app.route('/plan_meals', methods=('GET', 'POST'))
+def plan_meals():
+
+	# This will open the db connection
+	conn = get_db_connection()
+	
+	# Next lets get all the recipes
+	recipes = Recipe.list_recipes(conn)
+
+	#~~~~~~~~~~~~~~DO I NEED THIS IF STATEMENMT HERE?!~~~~~~~~~~~~~~
+	if request.method == 'POST':
+
+		# Get selected recipes from
+		selected_recipes = request.values.getlist('recipes')
+
+
+	return render_template('meal_plan.html', recipes=recipes)

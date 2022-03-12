@@ -2,8 +2,11 @@
 
 from os import stat
 from ingredient import Ingredent
+from database import Database
 
 class Recipe:
+
+	db_obj = Database()
 	
 	def __init__(self, name, id=0, ingredients=[], notes="", cuisine=""):
 		
@@ -40,7 +43,7 @@ class Recipe:
 				c.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient_id['id'], recipe_id, quantity, unit))
 
 	@staticmethod
-	def list_recipes(conn):
+	def list_recipes():
 		"""
 		This will return all the recipes in our database (THIS SHOULD JUST CALL GET_RECIPE)
 		
@@ -50,18 +53,16 @@ class Recipe:
 			sqlite3.Row Obj: Ingredient rows 
 		"""
 		
-		with conn:
-			c = conn.cursor()
 			
-			# Grab all the recipes from the db
-			recipes = conn.execute('SELECT * FROM recipes').fetchall()
-			
-			recipe_objs = []
-			
-			# Lets turn them into objs
-			for recipe in recipes:
-				recipe_obj = Recipe(recipe['name'], recipe['id'], recipe['notes'], recipe['cuisine'])
-				recipe_objs.append(recipe_obj)
+		# Grab all the recipes from the db
+		recipes = Recipe.db_obj.execute('SELECT * FROM recipes').fetchall()
+		
+		recipe_objs = []
+		
+		# Lets turn them into objs
+		for recipe in recipes:
+			recipe_obj = Recipe(recipe['name'], recipe['id'], recipe['notes'], recipe['cuisine'])
+			recipe_objs.append(recipe_obj)
 				
 			return recipe_objs
 

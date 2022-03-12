@@ -7,6 +7,10 @@ from werkzeug.exceptions import abort
 from ingredient import Ingredent
 from recipe import Recipe
 
+from database import Database
+
+db_obj = Database()
+
 # This will return a database connection to our SQLite db
 # This will return rows from the db that are just dicts
 def get_db_connection():
@@ -31,10 +35,10 @@ app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
 def index():
 	
 	# This will open the db connection
-	conn = get_db_connection()
+	# conn = get_db_connection()
 	
 	# Next lets get all the recipes
-	recipes = Recipe.list_recipes(conn)
+	recipes = Recipe.list_recipes()
 	
 	# We render this page by passing in the posts we just returned from the db
 	return render_template('index.html', recipes=recipes)

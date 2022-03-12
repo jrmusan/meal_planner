@@ -59,14 +59,11 @@ def recipe(recipe_id):
 	# Get this recipe object
 	recipe_obj = Recipe.get_recipe(conn, id=recipe_id)
 
-	print(f"{recipe_obj.name = }")
-	print(f"{recipe_obj.ingredients = }")
-
 	return render_template('recipe.html', recipe=recipe_obj)
 
 
 #~~~~~~~~This is our route to create a new recipe~~~~~~~~
-@app.route('/create', methods=('GET', 'POST'))  # ~~~~~~~~~~~WHAT IF WE DONT WANT A GET AND JUST A POST?~~~~~~~~~~~
+@app.route('/create', methods=('GET', 'POST')) 
 def create():
 	
 	# Get the ingredients for auto complete
@@ -86,7 +83,6 @@ def create():
 		if not name:
 			flash('Name is required!')
 		else:
-			# Lets write this to the database!  ~~~~~~THIS IS ADDING THE INGREDIENT AS A STR NOT OBJ~~~~~~
 			Recipe.instert_recipe(conn, name, needed_ingredients, notes, cuisine)
 
 			return redirect(url_for('index'))
@@ -156,6 +152,8 @@ def plan_meals():
 
 		# Get selected recipes from
 		selected_recipes = request.values.getlist('recipes')
+
+		# Need a way to convert a name into an id
 
 
 	return render_template('meal_plan.html', recipes=recipes)

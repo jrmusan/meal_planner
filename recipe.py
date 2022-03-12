@@ -127,7 +127,7 @@ class Recipe:
 		"""
 
 		# Grab all the meup_maps from from the db
-		selected_recipes = conn.execute(f"SELECT * FROM selected_meals where recipe_id = '{id}'").fetchall()
+		selected_recipes = conn.execute(f"SELECT * FROM selected_meals").fetchall()
 
 		# We need to instantiate the ingredient obj for each ingredient in this recipe
 		recipe_list = []

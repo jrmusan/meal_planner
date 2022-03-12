@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from os import stat
 from ingredient import Ingredent
 
 class Recipe:
@@ -64,14 +65,20 @@ class Recipe:
 				
 			return recipe_objs
 
-	@staticmethod
-	def get_recipe(conn, id):
+	@staticmethod # ~~~~~~~~~~~~CONSIDER THIS METHOD USING EITHER A NAME OR ID~~~~~~~~~~~~
+	def get_recipe(conn, id=0, name=""):
 		"""
 		This will get the recipe along with its ingredient objects
 
 		Args:
 			conn (Connection): This is the connection to our db
 		"""
+
+		# If were given a name, make a single call to get the id for this recipe
+		if not id and name:
+			id = conn.execute(f"SELECT id FROM recipes where name = '{name}'").fetchall()
+			print(f"{id = }")
+
 
 		# Grab all the meup_maps from from the db
 		ingredients = conn.execute(f"SELECT * FROM menu_map where recipe_id = '{id}'").fetchall()
@@ -90,8 +97,8 @@ class Recipe:
 
 		return recipe_obj
 
-
-	def add_to_meal_plan(self, conn):
+	@staticmethod
+	def add_to_meal_plan(conn, id):
 		"""
 		This will add this recipe to our meal plan for the week
 
@@ -103,4 +110,29 @@ class Recipe:
 		# First lets just add the recipe into the recipes table
 		with conn:
 			c = conn.cursor()
-			c.execute("INSERT INTO selected_meals(id) VALUES (?)", (self.id))
+			print(f"Trying to insert: {id}")
+			c.execute("INSERT INTO selected_meals(id) VALUES (?)", (id))
+
+
+	@staticmethod
+	def get_selected_recipes(conn):
+		"""
+		This will get all the selected meals for this meal plan
+
+		Args:
+			conn (Connection): This is the connection to our db
+		Returns:
+			sqlite3.Row Obj: Ingredient rows 
+		
+		"""
+
+		# Grab all the meup_maps from from the db
+		selected_recipes = conn.execute(f"SELECT * FROM selected_meals where recipe_id = '{id}'").fetchall()
+
+		# We need to instantiate the ingredient obj for each ingredient in this recipe
+		recipe_list = []
+		for recipe in selected_recipes:
+			recipe_obj = Recipe.get_recipe(conn, recipe['recipe_id'])
+			recipe_list.append(recipe_obj)
+
+		return recipe_list

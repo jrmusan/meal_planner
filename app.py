@@ -57,11 +57,12 @@ def recipe(recipe_id):
 	conn = get_db_connection()
 
 	# Get this recipe object
-	recipe_obj = Recipe.get_recipe(conn, recipe_id)
+	recipe_obj = Recipe.get_recipe(conn, id=recipe_id)
 
 	print(f"{recipe_obj.name = }")
+	print(f"{recipe_obj.ingredients = }")
 
-	return render_template('recipe.html', recipe=recipe)
+	return render_template('recipe.html', recipe=recipe_obj)
 
 
 #~~~~~~~~This is our route to create a new recipe~~~~~~~~

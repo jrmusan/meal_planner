@@ -14,16 +14,6 @@ def get_db_connection():
 	conn.row_factory = sqlite3.Row
 	return conn
 
-def get_recipe(recipe_id):
-	conn = get_db_connection()
-	
-	# This is running a sql command to get a posts by it's id
-	recipe = conn.execute('SELECT * FROM recipes WHERE id = ?', (recipe_id,)).fetchone()
-	conn.close()
-	if recipe is None:
-		abort(404)
-	return recipe
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
 

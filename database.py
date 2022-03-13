@@ -7,7 +7,7 @@ class Database():
         self.conn.row_factory = sqlite3.Row
         self.cursor = self.conn.cursor()
 
-    def execute(self, statement):
-        result = self.cursor.execute(statement)
+    def execute(self, statement, prams: tuple=()):
+        result = self.cursor.execute(statement, prams)
         self.conn.commit()
         return result

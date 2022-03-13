@@ -48,10 +48,8 @@ def index():
 @app.route('/<int:recipe_id>')
 def recipe(recipe_id):
 
-	conn = get_db_connection()
-
 	# Get this recipe object
-	recipe_obj = Recipe.get_recipe(conn, id=recipe_id)
+	recipe_obj = Recipe.get_recipe(id=recipe_id)
 
 	return render_template('recipe.html', recipe=recipe_obj)
 
@@ -61,8 +59,7 @@ def recipe(recipe_id):
 def create():
 	
 	# Get the ingredients for auto complete
-	conn = get_db_connection()
-	ingredients = Ingredent.list_ingredients(conn)
+	ingredients = Ingredent.list_ingredients()
 		
 	# Checks if a post was sent
 	if request.method == 'POST':
@@ -77,7 +74,7 @@ def create():
 		if not name:
 			flash('Name is required!')
 		else:
-			Recipe.instert_recipe(conn, name, needed_ingredients, notes, cuisine)
+			Recipe.instert_recipe(name, needed_ingredients, notes, cuisine)
 
 			return redirect(url_for('index'))
 		
@@ -99,9 +96,8 @@ def add_ingredient():
 			
 		else:
 			# Lets write this to the database!
-			conn = get_db_connection()
 			ing_obj = Ingredent(name, category=category)
-			ing_obj.insert_ingredient(conn)
+			ing_obj.insert_ingredient()
 			return redirect(url_for('index'))
 	
 	return render_template('add_ingredient.html')
@@ -134,12 +130,9 @@ def edit(id):
 
 @app.route('/plan_meals', methods=('GET', 'POST'))
 def plan_meals():
-
-	# This will open the db connection
-	conn = get_db_connection()
 	
 	# Next lets get all the recipes
-	recipes = Recipe.list_recipes(conn)
+	recipes = Recipe.list_recipes()
 
 	#~~~~~~~~~~~~~~DO I NEED THIS IF STATEMENMT HERE?!~~~~~~~~~~~~~~
 	if request.method == 'POST':

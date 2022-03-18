@@ -74,9 +74,9 @@ def create():
 		if not name:
 			flash('Name is required!')
 		else:
-			Recipe.instert_recipe(name, needed_ingredients, notes, cuisine)
+			recipe_id = Recipe.instert_recipe(name, needed_ingredients, notes, cuisine)
 
-			return redirect(url_for('index'))
+			return recipe(recipe_id)
 		
 	return render_template('create.html', ingredients=ingredients)
 

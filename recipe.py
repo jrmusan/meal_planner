@@ -46,6 +46,8 @@ class Recipe:
 			# Next we need to insert this into the menu_map table (HARDCODING quantity and unit for now)
 			Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient_id['id'], recipe_id, quantity, unit))
 
+		return recipe_id
+
 	@staticmethod
 	def list_recipes():
 		"""

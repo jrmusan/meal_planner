@@ -38,7 +38,7 @@ def index():
 	# conn = get_db_connection()
 	
 	# Next lets get all the recipes
-	recipes = Recipe.list_recipes()
+	recipes = Recipe.get_selected_recipes()
 	
 	# We render this page by passing in the posts we just returned from the db
 	return render_template('index.html', recipes=recipes)
@@ -141,6 +141,11 @@ def plan_meals():
 		selected_recipes = request.values.getlist('recipes')
 
 		# Need a way to convert a name into an id
+		for recipe in selected_recipes:
+
+			# First lets get its id
+			recipe_id = Recipe.get_id_from_name(recipe)
+			Recipe.add_to_meal_plan(recipe_id)
 
 
 	return render_template('meal_plan.html', recipes=recipes)

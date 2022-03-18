@@ -36,7 +36,12 @@ class Recipe:
 
 		# Need id for each ingredient this recipe uses
 		for ingredient in ingredients:
+
+			print(f"{ingredient = }")
+
 			ingredient_id = Recipe.db_obj.execute(f"SELECT id FROM ingredients where name = '{ingredient}'").fetchone()
+
+			print(f"{ingredient_id['id'] = }")
 			
 			# Next we need to insert this into the menu_map table (HARDCODING quantity and unit for now)
 			Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient_id['id'], recipe_id, quantity, unit))
@@ -52,7 +57,6 @@ class Recipe:
 			sqlite3.Row Obj: Ingredient rows 
 		"""
 		
-			
 		# Grab all the recipes from the db
 		recipes = Recipe.db_obj.execute('SELECT * FROM recipes').fetchall()
 		
@@ -60,25 +64,36 @@ class Recipe:
 		
 		# Lets turn them into objs
 		for recipe in recipes:
+			print("HI")
 			recipe_obj = Recipe(recipe['name'], recipe['id'], recipe['notes'], recipe['cuisine'])
 			recipe_objs.append(recipe_obj)
 				
-			return recipe_objs
+		return recipe_objs
+
+	@staticmethod
+	def get_id_from_name(name):
+		"""
+		Given a recipe name, get its id
+
+		Args:
+			name (str): Name of the recipe
+		
+		Returns:
+			int: ID of the recipe
+		
+		"""
+
+		id = Recipe.db_obj.execute(f"SELECT id FROM recipes where name = '{name}'").fetchone()
+		return id["id"]
 
 	@staticmethod # ~~~~~~~~~~~~CONSIDER THIS METHOD USING EITHER A NAME OR ID~~~~~~~~~~~~
-	def get_recipe(id=0, name=""):
+	def get_recipe(id):
 		"""
 		This will get the recipe along with its ingredient objects
 
 		Args:
 			conn (Connection): This is the connection to our db
 		"""
-
-		# If were given a name, make a single call to get the id for this recipe
-		if not id and name:
-			id = Recipe.db_obj.execute(f"SELECT id FROM recipes where name = '{name}'").fetchall()
-			print(f"{id = }")
-
 
 		# Grab all the meup_maps from from the db
 		ingredients = Recipe.db_obj.execute(f"SELECT * FROM menu_map where recipe_id = '{id}'").fetchall()
@@ -109,7 +124,7 @@ class Recipe:
 
 		# First lets just add the recipe into the recipes table
 		print(f"Trying to insert: {id}")
-		Recipe.db_obj.execute("INSERT INTO selected_meals(id) VALUES (?)", (id))
+		Recipe.db_obj.execute("INSERT INTO selected_meals(recipe_id) VALUES (?)", (id,))
 
 
 	@staticmethod
@@ -127,9 +142,12 @@ class Recipe:
 		# Grab all the meup_maps from from the db
 		selected_recipes = Recipe.db_obj.execute(f"SELECT * FROM selected_meals").fetchall()
 
+		print(f"{selected_recipes = }")
+
 		# We need to instantiate the ingredient obj for each ingredient in this recipe
 		recipe_list = []
 		for recipe in selected_recipes:
+			print(f"{recipe = }")
 			recipe_obj = Recipe.get_recipe(recipe['recipe_id'])
 			recipe_list.append(recipe_obj)
 

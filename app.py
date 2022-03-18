@@ -7,22 +7,16 @@ from werkzeug.exceptions import abort
 from ingredient import Ingredent
 from recipe import Recipe
 
+from database import Database
+
+db_obj = Database()
+
 # This will return a database connection to our SQLite db
 # This will return rows from the db that are just dicts
 def get_db_connection():
 	conn = sqlite3.connect('database.db')
 	conn.row_factory = sqlite3.Row
 	return conn
-
-def get_recipe(recipe_id):
-	conn = get_db_connection()
-	
-	# This is running a sql command to get a posts by it's id
-	recipe = conn.execute('SELECT * FROM recipes WHERE id = ?', (recipe_id,)).fetchone()
-	conn.close()
-	if recipe is None:
-		abort(404)
-	return recipe
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
@@ -41,10 +35,10 @@ app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
 def index():
 	
 	# This will open the db connection
-	conn = get_db_connection()
+	# conn = get_db_connection()
 	
 	# Next lets get all the recipes
-	recipes = Recipe.list_recipes(conn)
+	recipes = Recipe.get_selected_recipes()
 	
 	# We render this page by passing in the posts we just returned from the db
 	return render_template('index.html', recipes=recipes)
@@ -54,10 +48,8 @@ def index():
 @app.route('/<int:recipe_id>')
 def recipe(recipe_id):
 
-	conn = get_db_connection()
-
 	# Get this recipe object
-	recipe_obj = Recipe.get_recipe(conn, id=recipe_id)
+	recipe_obj = Recipe.get_recipe(id=recipe_id)
 
 	return render_template('recipe.html', recipe=recipe_obj)
 
@@ -67,8 +59,7 @@ def recipe(recipe_id):
 def create():
 	
 	# Get the ingredients for auto complete
-	conn = get_db_connection()
-	ingredients = Ingredent.list_ingredients(conn)
+	ingredients = Ingredent.list_ingredients()
 		
 	# Checks if a post was sent
 	if request.method == 'POST':
@@ -83,9 +74,9 @@ def create():
 		if not name:
 			flash('Name is required!')
 		else:
-			Recipe.instert_recipe(conn, name, needed_ingredients, notes, cuisine)
+			recipe_id = Recipe.instert_recipe(name, needed_ingredients, notes, cuisine)
 
-			return redirect(url_for('index'))
+			return recipe(recipe_id)
 		
 	return render_template('create.html', ingredients=ingredients)
 
@@ -105,9 +96,8 @@ def add_ingredient():
 			
 		else:
 			# Lets write this to the database!
-			conn = get_db_connection()
 			ing_obj = Ingredent(name, category=category)
-			ing_obj.insert_ingredient(conn)
+			ing_obj.insert_ingredient()
 			return redirect(url_for('index'))
 	
 	return render_template('add_ingredient.html')
@@ -140,12 +130,9 @@ def edit(id):
 
 @app.route('/plan_meals', methods=('GET', 'POST'))
 def plan_meals():
-
-	# This will open the db connection
-	conn = get_db_connection()
 	
 	# Next lets get all the recipes
-	recipes = Recipe.list_recipes(conn)
+	recipes = Recipe.list_recipes()
 
 	#~~~~~~~~~~~~~~DO I NEED THIS IF STATEMENMT HERE?!~~~~~~~~~~~~~~
 	if request.method == 'POST':
@@ -154,6 +141,11 @@ def plan_meals():
 		selected_recipes = request.values.getlist('recipes')
 
 		# Need a way to convert a name into an id
+		for recipe in selected_recipes:
+
+			# First lets get its id
+			recipe_id = Recipe.get_id_from_name(recipe)
+			Recipe.add_to_meal_plan(recipe_id)
 
 
 	return render_template('meal_plan.html', recipes=recipes)

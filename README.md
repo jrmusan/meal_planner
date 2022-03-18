@@ -1,5 +1,10 @@
 # meal_planner
 
+Still a work in progress
+At the end this will allow users to enter their own recipes and ingredients
+From there you will be able to select meals that you want to have for that week
+This way you can easily see all the ingredients needed for the grocery trip!
+
 # To run demo
 First cd into project dir
 Type
@@ -10,14 +15,3 @@ flask run
 ```
 
 This will/should run our little demo on localhost 
-
-We should consider using something called boot strap for mobile resizing. 
-
-Link to tutorial being followed
-[Flask Basics](https://www.digitalocean.com/community/tutorials/how-to-make-a-web-application-using-flask-in-python-3)
-
-Drag and drop list
-https://webdevtrick.com/html-drag-and-drop-list/
-
-Dynamically add text boxes
-https://www.codexworld.com/add-remove-input-fields-dynamically-using-jquery/

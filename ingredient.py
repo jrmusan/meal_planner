@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
+from database import Database
+
 class Ingredent:
+
+	db_obj = Database()
 	
 	def __init__(self, name, id = 0, category = "", quantity = 0, unit = ""):
 	
@@ -13,7 +17,7 @@ class Ingredent:
 	def __str__(self):
 		return self.name
 		
-	def insert_ingredient(self, conn):
+	def insert_ingredient(self):
 		"""
 		This will insert an ingredient into our database
 
@@ -21,12 +25,10 @@ class Ingredent:
 			conn (Connection): This is the connection to our db
 		"""
 
-		with conn:
-			c = conn.cursor()
-			c.execute("INSERT INTO ingredients(name, category) VALUES (?, ?)", (self.name, self.category))
+		Ingredent.db_obj.execute("INSERT INTO ingredients(name, category) VALUES (?, ?)", (self.name, self.category))
 			
 	@staticmethod
-	def list_ingredients(conn):
+	def list_ingredients():
 		"""
 		This will return all the ingredients in our database
 		
@@ -36,27 +38,26 @@ class Ingredent:
 			sqlite3.Row Obj: Ingredient rows 
 		"""
 		
-		with conn:
-			ingredients = conn.execute('SELECT * FROM ingredients').fetchall()
+		ingredients = Ingredent.db_obj.execute('SELECT * FROM ingredients').fetchall()
+		
+		# Lets turn these into objects
+		ingredient_objs = []
+		
+		for ing in ingredients:
+			ingredient_obj = Ingredent(ing['name'], ing['id'], ing['category'])
 			
-			# Lets turn these into objects
-			ingredient_objs = []
+			ingredient_objs.append(ingredient_obj)
 			
-			for ing in ingredients:
-				ingredient_obj = Ingredent(ing['name'], ing['id'], ing['category'])
-				
-				ingredient_objs.append(ingredient_obj)
-				
-			return ingredient_objs
+		return ingredient_objs
 
 	@staticmethod
-	def get_ingredient(conn, id, quantity, unit):
+	def get_ingredient(id, quantity, unit):
 		"""
 		Retruns an ingredient obj
 		"""
 		
 		# Get the data for this ingredient
-		ingredient_row = conn.execute(f"SELECT name, category FROM ingredients where id = '{id}'").fetchone()
+		ingredient_row = Ingredent.db_obj.execute(f"SELECT name, category FROM ingredients where id = '{id}'").fetchone()
 
 		# Instantiate an Ingredent object with eveyrthing it needs
 		ing_obj = Ingredent(ingredient_row['name'], id, ingredient_row['category'], quantity, unit)

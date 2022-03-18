@@ -24,6 +24,5 @@ CREATE TABLE IF NOT EXISTS menu_map (
 
 CREATE TABLE IF NOT EXISTS selected_meals (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    recipe_id INTEGER,
-    FOREIGN KEY(recipe_id) REFERENCES recipes(id)
+    recipe_id INTEGER
 );

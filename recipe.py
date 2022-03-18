@@ -66,7 +66,6 @@ class Recipe:
 		
 		# Lets turn them into objs
 		for recipe in recipes:
-			print("HI")
 			recipe_obj = Recipe(recipe['name'], recipe['id'], recipe['notes'], recipe['cuisine'])
 			recipe_objs.append(recipe_obj)
 				

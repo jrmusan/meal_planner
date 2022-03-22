@@ -18,6 +18,21 @@ class Recipe:
 		
 	def __str__(self):
 		return self.name
+
+	@property
+	def selected(self):
+		"""
+		Checks if this recipe is selected in the meal plans
+
+		Returns:
+			True if selected for meal plan
+		"""
+
+		if Recipe.db_obj.execute(f"SELECT 1 FROM selected_meals WHERE recipe_id = '{self.id}'").fetchone():
+			return True
+	
+		return False
+	
 		
 	@staticmethod
 	def instert_recipe(name, ingredients, notes="", cuisine="", quantity=1, unit="cup"):

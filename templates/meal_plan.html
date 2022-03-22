@@ -16,13 +16,20 @@
         <!--This is for the dynamic boxes-->
         <select name='recipes' class="selectpicker" multiple data-live-search="true">
             {% for recipe in recipes %}
-                "<option>{{  recipe.name  }}</option>"
+
+                {% if recipe.selected %}
+                    "<option selected>{{  recipe.name  }} </option>"
+
+                {% else %}
+                    "<option>{{  recipe.name  }} </option>"
+                {% endif %}
+
             {% endfor %}
         </select>   
     
         <!-- Make this into a better looking button -->
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Update</button>
         </div>
     
     </form>

@@ -139,6 +139,9 @@ def plan_meals():
 	#~~~~~~~~~~~~~~DO I NEED THIS IF STATEMENMT HERE?!~~~~~~~~~~~~~~
 	if request.method == 'POST':
 
+		# First lets wipe the data in the meal plan, since we already have current values selected
+		Recipe.wipe_meal_plan()
+
 		# Get selected recipes from
 		selected_recipes = request.values.getlist('recipes')
 

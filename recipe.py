@@ -129,6 +129,16 @@ class Recipe:
 		return recipe_obj
 
 	@staticmethod
+	def wipe_meal_plan():
+		"""
+		Fully wipes the meal plan table so that we can enter new data
+		This isn't the best way to do this, I know...
+		But for now, since there's going to be a max of 6 rows in this table were just going to wipe the table
+		"""
+
+		Recipe.db_obj.execute("DELETE FROM selected_meals")
+
+	@staticmethod
 	def add_to_meal_plan(id):
 		"""
 		This will add this recipe to our meal plan for the week
@@ -140,9 +150,10 @@ class Recipe:
 
 		# First lets just add the recipe into the recipes table
 		print(f"Trying to insert: {id}")
+
 		Recipe.db_obj.execute("INSERT INTO selected_meals(recipe_id) VALUES (?)", (id,))
 
-
+	
 	@staticmethod
 	def get_selected_recipes():
 		"""

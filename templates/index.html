@@ -11,5 +11,24 @@
         <span class="badge badge-primary">{{ recipe.cuisine }}</span>
         <hr>
     {% endfor %}
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Quantity</th>
+            <th scope="col">Name</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {% for key, value in ingredients.items() %}
+            <tr>
+            <td>{{  value }}</td>
+            <td>{{  key  }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+      </table>
     
 {% endblock %}

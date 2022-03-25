@@ -41,7 +41,7 @@ def index():
 	ingredient_dict = Ingredent.ingredient_combiner(recipes)
 	
 	# We render this page by passing in the posts we just returned from the db
-	return render_template('index.html', recipes=recipes)
+	return render_template('index.html', recipes=recipes, ingredients=ingredient_dict)
 
 
 #~~~~~~~~This is our route to see a recipe~~~~~~~~

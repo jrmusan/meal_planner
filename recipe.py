@@ -159,17 +159,12 @@ class Recipe:
 		"""
 		This will get all the selected meals for this meal plan
 
-		Args:
-			conn (Connection): This is the connection to our db
 		Returns:
-			sqlite3.Row Obj: Ingredient rows 
-		
+			list []: List of Recipe objects
 		"""
 
 		# Grab all the meup_maps from from the db
 		selected_recipes = Recipe.db_obj.execute(f"SELECT * FROM selected_meals").fetchall()
-
-		print(f"{selected_recipes = }")
 
 		# We need to instantiate the ingredient obj for each ingredient in this recipe
 		recipe_list = []

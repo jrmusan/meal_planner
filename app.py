@@ -36,6 +36,9 @@ def index():
 	
 	# Next lets get all the recipes
 	recipes = Recipe.get_selected_recipes()
+
+	# Need to pass in a full list of ingredients we need for all these recipes
+	ingredient_dict = Ingredent.ingredient_combiner(recipes)
 	
 	# We render this page by passing in the posts we just returned from the db
 	return render_template('index.html', recipes=recipes)

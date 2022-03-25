@@ -34,9 +34,6 @@ app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
 @app.route('/')
 def index():
 	
-	# This will open the db connection
-	# conn = get_db_connection()
-	
 	# Next lets get all the recipes
 	recipes = Recipe.get_selected_recipes()
 	

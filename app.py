@@ -51,8 +51,6 @@ def recipe(recipe_id):
 	# Get this recipe object
 	recipe_obj = Recipe.get_recipe(id=recipe_id)
 
-	recipe_obj.selected
-
 	return render_template('recipe.html', recipe=recipe_obj)
 
 

@@ -124,7 +124,7 @@ class Recipe:
 		recipe_row = Recipe.db_obj.execute(f"SELECT name, notes, cuisine FROM recipes where id = {id}").fetchone()
 
 		# Next instantiate the recipe object
-		recipe_obj = Recipe(recipe_row['name'], id, ingredients_list, recipe_row['notes'], recipe_row['cuisine'])
+		recipe_obj = Recipe(recipe_row['name'], id, ingredients_list, recipe_row['notes'].split('\n'), recipe_row['cuisine'])
 
 		return recipe_obj
 

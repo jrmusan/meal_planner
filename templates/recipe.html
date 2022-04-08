@@ -8,8 +8,23 @@
         <div>{{ line }}</div>
     {% endfor %}
 
-    {% for ingredient in recipe.ingredients %}
-        <option>{{  ingredient.name  }}</option>
-    {% endfor %}
+    <br>
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Ingredients</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {% for ingredient in recipe.ingredients %}
+            <tr>
+            <td>{{  ingredient }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+      </table>
 
 {% endblock %}

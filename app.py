@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
@@ -11,12 +12,6 @@ from database import Database
 
 db_obj = Database()
 
-# This will return a database connection to our SQLite db
-# This will return rows from the db that are just dicts
-def get_db_connection():
-	conn = sqlite3.connect('database.db')
-	conn.row_factory = sqlite3.Row
-	return conn
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
@@ -152,3 +147,8 @@ def plan_meals():
 
 
 	return render_template('meal_plan.html', recipes=recipes)
+
+if __name__ == "__main__":
+	print("HELLO")
+	print(f"Path: {os.getcwd()}")
+	app.run()

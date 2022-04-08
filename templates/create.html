@@ -3,14 +3,6 @@
 {% block content %}
 <h1>{% block title %} Create a New Recipe {% endblock %}</h1>
 
-<!--Bootstrap searchable drop down-->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-
-
 <form method="post">
     
     <div class="form-group">
@@ -30,14 +22,6 @@
         <textarea name="cuisine" placeholder="Cuisine type"
             class="form-control">{{ request.form['cuisine'] }}</textarea>
     </div>
-    
-    <!-- <select name='cuisine' class="selectpicker">
-            "<option>American</option>"
-            "<option>Asian</option>"
-            "<option>Japanese</option>"
-            "<option>Korean</option>"
-            "<option>Italian</option>"
-    </select>   -->
         
     <!--This is for the dynamic boxes-->
     <select name='ingredients' class="selectpicker" multiple data-live-search="true">

@@ -1,37 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Lets Meal Plan {% endblock %}</h1>
-
-    <!--Bootstrap searchable drop down-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<h1>{% block title %} Lets Meal Plan {% endblock %}</h1>
     
-    <form method="post">
+<form method="post">
     
         
-        <!--This is for the dynamic boxes-->
-        <select name='recipes' class="selectpicker" multiple data-live-search="true">
-            {% for recipe in recipes %}
+    <!--This is for the dynamic boxes-->
+    <select name='recipes' class="selectpicker" multiple data-live-search="true">
+        {% for recipe in recipes %}
 
-                {% if recipe.selected %}
-                    "<option selected>{{  recipe.name  }} </option>"
+            {% if recipe.selected %}
+                "<option selected>{{  recipe.name  }} </option>"
+            {% else %}
+                "<option>{{  recipe.name  }} </option>"
+            {% endif %}
 
-                {% else %}
-                    "<option>{{  recipe.name  }} </option>"
-                {% endif %}
-
-            {% endfor %}
-        </select>   
+        {% endfor %}
+    </select>   
     
-        <!-- Make this into a better looking button -->
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Update</button>
-        </div>
+    <!-- Make this into a better looking button -->
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
     
-    </form>
+</form>
     
 {% endblock %}

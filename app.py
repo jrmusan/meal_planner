@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 import os
 import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect, session
@@ -36,17 +37,53 @@ app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
 
 
 # This is just for the base home page route
-@app.route('/')
-def index():
+@app.route('/', methods=('GET', 'POST'))
+def user_page():
+
+	# THERE HAS TO BE A BETTER WAY TO DO THIS
+	try:
+		if session['user_id']:
+			print("in user page")
+			print(f"{session['user_id'] = }")
+			return redirect(url_for('selected_recipes'))
+	except KeyError:
+		pass
+
+	if request.method == 'POST':
+
+		print('This is error output', file=sys.stderr)
+		print('enter getJSONReuslt', flush=True)
+
+		# Check if we were given a user ID
+		if request.form['submit_button'] == 'enter':
+			user_id = request.form['user_id']
+			print(f"{user_id = }")
+			session['user_id'] = user_id
+
+		elif request.form['submit_button'] == 'new':
+			# Generates a user id, writes it to the db
+			random_num()
+			print(f"Inserting {session['user_id']} into db")
+			User.insert_user(session['user_id'])
+
+		return redirect(url_for('selected_recipes'))
+
+	return render_template('user.html')
 	
+
+@app.route('/selected_recipes')
+def selected_recipes():
+
+	print('already have a user_id', flush=True)
+
 	# Next lets get all the recipes
 	recipes = Recipe.get_selected_recipes(session['user_id'])
 
 	# Need to pass in a full list of ingredients we need for all these recipes
 	ingredient_dict = Ingredent.ingredient_combiner(recipes)
-	
+
 	# We render this page by passing in the posts we just returned from the db
-	return render_template('index.html', recipes=recipes, ingredients=ingredient_dict)
+	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_dict)
 
 
 #~~~~~~~~This is our route to see a recipe~~~~~~~~
@@ -103,7 +140,7 @@ def add_ingredient():
 			# Lets write this to the database!
 			ing_obj = Ingredent(name, category=category)
 			ing_obj.insert_ingredient()
-			return redirect(url_for('index'))
+			return redirect(url_for('selected_recipes'))
 	
 	return render_template('add_ingredient.html')
 		
@@ -128,7 +165,7 @@ def edit(id):
 			conn.execute('UPDATE posts SET title = ?, content = ?'' WHERE id = ?', (title, content, id))
 			conn.commit()
 			conn.close()
-			return redirect(url_for('index'))
+			return redirect(url_for('selected_recipes'))
 		
 	return render_template('edit.html', post=post)
 
@@ -162,16 +199,21 @@ def plan_meals():
 @app.route('/user_id', methods=('GET', 'POST'))
 def get_user():
 
-
 	if request.method == 'POST':
 
-		# Generates a user id, writes it to the db
-		random_num()
-		User.insert_user(session['user_id'])
+		# Check if we were given a user ID
+		if request.form['submit_button'] == 'enter':
+			user_id = request.form['user_id']
+			print(f"{user_id = }")
+			session['user_id'] = user_id
+
+		elif request.form['submit_button'] == 'Generate new Meal Plan ID':
+			# Generates a user id, writes it to the db
+			random_num()
+			User.insert_user(session['user_id'])
 
 	return render_template('user.html')
 
 
 if __name__ == "__main__":
-	print(f"Path: {os.getcwd()}")
 	app.run()

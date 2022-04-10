@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Update/View Meal plan {% endblock %}</h1>
+
+<form method="post">
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button">Enter</button>
+        </div>
+      </div>
+
+    <div class="mx-auto" style="width: 200px;">
+        <button type="submit" class="btn btn-primary">Generate new Meal Plan ID</button>
+    </div>
+    
+</form>
+{% endblock %}

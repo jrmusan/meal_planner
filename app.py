@@ -2,15 +2,25 @@
 
 import os
 import sqlite3
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, url_for, flash, redirect, session
 from werkzeug.exceptions import abort
+import random
 
 from ingredient import Ingredent
 from recipe import Recipe
+from user import User
 
 from database import Database
 
 db_obj = Database()
+
+
+def random_num():
+	
+	random_num = random.randint(0000, 9999)
+
+	session['user_id'] = random_num
+	return None
 
 
 app = Flask(__name__)
@@ -30,7 +40,7 @@ app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
 def index():
 	
 	# Next lets get all the recipes
-	recipes = Recipe.get_selected_recipes()
+	recipes = Recipe.get_selected_recipes(session['user_id'])
 
 	# Need to pass in a full list of ingredients we need for all these recipes
 	ingredient_dict = Ingredent.ingredient_combiner(recipes)
@@ -69,7 +79,7 @@ def create():
 		if not name:
 			flash('Name is required!')
 		else:
-			recipe_id = Recipe.instert_recipe(name, needed_ingredients, notes, cuisine)
+			recipe_id = Recipe.instert_recipe(name, needed_ingredients, session['user_id'], notes, cuisine)
 
 			return recipe(recipe_id)
 		
@@ -127,7 +137,7 @@ def edit(id):
 def plan_meals():
 	
 	# Next lets get all the recipes
-	recipes = Recipe.list_recipes()
+	recipes = Recipe.list_recipes(session['user_id'])
 
 	#~~~~~~~~~~~~~~DO I NEED THIS IF STATEMENMT HERE?!~~~~~~~~~~~~~~
 	if request.method == 'POST':
@@ -143,12 +153,25 @@ def plan_meals():
 
 			# First lets get its id
 			recipe_id = Recipe.get_id_from_name(recipe)
-			Recipe.add_to_meal_plan(recipe_id)
+			Recipe.add_to_meal_plan(recipe_id, session['user_id'])
 
 
 	return render_template('meal_plan.html', recipes=recipes)
 
+
+@app.route('/user_id', methods=('GET', 'POST'))
+def get_user():
+
+
+	if request.method == 'POST':
+
+		# Generates a user id, writes it to the db
+		random_num()
+		User.insert_user(session['user_id'])
+
+	return render_template('user.html')
+
+
 if __name__ == "__main__":
-	print("HELLO")
 	print(f"Path: {os.getcwd()}")
 	app.run()

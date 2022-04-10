@@ -9,7 +9,9 @@ CREATE TABLE IF NOT EXISTS recipes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     notes TEXT,
-    cuisine TEXT
+    cuisine TEXT, 
+    user_id INTEGER, 
+    FOREIGN KEY(user_id) REFERENCES user_table(id)
 );
 
 CREATE TABLE IF NOT EXISTS menu_map (
@@ -25,5 +27,12 @@ CREATE TABLE IF NOT EXISTS menu_map (
 CREATE TABLE IF NOT EXISTS selected_meals (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     recipe_id INTEGER, 
-    FOREIGN KEY(recipe_id) REFERENCES recipes(id)
+    user_id INTEGER, 
+    FOREIGN KEY(recipe_id) REFERENCES recipes(id), 
+    FOREIGN KEY(user_id) REFERENCES user_table(id)
+);
+
+CREATE TABLE IF NOT EXISTS user_table (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    user_id INTEGER
 );

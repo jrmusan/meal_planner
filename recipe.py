@@ -152,7 +152,7 @@ class Recipe:
 		# First lets just add the recipe into the recipes table
 		print(f"Trying to insert: {id} for user_id {user_id}")
 
-		Recipe.db_obj.execute("INSERT INTO selected_meals(recipe_id, user_id) VALUES (?, ?)", (id, user_id,))
+		Recipe.db_obj.execute("INSERT INTO selected_meals(recipe_id, user_id) VALUES (?, ?)", (id, user_id))
 
 	
 	@staticmethod

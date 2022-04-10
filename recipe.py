@@ -129,14 +129,15 @@ class Recipe:
 		return recipe_obj
 
 	@staticmethod
-	def wipe_meal_plan():
+	def delete_user_meals(user_id):
 		"""
-		Fully wipes the meal plan table so that we can enter new data
-		This isn't the best way to do this, I know...
-		But for now, since there's going to be a max of 6 rows in this table were just going to wipe the table
+		Removes all the selected meals for this user 
+
+		Args:
+			user_id (int): Id of the user to get selected recipes for
 		"""
 
-		Recipe.db_obj.execute("DELETE FROM selected_meals")
+		Recipe.db_obj.execute(f"DELETE FROM selected_meals where user_id = {user_id}")
 
 	@staticmethod
 	def add_to_meal_plan(id, user_id):

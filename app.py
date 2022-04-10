@@ -46,7 +46,7 @@ def user_page():
 	if request.method == 'POST':
 
 		print('This is error output', file=sys.stderr)
-		print('enter getJSONReuslt', flush=True)
+		print('enter getJSONReuslt', flush=True) 
 
 		# Check if we were given a user ID
 		if request.form['submit_button'] == 'enter':
@@ -171,13 +171,10 @@ def plan_meals():
 	# Next lets get all the recipes
 	recipes = Recipe.list_recipes(session['user_id'])
 
-	#~~~~~~~~~~~~~~DO I NEED THIS IF STATEMENMT HERE?!~~~~~~~~~~~~~~
 	if request.method == 'POST':
 
-		# First lets wipe the data in the meal plan, since we already have current values selected
-		Recipe.wipe_meal_plan()
+		Recipe.delete_user_meals(session['user_id'])
 
-		# Get selected recipes from
 		selected_recipes = request.values.getlist('recipes')
 
 		# Need a way to convert a name into an id
@@ -186,7 +183,6 @@ def plan_meals():
 			# First lets get its id
 			recipe_id = Recipe.get_id_from_name(recipe)
 			Recipe.add_to_meal_plan(recipe_id, session['user_id'])
-
 
 	return render_template('meal_plan.html', recipes=recipes)
 

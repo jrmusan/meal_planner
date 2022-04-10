@@ -25,7 +25,7 @@ def random_num():
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
+app.config['SECRET_KEY'] = os.urandom(12).hex()
 
 """
 ================================================================================
@@ -40,14 +40,8 @@ app.config['SECRET_KEY'] = 'supersecretkeyohwowcrazy'
 @app.route('/', methods=('GET', 'POST'))
 def user_page():
 
-	# THERE HAS TO BE A BETTER WAY TO DO THIS
-	try:
-		if session['user_id']:
-			print("in user page")
-			print(f"{session['user_id'] = }")
-			return redirect(url_for('selected_recipes'))
-	except KeyError:
-		pass
+	if "user_id" in session:
+		return redirect(url_for('selected_recipes'))
 
 	if request.method == 'POST':
 
@@ -74,7 +68,8 @@ def user_page():
 @app.route('/selected_recipes')
 def selected_recipes():
 
-	print('already have a user_id', flush=True)
+	if "user_id" not in session:
+		return redirect(url_for('user_page'))
 
 	# Next lets get all the recipes
 	recipes = Recipe.get_selected_recipes(session['user_id'])

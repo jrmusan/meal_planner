@@ -4,25 +4,24 @@
 <h1>{% block title %} Lets Meal Plan {% endblock %}</h1>
     
 <form method="post">
-    
-        
-    <!--This is for the dynamic boxes-->
-    <select name='recipes' class="selectpicker" multiple data-live-search="true">
-        {% for recipe in recipes %}
 
-            {% if recipe.selected %}
-                "<option selected>{{  recipe.name  }} </option>"
-            {% else %}
-                "<option>{{  recipe.name  }} </option>"
-            {% endif %}
-
-        {% endfor %}
-    </select>   
+    <div class="input-group mb-3">
+        <select name='recipes' class="selectpicker" multiple data-live-search="true">
+            {% for recipe in recipes %}
     
-    <!-- Make this into a better looking button -->
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Update</button>
+                {% if recipe.selected %}
+                    "<option selected>{{  recipe.name  }} </option>"
+                {% else %}
+                    "<option>{{  recipe.name  }} </option>"
+                {% endif %}
+    
+            {% endfor %}
+        </select>   
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" name="submit_button" type="submit">Update</button>
+        </div>
     </div>
+    
     
 </form>
     

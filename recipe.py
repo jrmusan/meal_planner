@@ -35,7 +35,7 @@ class Recipe:
 	
 		
 	@staticmethod
-	def instert_recipe(name, ingredients, notes="", cuisine="", quantity=1, unit="cup"):
+	def instert_recipe(name, ingredients, user_id, notes="", cuisine="", quantity=1, unit="cup"):
 		"""
 		This will insert an recipe into our database
 
@@ -44,7 +44,7 @@ class Recipe:
 		"""
 		
 		# First lets just add the recipe into the recipes table
-		Recipe.db_obj.execute("INSERT INTO recipes(name, notes, cuisine) VALUES (?, ?, ?)", (name, notes, cuisine))
+		Recipe.db_obj.execute("INSERT INTO recipes(name, notes, cuisine, user_id) VALUES (?, ?, ?, ?)", (name, notes, cuisine, user_id))
 
 		# This will retrive the last id written to the db
 		recipe_id = Recipe.db_obj.cursor.lastrowid
@@ -64,18 +64,18 @@ class Recipe:
 		return recipe_id
 
 	@staticmethod
-	def list_recipes():
+	def list_recipes(user_id):
 		"""
 		This will return all the recipes in our database (THIS SHOULD JUST CALL GET_RECIPE)
 		
 		Args:
-			conn (Connection): This is the connection to our db
+			user_id (int): Id of the user to get selected recipes for 
 		Returns:
 			sqlite3.Row Obj: Ingredient rows 
 		"""
 		
 		# Grab all the recipes from the db
-		recipes = Recipe.db_obj.execute('SELECT * FROM recipes').fetchall()
+		recipes = Recipe.db_obj.execute(f'SELECT * FROM recipes where user_id = {user_id}').fetchall()
 		
 		recipe_objs = []
 		
@@ -129,42 +129,47 @@ class Recipe:
 		return recipe_obj
 
 	@staticmethod
-	def wipe_meal_plan():
+	def delete_user_meals(user_id):
 		"""
-		Fully wipes the meal plan table so that we can enter new data
-		This isn't the best way to do this, I know...
-		But for now, since there's going to be a max of 6 rows in this table were just going to wipe the table
+		Removes all the selected meals for this user 
+
+		Args:
+			user_id (int): Id of the user to get selected recipes for
 		"""
 
-		Recipe.db_obj.execute("DELETE FROM selected_meals")
+		Recipe.db_obj.execute(f"DELETE FROM selected_meals where user_id = {user_id}")
 
 	@staticmethod
-	def add_to_meal_plan(id):
+	def add_to_meal_plan(id, user_id):
 		"""
 		This will add this recipe to our meal plan for the week
 
 		Args:
-			conn (Connection): This is the connection to our db
+			id (int): Id of the recipe to add
+			user_id (int): Id of the user to get selected recipes for 
 		
 		"""
 
 		# First lets just add the recipe into the recipes table
-		print(f"Trying to insert: {id}")
+		print(f"Trying to insert: {id} for user_id {user_id}")
 
-		Recipe.db_obj.execute("INSERT INTO selected_meals(recipe_id) VALUES (?)", (id,))
+		Recipe.db_obj.execute("INSERT INTO selected_meals(recipe_id, user_id) VALUES (?, ?)", (id, user_id))
 
 	
 	@staticmethod
-	def get_selected_recipes():
+	def get_selected_recipes(user_id):
 		"""
 		This will get all the selected meals for this meal plan
+
+		Args:
+			user_id (int): Id of the user to get selected recipes for 
 
 		Returns:
 			list []: List of Recipe objects
 		"""
 
 		# Grab all the meup_maps from from the db
-		selected_recipes = Recipe.db_obj.execute(f"SELECT * FROM selected_meals").fetchall()
+		selected_recipes = Recipe.db_obj.execute(f"SELECT * FROM selected_meals where user_id = {user_id}").fetchall()
 
 		# We need to instantiate the ingredient obj for each ingredient in this recipe
 		recipe_list = []

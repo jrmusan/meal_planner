@@ -78,7 +78,7 @@ def selected_recipes():
 	ingredient_dict = Ingredent.ingredient_combiner(recipes)
 
 	# We render this page by passing in the posts we just returned from the db
-	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_dict)
+	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_dict, user_id=session['user_id'])
 
 
 #~~~~~~~~This is our route to see a recipe~~~~~~~~

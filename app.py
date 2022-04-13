@@ -52,12 +52,13 @@ def user_page():
 		if request.form['submit_button'] == 'enter':
 			user_id = request.form['user_id']
 			print(f"{user_id = }")
+			# TODO: Add logic to check if this user_id is in the database or not
 			session['user_id'] = user_id
 
 		elif request.form['submit_button'] == 'new':
 			# Generates a user id, writes it to the db
 			random_num()
-			print(f"Inserting {session['user_id']} into db")
+			flash(f"Your Meal Plan Id is {session['user_id']} please save this somewhere")
 			User.insert_user(session['user_id'])
 
 		return redirect(url_for('selected_recipes'))

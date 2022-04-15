@@ -110,7 +110,7 @@ def create():
 		needed_ingredients = request.values.getlist('ingredients')
 		
 		if not name:
-			flash('Name is required!')
+			flash('Name is required!', 'error')
 		else:
 			recipe_id = Recipe.instert_recipe(name, needed_ingredients, session['user_id'], notes, cuisine)
 

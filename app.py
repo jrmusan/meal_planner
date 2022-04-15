@@ -45,23 +45,23 @@ def user_page():
 
 	if request.method == 'POST':
 
-		print('This is error output', file=sys.stderr)
-		print('enter getJSONReuslt', flush=True) 
-
 		# Check if we were given a user ID
 		if request.form['submit_button'] == 'enter':
 			user_id = request.form['user_id']
-			print(f"{user_id = }")
-			# TODO: Add logic to check if this user_id is in the database or not
-			session['user_id'] = user_id
 
+			# Check if this id exists
+			if User.check_user(user_id):
+				session['user_id'] = user_id
+				return redirect(url_for('selected_recipes'))
+			else:
+				flash(f"Meal Plan ID {user_id} does not exist", "error")
+
+		# Generates a Meal plan id, writes it to the db
 		elif request.form['submit_button'] == 'new':
-			# Generates a user id, writes it to the db
 			random_num()
 			flash(f"Your Meal Plan Id is {session['user_id']} please save this somewhere")
 			User.insert_user(session['user_id'])
-
-		return redirect(url_for('selected_recipes'))
+			return redirect(url_for('selected_recipes'))
 
 	return render_template('user.html')
 	

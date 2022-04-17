@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{% block title %} {{ recipe.name }} {% endblock %}</h2>
+
+<form method="post">
+    
+    <span class="badge badge-primary">{{ recipe.cuisine }}</span>
+
+    {% for line in recipe.notes %}
+        <div>{{ line }}</div>
+    {% endfor %}
+
+    <!--This is for the dynamic boxes-->
+    <select name='ingredients' class="selectpicker" multiple data-live-search="true">
+        {% for ingredient in ingredients %}
+
+            {% if ingredient in recipe.ingredients %}
+                "<option selected>{{  ingredient.name  }} </option>"
+            {% else %}
+                "<option>{{  ingredient.name  }} </option>"
+            {% endif %}
+        {% endfor %}
+
+    </select>  
+
+    <div class="mx-auto" style="width: 200px;">
+        <button class="btn btn-outline-secondary" name="submit_button" type="submit" value="new">Edit Recipe</button>
+    </div>
+
+</form>
+
+{% endblock %}

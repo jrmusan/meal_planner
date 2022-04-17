@@ -84,10 +84,16 @@ def selected_recipes():
 
 #~~~~~~~~This is our route to see a recipe~~~~~~~~
 @app.route('/<int:recipe_id>')
-def recipe(recipe_id):
+def recipe(recipe_id, methods=('GET', 'POST')):
 
 	# Get this recipe object
 	recipe_obj = Recipe.get_recipe(id=recipe_id)
+
+	if request.method == 'POST':
+		return redirect(url_for('edit_recipe', recipe_obj=recipe_obj))
+	else:
+		print("IDFK")
+
 
 	return render_template('recipe.html', recipe=recipe_obj)
 
@@ -205,6 +211,18 @@ def get_user():
 			User.insert_user(session['user_id'])
 
 	return render_template('user.html')
+
+
+@app.route('/edit_recipe', methods=('GET', 'POST'))
+def edit_recipe(recipe_obj):
+
+	# Get the ingredients for auto complete 
+	ingredients = Ingredent.list_ingredients()
+
+	if request.method == 'POST':
+		print("POST changes to the databsse")
+
+	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj)
 
 
 if __name__ == "__main__":

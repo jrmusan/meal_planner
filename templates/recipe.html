@@ -1,30 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>{% block title %} {{ recipe.name }} {% endblock %}</h2>
-    <span class="badge badge-primary">{{ recipe.cuisine }}</span>
+<h2>{% block title %} {{ recipe.name }} {% endblock %}</h2>
 
-    {% for line in recipe.notes %}
-        <div>{{ line }}</div>
-    {% endfor %}
+<form method="post">
 
-    <br>
+  <span class="badge badge-primary">{{ recipe.cuisine }}</span>
 
-    <table class="table">
-        <thead>
+  {% for line in recipe.notes %}
+      <div>{{ line }}</div>
+  {% endfor %}
+
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Ingredients</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {% for ingredient in recipe.ingredients %}
           <tr>
-            <th scope="col">Ingredients</th>
+          <td>{{  ingredient }}</td>
           </tr>
-        </thead>
+      {% endfor %}
+      </tbody>
 
-        <tbody>
-        {% for ingredient in recipe.ingredients %}
-            <tr>
-            <td>{{  ingredient }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
+    </table>
 
-      </table>
+    <div class="mx-auto" style="width: 200px;">
+      <button class="btn btn-outline-secondary" name="submit_button" type="button" value="new">Edit Recipe</button>
+    </div>
+
+</form>
 
 {% endblock %}

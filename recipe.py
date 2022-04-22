@@ -56,7 +56,7 @@ class Recipe:
 
 			ingredient_id = Recipe.db_obj.execute(f"SELECT id FROM ingredients where name = '{ingredient}'").fetchone()
 
-			print(f"{ingredient_id['id'] = }")
+			print(f"ingredient_id: {ingredient_id}")
 			
 			# Next we need to insert this into the menu_map table (HARDCODING quantity and unit for now)
 			Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient_id['id'], recipe_id, quantity, unit))
@@ -98,6 +98,8 @@ class Recipe:
 			int: ID of the recipe
 		
 		"""
+
+		print(f"In Recipe.py trying to get recipe id from name: ({name})")
 
 		id = Recipe.db_obj.execute(f"SELECT id FROM recipes where name = '{name}'").fetchone()
 		return id["id"]

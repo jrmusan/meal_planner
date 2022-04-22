@@ -112,7 +112,7 @@ def create():
 		if not name:
 			flash('Name is required!', 'error')
 		else:
-			recipe_id = Recipe.instert_recipe(name, needed_ingredients, session['user_id'], notes, cuisine)
+			recipe_id = Recipe.instert_recipe(name.strip(), needed_ingredients, session['user_id'], notes, cuisine)
 
 			return recipe(recipe_id)
 		
@@ -134,7 +134,7 @@ def add_ingredient():
 			
 		else:
 			# Lets write this to the database!
-			ing_obj = Ingredent(name, category=category)
+			ing_obj = Ingredent(name.strip(), category=category)
 			ing_obj.insert_ingredient()
 			return redirect(url_for('selected_recipes'))
 	

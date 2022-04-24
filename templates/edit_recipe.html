@@ -15,7 +15,7 @@
     <select name='ingredients' class="selectpicker" multiple data-live-search="true">
         {% for ingredient in ingredients %}
 
-            {% if ingredient in recipe.ingredients %}
+            {% if ingredient.name in recipe.ingredients %}
                 "<option selected>{{  ingredient.name  }} </option>"
             {% else %}
                 "<option>{{  ingredient.name  }} </option>"

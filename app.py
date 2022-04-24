@@ -6,6 +6,7 @@ import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect, session
 from werkzeug.exceptions import abort
 import random
+from datetime import timedelta
 
 from ingredient import Ingredent
 from recipe import Recipe
@@ -26,6 +27,7 @@ def random_num():
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(12).hex()
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 
 """
 ================================================================================
@@ -52,6 +54,7 @@ def user_page():
 			# Check if this id exists
 			if User.check_user(user_id):
 				session['user_id'] = user_id
+				session.permanent = True
 				return redirect(url_for('selected_recipes'))
 			else:
 				flash(f"Meal Plan ID {user_id} does not exist", "error")
@@ -61,6 +64,7 @@ def user_page():
 			random_num()
 			flash(f"Your Meal Plan Id is {session['user_id']} please save this somewhere")
 			User.insert_user(session['user_id'])
+			session.permanent = True
 			return redirect(url_for('selected_recipes'))
 
 	return render_template('user.html')
@@ -119,7 +123,7 @@ def create():
 		if not name:
 			flash('Name is required!', 'error')
 		else:
-			recipe_id = Recipe.instert_recipe(name, needed_ingredients, session['user_id'], notes, cuisine)
+			recipe_id = Recipe.instert_recipe(name.strip(), needed_ingredients, session['user_id'], notes, cuisine)
 
 			return recipe(recipe_id)
 		
@@ -141,7 +145,7 @@ def add_ingredient():
 			
 		else:
 			# Lets write this to the database!
-			ing_obj = Ingredent(name, category=category)
+			ing_obj = Ingredent(name.strip(), category=category)
 			ing_obj.insert_ingredient()
 			return redirect(url_for('selected_recipes'))
 	

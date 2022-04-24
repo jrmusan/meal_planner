@@ -94,11 +94,7 @@ def recipe(recipe_id):
 	recipe_obj = Recipe.get_recipe(id=recipe_id)
 
 	if request.method == 'POST':
-		print("TRYING TO REDIRECT")
-		return redirect(url_for('edit_recipe', recipe_obj=recipe_obj))
-	else:
-		print("IDFK")
-
+		return redirect(url_for('edit_recipe', recipe_id=recipe_id))
 
 	return render_template('recipe.html', recipe=recipe_obj)
 
@@ -192,9 +188,11 @@ def get_user():
 
 	return render_template('user.html')
 
+@app.route('/edit_recipe/<int:recipe_id>', methods=('GET', 'POST'))
+def edit_recipe(recipe_id):
 
-@app.route('/edit_recipe', methods=('GET', 'POST'))
-def edit_recipe(recipe_obj):
+	# Get this recipe object
+	recipe_obj = Recipe.get_recipe(id=recipe_id)
 
 	# Get the ingredients for auto complete 
 	ingredients = Ingredent.list_ingredients()

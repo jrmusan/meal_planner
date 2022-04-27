@@ -87,11 +87,14 @@ def selected_recipes():
 
 
 #~~~~~~~~This is our route to see a recipe~~~~~~~~
-@app.route('/<int:recipe_id>')
+@app.route('/<int:recipe_id>', methods=('GET', 'POST'))
 def recipe(recipe_id):
 
 	# Get this recipe object
 	recipe_obj = Recipe.get_recipe(id=recipe_id)
+
+	if request.method == 'POST':
+		return redirect(url_for('edit_recipe', recipe_id=recipe_id))
 
 	return render_template('recipe.html', recipe=recipe_obj)
 
@@ -144,31 +147,6 @@ def add_ingredient():
 	
 	return render_template('add_ingredient.html')
 		
-	
-
-
-#~~~~~~~~This will edit a recipe~~~~~~~~  NEED TO DO SOMETHING WITH THE STILL ~~~~~~~~ 
-@app.route('/<int:id>/edit', methods=('GET', 'POST'))
-def edit(id):
-	
-	# This will get the ID that was selected
-	post = get_post(id)
-	
-	if request.method == 'POST':
-		title = request.form['title']
-		content = request.form['content']
-		
-		if not title:
-			flash('Title is required!')
-		else:
-			conn = get_db_connection()
-			conn.execute('UPDATE posts SET title = ?, content = ?'' WHERE id = ?', (title, content, id))
-			conn.commit()
-			conn.close()
-			return redirect(url_for('selected_recipes'))
-		
-	return render_template('edit.html', post=post)
-
 
 @app.route('/plan_meals', methods=('GET', 'POST'))
 def plan_meals():
@@ -209,6 +187,29 @@ def get_user():
 			User.insert_user(session['user_id'])
 
 	return render_template('user.html')
+
+@app.route('/edit_recipe/<int:recipe_id>', methods=('GET', 'POST'))
+def edit_recipe(recipe_id):
+
+	# Get this recipe object
+	recipe_obj = Recipe.get_recipe(id=recipe_id)
+
+	# Get the ingredients for auto complete 
+	ingredients = Ingredent.list_ingredients()
+
+	if request.method == 'POST':
+
+		selected_ingredients = request.values.getlist('ingredients')
+		name = request.form['name']
+		notes = request.form['notes']
+		cuisine = request.form['cuisine']
+
+		print(f"Trying to update the recipe")
+		recipe_obj.update_recipe(selected_ingredients, name, notes, cuisine)
+		return redirect(url_for('selected_recipes', recipe_id=recipe_obj.id))
+
+
+	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj)
 
 
 if __name__ == "__main__":

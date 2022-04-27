@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{% block title %} {{ recipe.name }} {% endblock %}</h2>
+
+<form method="post">
+
+    <div class="form-group">
+        <label for="title">Name</label>
+        <input type="text" name="name" class="form-control" value= {{ recipe.name }}>
+    </div>
+    
+    <div class="form-group">
+        <label for="content">Cuisine</label>
+        <textarea name="cuisine" placeholder="Cuisine type"
+            class="form-control">{{ recipe.cuisine }}</textarea>
+    </div>
+
+    <!-- The fancy stuff with the |join is used to combine the notes list so it can be on new lines! -->
+    <div class="form-group">
+        <label for="content">Notes</label>
+        <textarea name="notes" placeholder="Recipe notes" class="form-control">{{  recipe.notes|join('')  }}</textarea>
+    </div>
+
+
+    <!--This is for the dynamic boxes-->
+    <select name='ingredients' class="selectpicker" multiple data-live-search="true">
+        {% for ingredient in ingredients %}
+
+            {% if ingredient.name in recipe.ingredients %}
+                "<option selected>{{  ingredient.name  }} </option>"
+            {% else %}
+                "<option>{{  ingredient.name  }} </option>"
+            {% endif %}
+        {% endfor %}
+
+    </select>  
+
+    <div class="mx-auto" style="width: 200px;">
+        <button class="btn btn-outline-secondary" name="submit_button" type="submit" value="new">Update</button>
+    </div>
+
+</form>
+
+{% endblock %}

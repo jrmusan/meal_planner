@@ -14,8 +14,12 @@ class Ingredent:
 		self.quantity = quantity
 		self.unit = unit
 		
-	def __str__(self):
+	def __repr__(self):
 		return self.name
+
+	# This is used to compare ingredients to others
+	def __eq__(self, other):
+		return self.name == other
 		
 	def insert_ingredient(self):
 		"""

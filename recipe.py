@@ -52,11 +52,8 @@ class Recipe:
 		# Need id for each ingredient this recipe uses
 		for ingredient in ingredients:
 
-			print(f"{ingredient = }")
-
+			# First get the ingredient id
 			ingredient_id = Recipe.db_obj.execute(f"SELECT id FROM ingredients where name = '{ingredient}'").fetchone()
-
-			print(f"ingredient_id: {ingredient_id}")
 			
 			# Next we need to insert this into the menu_map table (HARDCODING quantity and unit for now)
 			Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient_id['id'], recipe_id, quantity, unit))
@@ -96,7 +93,6 @@ class Recipe:
 		
 		Returns:
 			int: ID of the recipe
-		
 		"""
 
 		print(f"In Recipe.py trying to get recipe id from name: ({name})")
@@ -152,9 +148,7 @@ class Recipe:
 		
 		"""
 
-		# First lets just add the recipe into the recipes table
-		print(f"Trying to insert: {id} for user_id {user_id}")
-
+		# Just add the recipe into the recipes table
 		Recipe.db_obj.execute("INSERT INTO selected_meals(recipe_id, user_id) VALUES (?, ?)", (id, user_id))
 
 	
@@ -181,3 +175,30 @@ class Recipe:
 			recipe_list.append(recipe_obj)
 
 		return recipe_list
+
+	def update_recipe(self, selected_ings, name="", notes="", cuisine="", quantity=1, unit="cup"):
+		"""
+		Will update the Recipe in the database if needed
+
+		Args:
+			selected_ings: List of selected ingredient objects
+			name (str): Name of recipe
+			notes (str): Notes for the recipe
+			cuisine (str): Cuisine for the recipe
+		"""
+
+		# TODO: Find a smarter way to do this instead of just dropping everything for the Recipe		
+		if self.ingredients != selected_ings:
+			# First we are going to drop all the ingredients for this recipe
+			Recipe.db_obj.execute(f"DELETE FROM menu_map where recipe_id = {self.id}")
+
+			# Next we need to insert this into the menu_map table (HARDCODING quantity and unit for now)
+			for ingredient in selected_ings:
+				ingredient_id = Recipe.db_obj.execute(f"SELECT id FROM ingredients where name = '{ingredient}'").fetchone()
+				Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient_id['id'], self.id, quantity, unit))
+
+		# Next check if we need to update the recipe
+		if self.name != name or self.notes != notes or self.cuisine != cuisine:
+			Recipe.db_obj.execute('UPDATE recipes SET name = ?, notes = ?, cuisine = ?'' WHERE id = ?', (name, str(notes), cuisine, self.id))
+
+

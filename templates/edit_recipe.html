@@ -4,12 +4,19 @@
 <h2>{% block title %} {{ recipe.name }} {% endblock %}</h2>
 
 <form method="post">
+
+    <div class="form-group">
+        <label for="title">Name</label>
+        <input type="text" name="name" class="form-control" value= {{ recipe.name }}>
+    </div>
     
     <span class="badge badge-primary">{{ recipe.cuisine }}</span>
 
-    {% for line in recipe.notes %}
-        <div>{{ line }}</div>
-    {% endfor %}
+    <div class="form-group">
+        <label for="content">Notes</label>
+        <textarea name="notes" placeholder="Recipe notes" class="form-control">{{  recipe.notes|join('')  }}</textarea>
+    </div>
+
 
     <!--This is for the dynamic boxes-->
     <select name='ingredients' class="selectpicker" multiple data-live-search="true">
@@ -25,7 +32,7 @@
     </select>  
 
     <div class="mx-auto" style="width: 200px;">
-        <button class="btn btn-outline-secondary" name="submit_button" type="submit" value="new">Edit Recipe</button>
+        <button class="btn btn-outline-secondary" name="submit_button" type="submit" value="new">Update</button>
     </div>
 
 </form>

@@ -198,7 +198,16 @@ def edit_recipe(recipe_id):
 	ingredients = Ingredent.list_ingredients()
 
 	if request.method == 'POST':
-		print("POST changes to the databsse")
+
+		selected_ingredients = request.values.getlist('ingredients')
+		name = request.form['name']
+		notes = request.form['notes']
+		cuisine = recipe_obj.cuisine
+
+		print(f"Trying to update the recipe")
+		recipe_obj.update_recipe(selected_ingredients, name, notes, cuisine)
+		return redirect(url_for('selected_recipes', recipe_id=recipe_obj.id))
+
 
 	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj)
 

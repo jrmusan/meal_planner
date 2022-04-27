@@ -202,7 +202,7 @@ def edit_recipe(recipe_id):
 		selected_ingredients = request.values.getlist('ingredients')
 		name = request.form['name']
 		notes = request.form['notes']
-		cuisine = recipe_obj.cuisine
+		cuisine = request.form['cuisine']
 
 		print(f"Trying to update the recipe")
 		recipe_obj.update_recipe(selected_ingredients, name, notes, cuisine)

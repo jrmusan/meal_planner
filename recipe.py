@@ -200,11 +200,9 @@ class Recipe:
 			for ingredient in selected_ings:
 				ingredient_id = Recipe.db_obj.execute(f"SELECT id FROM ingredients where name = '{ingredient}'").fetchone()
 				Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient_id['id'], self.id, quantity, unit))
-		else:
-			print("INGREDIENTS ARE EQUAL")
 
 		# Next check if we need to update the recipe
 		if self.name != name or self.notes != notes or self.cuisine != cuisine:
-			Recipe.db_obj.execute('UPDATE recipes SET name = ?, notes = ?, cuisine = ?'' WHERE id = ?', (name, str(notes), cuisine, int(self.id)))
+			Recipe.db_obj.execute('UPDATE recipes SET name = ?, notes = ?, cuisine = ?'' WHERE id = ?', (name, str(notes), cuisine, self.id))
 
 

@@ -12,6 +12,7 @@
     
     <span class="badge badge-primary">{{ recipe.cuisine }}</span>
 
+    <!-- The fancy stuff with the |join is used to combine the notes list so it can be on new lines! -->
     <div class="form-group">
         <label for="content">Notes</label>
         <textarea name="notes" placeholder="Recipe notes" class="form-control">{{  recipe.notes|join('')  }}</textarea>

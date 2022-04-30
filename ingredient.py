@@ -19,7 +19,7 @@ class Ingredent:
 
 	# This is used to compare ingredients to others
 	def __eq__(self, other):
-		return self.name == other
+		return self.name.lower() == other
 		
 	def insert_ingredient(self):
 		"""

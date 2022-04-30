@@ -127,17 +127,22 @@ def create():
 
 
 #~~~~~~~~This is our route to add a new ingredient~~~~~~~~
-@app.route('/create_ingredient', methods=('GET', 'POST'))
+@app.route('/add_ingredient', methods=('GET', 'POST'))
 def add_ingredient():
+
+	ingredients = Ingredent.list_ingredients()
 	
 	# Checks if a post was sent
 	if request.method == 'POST':
 		# If so grab the input data from the page submitted
 		name = request.form['name']
 		category = request.form['category']
-	
+
 		if not name:
-			flash('Name is required!')
+			flash('Name is required!', 'error')
+
+		if name.lower() in ingredients:
+			flash(f'{name} already exists!', 'error')
 			
 		else:
 			# Lets write this to the database!
@@ -203,12 +208,12 @@ def edit_recipe(recipe_id):
 		name = request.form['name']
 		notes = request.form['notes']
 		cuisine = request.form['cuisine']
-
-		print(f"Trying to update the recipe")
+		
 		recipe_obj.update_recipe(selected_ingredients, name, notes, cuisine)
 		return redirect(url_for('selected_recipes', recipe_id=recipe_obj.id))
 
-
+	print(f"name from recipe obj 2 : {recipe_obj.name}")
+	print(f"name from recipe obj 2 type : {type(recipe_obj.name)}")
 	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj)
 
 

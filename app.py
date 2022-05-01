@@ -90,6 +90,9 @@ def selected_recipes():
 @app.route('/<int:recipe_id>', methods=('GET', 'POST'))
 def recipe(recipe_id):
 
+	if "user_id" not in session:
+		return redirect(url_for('user_page'))
+
 	# Get this recipe object
 	recipe_obj = Recipe.get_recipe(id=recipe_id)
 
@@ -102,6 +105,9 @@ def recipe(recipe_id):
 #~~~~~~~~This is our route to create a new recipe~~~~~~~~
 @app.route('/create', methods=('GET', 'POST')) 
 def create():
+
+	if "user_id" not in session:
+		return redirect(url_for('user_page'))
 	
 	# Get the ingredients for auto complete
 	ingredients = Ingredent.list_ingredients()
@@ -130,6 +136,9 @@ def create():
 @app.route('/add_ingredient', methods=('GET', 'POST'))
 def add_ingredient():
 
+	if "user_id" not in session:
+		return redirect(url_for('user_page'))
+
 	ingredients = Ingredent.list_ingredients()
 	
 	# Checks if a post was sent
@@ -155,6 +164,9 @@ def add_ingredient():
 
 @app.route('/plan_meals', methods=('GET', 'POST'))
 def plan_meals():
+
+	if "user_id" not in session:
+		return redirect(url_for('user_page'))
 	
 	# Next lets get all the recipes
 	recipes = Recipe.list_recipes(session['user_id'])

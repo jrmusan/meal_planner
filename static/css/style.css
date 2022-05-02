@@ -61,6 +61,7 @@ body, html {
     cursor: pointer;
     width: 100%;
     opacity: 0.9;
+    margin-top:10px;
     }
     .btn:hover {
     opacity: 1;

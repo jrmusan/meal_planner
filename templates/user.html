@@ -1,20 +1,19 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <style>@import url("static/css/style.css");</style>
+   </head>
+   <body>
 
-{% block content %}
-<h1>{% block title %} Update/View Meal plan {% endblock %}</h1>
-
-<form method="post">
-
-    <div class="input-group mb-3">
-        <input type="text" name="user_id" class="form-control">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" name="submit_button" type="submit" value="enter">Enter</button>
-        </div>
-    </div>
-
-    <div class="mx-auto" style="width: 200px;">
-      <button class="btn btn-outline-secondary" name="submit_button" type="submit" value="new">Generate new Meal Plan ID</button>
-    </div>
-    
-</form>
-{% endblock %}
+      <div class="bg-img">
+         <form method="post" class="container">
+            <h1>Lets Meal Plan</h1>
+            <label for="email"><b>Meal PlanID</label>
+            <input type="text" placeholder="Enter Meal PlanID" name="user_id" required>
+            <button type="submit" name="submit_button" class="btn" value="enter">Enter</button>
+            <button class="btn" name="submit_button" type="submit" value="new">Generate new Meal Plan ID</button>
+         </form>
+      </div>
+   </body>
+</html>

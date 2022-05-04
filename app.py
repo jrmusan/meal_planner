@@ -223,9 +223,7 @@ def edit_recipe(recipe_id):
 		
 		recipe_obj.update_recipe(selected_ingredients, name, notes, cuisine)
 		return redirect(url_for('selected_recipes', recipe_id=recipe_obj.id))
-
-	print(f"name from recipe obj 2 : {recipe_obj.name}")
-	print(f"name from recipe obj 2 type : {type(recipe_obj.name)}")
+		
 	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj)
 
 

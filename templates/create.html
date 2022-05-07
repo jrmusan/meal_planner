@@ -65,9 +65,10 @@
             const values = $('#ingredients').val();
             
             // Build the table
-            var table = '<table class="table"> <thead> <tr> <th scope="col">Ingredients</th> </tr> </thead> <tbody>'
+            var table = '<table class="table"> <thead> <tr> <th scope="col">Ingredients</th> <th scope="col">Quantity</th> </tr> </thead> <tbody>'
             values.forEach(function(ingredient) {
-                table += '<tr> <td>' + ingredient + '</td> </tr>'
+                table += '<tr> <td>' + ingredient + '</td>'
+                table += '<td>' + '<input type="text" id=' + ingredient + '></td> <tr>'
                 }); 
 
             table += '</tbody> </table>'

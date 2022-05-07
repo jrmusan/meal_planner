@@ -60,20 +60,22 @@
 
     <script>
         function getSelected() {
+
+            // Get the ingredients selected from the dropdown
             const values = $('#ingredients').val();
-
-            var str = '<ul>'
-
+            
+            // Build the table
+            var table = '<table class="table"> <thead> <tr> <th scope="col">Ingredients</th> </tr> </thead> <tbody>'
             values.forEach(function(ingredient) {
-            str += '<li>'+ ingredient + '</li>';
-            }); 
+                table += '<tr> <td>' + ingredient + '</td> </tr>'
+                }); 
 
-            str += '</ul>';
-
-            document.getElementById("ingredients_list").innerHTML = str
+            table += '</tbody> </table>'
+            
+            // Send this value to the Modal
+            document.getElementById("ingredients_list").innerHTML = table
         }
     </script>
-
 </form>
 
 {% endblock %}

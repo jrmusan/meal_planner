@@ -34,7 +34,9 @@
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" onclick="getSelected()" data-toggle="modal" data-target="#unitModal">Add</button>
 
-    <br/><a href="{{url_for('add_ingredient')}}" class="btn btn-info" role="button" style="margin-top:15px;">Create new ingredient</a>
+    <br/><em style="font-size:0.8rem;">Can't find an ingredient? <a href="{{url_for('add_ingredient')}}">Create one here.</a></em>
+
+    <br/><button type="submit" class="btn btn-primary" style="margin-top:15px; font-size:1.5rem;">Create Recipe</button>
 
     <!-- Modal -->
     <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalTitle" aria-hidden="true">

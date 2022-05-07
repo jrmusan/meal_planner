@@ -65,10 +65,13 @@
             const values = $('#ingredients').val();
             
             // Build the table
-            var table = '<table class="table"> <thead> <tr> <th scope="col">Ingredients</th> <th scope="col">Quantity</th> </tr> </thead> <tbody>'
+            var table = '<table class="table"> <thead> <tr> <th scope="col">Ingredients</th> <th scope="col">Quantity</th> <th scope="col">Unit</th> </tr> </thead> <tbody>'
             values.forEach(function(ingredient) {
                 table += '<tr> <td>' + ingredient + '</td>'
-                table += '<td>' + '<input type="text" id=' + ingredient + '></td> <tr>'
+                table += '<td>' + '<input type="text" id=' + ingredient + '_quantity' + '></td>'
+                // Put this select thingy in its own var so we can just add it
+                table += '<td> <select id=' + ingredient + '_unit' + '>' + '<option value="cup">Cup</option>' + '<option value="item">Item</option>' + '</select> </td>'
+                table += '</tr>'
                 }); 
 
             table += '</tbody> </table>'

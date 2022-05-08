@@ -119,6 +119,9 @@ def create():
 		notes = request.form['notes']
 		cuisine = request.form['cuisine']
 
+		# unit_1 = request.form['Macaroni_quantity']
+		print(f"form: {request.form}")
+
 		# Get ingredients from form
 		needed_ingredients = request.values.getlist('ingredients')
 		

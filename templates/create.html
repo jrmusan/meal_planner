@@ -36,7 +36,7 @@
 
     <br/><em style="font-size:0.8rem;">Can't find an ingredient? <a href="{{url_for('add_ingredient')}}">Create one here.</a></em>
 
-    <br/><button type="submit" class="btn btn-primary" style="margin-top:15px; font-size:1.5rem;">Create Recipe</button>
+    <br/><button type="submit" id="create" onclick="create()" class="btn btn-primary" style="margin-top:15px; font-size:1.5rem;">Create Recipe</button>
 
     <!-- Modal -->
     <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalTitle" aria-hidden="true">
@@ -55,33 +55,57 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" id="save" onclick="save()" class="btn btn-primary">Save</button>
             </div>
         </div>
         </div>
     </div>
 
     <script>
+
+        var table = ''; 
+
         function getSelected() {
 
-            // Get the ingredients selected from the dropdown
-            const values = $('#ingredients').val();
-            
-            // Build the table
-            var table = '<table class="table"> <thead> <tr> <th scope="col">Ingredient</th> <th scope="col">Quantity</th> <th scope="col">Unit</th> </tr> </thead> <tbody>'
-            values.forEach(function(ingredient) {
-                table += '<tr> <td>' + ingredient + '</td>'
-                table += '<td>' + '<input type="number" id=' + ingredient + '_quantity' + '></td>'
-                table += '<td> <select id=' + ingredient + '_unit' + '>' + '<option value="cup">Cup</option> <option value="item">Item</option> </select> </td>'
-                table += '</tr>'
-                }); 
+            // Doing this enables us to show/hide the modal and reserve its data
+            // TODO: THIS WILL NOT ALLOW USERS TO UPDATE INGREDIENTS ONCE ADD SAVE HAS BEEN PRESSED
+            if( table ) {
+                $('#unitModal').modal('show');
+            } else {
+                
+                // Get the ingredients selected from the dropdown
+                const values = $('#ingredients').val();
+               
+                // Build the table
+                table += '<table class="table"> <thead> <tr> <th scope="col">Ingredient</th> <th scope="col">Quantity</th> <th scope="col">Unit</th> </tr> </thead> <tbody>'
+                values.forEach(function(ingredient) {
+                    table += '<tr> <td>' + ingredient + '</td>'
+                    table += '<td>' + '<input type="number" id=' + ingredient + '_quantity' + '></td>'
+                    table += '<td> <select id=' + ingredient + '_unit' + '>' + '<option value="cup">Cup</option> <option value="item">Item</option> </select> </td>'
+                    table += '</tr>'
+                    }); 
 
-            table += '</tbody> </table>'
-            
-            // Send this value to the Modal
-            document.getElementById("ingredients_list").innerHTML = table
+                table += '</tbody> </table>'
+                
+                // Send this value to the Modal
+                document.getElementById("ingredients_list").innerHTML = table
+            }
         }
+        
+        // This little guy will hide our modal
+        $('#save').click(function() {
+            $('#unitModal').modal('hide');
+        });
+
+        // This little guy will hide our modal
+        $('#create').click(function() {
+            document.getElementById("ingredients_list").submit();
+        });
+
+
+
     </script>
+
 </form>
 
 {% endblock %}

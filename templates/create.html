@@ -95,6 +95,26 @@
         // This little guy will hide our modal
         $('#save').click(function() {
             $('#unitModal').modal('hide');
+
+            const name = document.getElementById("Onion_quantity").value
+            console.log(name)
+
+            $.post( '{{ url_for("create") }}', { name: "John", time: "2pm" })
+                .done(function( data ) {
+                    alert( "Data Loaded: " + data );
+                });
+
+            $.ajax({
+                url: '{{ url_for("create") }}',
+                type: 'POST',
+                data: {
+                    name: name
+                },
+                success: function (response) {
+                },
+                error: function (response) {
+                }
+            });
         });
 
         // This little guy will hide our modal

@@ -1,6 +1,79 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<!-- TODO fix this -->
+<meta id="ingredient-data" data-name="ingredient-data" data-value="{{ingredients}}">
+
+<script>
+
+    var table = ''; 
+
+    
+    // var djangoData = $('#ingredient-data').data().value;
+    // console.log(typeof djangoData);
+    // djangoData.forEach(function(dataPoint) {
+    //     console.log(dataPoint)
+    // });
+
+    function getSelected() {
+
+        // Doing this enables us to show/hide the modal and reserve its data
+        // TODO: THIS WILL NOT ALLOW USERS TO UPDATE INGREDIENTS ONCE ADD SAVE HAS BEEN PRESSED
+        if( table ) {
+            $('#unitModal').modal('show');
+        } else {
+            
+            // Get the ingredients selected from the dropdown
+            const values = $('#ingredients').val();
+            console.log(values)
+            // const values = $('#ingredients').children("option:selected");
+           
+            // Build the table
+            table += '<table class="table"> <thead> <tr> <th scope="col">Ingredient</th> <th scope="col">Quantity</th> <th scope="col">Unit</th> </tr> </thead> <tbody>'
+            values.forEach(function(ingredient) {
+                table += '<tr> <td>' + ingredient + '</td>'
+                table += '<td>' + '<input type="number" id=' + ingredient + '_quantity' + '></td>'
+                table += '<td> <select id=' + ingredient + '_unit' + '>' + '<option value="cup">Cup</option> <option value="item">Item</option> </select> </td>'
+                table += '</tr>'
+                }); 
+            table += '</tbody> </table>'
+            
+            // Send this value to the Modal
+            document.getElementById("ingredients_list").innerHTML = table
+        }
+    }
+    
+    // This little guy will hide our modal
+    function save() {
+
+        // This is jQuery
+        $('#unitModal').modal('hide');
+
+        // Get the ingredients selected from the dropdown
+        const values = $('#ingredients').val();
+
+        let selected_ingredients = []
+
+        values.forEach(function(ingredient) {
+            console.log(ingredient)
+        }); 
+
+
+        // const name = $("#Onion_quantity").val()
+        // console.log(name)
+
+        $.post( '{{ url_for("create") }}', { name: "John", time: "2pm" })
+            .done(function( data ) {
+                alert( "Data Loaded: " + data );
+            });
+    };
+
+    function getIngredientById(ingred_id) {
+        
+    }
+</script>
+
 <h1>{% block title %} Create a New Recipe {% endblock %}</h1>
 
 <form method="post">
@@ -27,7 +100,7 @@
     <label for="ingredients">Ingredients</label><br/>
     <select name='ingredients' id='ingredients' class="selectpicker" multiple data-live-search="true">
         {% for ingredient in ingredients %}
-            "<option>{{  ingredient.name  }}</option>"
+            "<option value="{{  ingredient.id }}">{{  ingredient.name  }}</option>"
         {% endfor %}
     </select>
 
@@ -36,7 +109,7 @@
 
     <br/><em style="font-size:0.8rem;">Can't find an ingredient? <a href="{{url_for('add_ingredient')}}">Create one here.</a></em>
 
-    <br/><button type="submit" id="create" onclick="create()" class="btn btn-primary" style="margin-top:15px; font-size:1.5rem;">Create Recipe</button>
+    <br/><button type="submit" id="create" class="btn btn-primary" style="margin-top:15px; font-size:1.5rem;">Create Recipe</button>
 
     <!-- Modal -->
     <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalTitle" aria-hidden="true">
@@ -55,77 +128,11 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" id="save" onclick="save()" class="btn btn-primary">Save</button>
+            <button type="button" onclick="save()" class="btn btn-primary">Save</button>
             </div>
         </div>
         </div>
     </div>
-
-    <script>
-
-        var table = ''; 
-
-        function getSelected() {
-
-            // Doing this enables us to show/hide the modal and reserve its data
-            // TODO: THIS WILL NOT ALLOW USERS TO UPDATE INGREDIENTS ONCE ADD SAVE HAS BEEN PRESSED
-            if( table ) {
-                $('#unitModal').modal('show');
-            } else {
-                
-                // Get the ingredients selected from the dropdown
-                const values = $('#ingredients').val();
-               
-                // Build the table
-                table += '<table class="table"> <thead> <tr> <th scope="col">Ingredient</th> <th scope="col">Quantity</th> <th scope="col">Unit</th> </tr> </thead> <tbody>'
-                values.forEach(function(ingredient) {
-                    table += '<tr> <td>' + ingredient + '</td>'
-                    table += '<td>' + '<input type="number" id=' + ingredient + '_quantity' + '></td>'
-                    table += '<td> <select id=' + ingredient + '_unit' + '>' + '<option value="cup">Cup</option> <option value="item">Item</option> </select> </td>'
-                    table += '</tr>'
-                    }); 
-
-                table += '</tbody> </table>'
-                
-                // Send this value to the Modal
-                document.getElementById("ingredients_list").innerHTML = table
-            }
-        }
-        
-        // This little guy will hide our modal
-        $('#save').click(function() {
-            $('#unitModal').modal('hide');
-
-            const name = document.getElementById("Onion_quantity").value
-            console.log(name)
-
-            $.post( '{{ url_for("create") }}', { name: "John", time: "2pm" })
-                .done(function( data ) {
-                    alert( "Data Loaded: " + data );
-                });
-
-            $.ajax({
-                url: '{{ url_for("create") }}',
-                type: 'POST',
-                data: {
-                    name: name
-                },
-                success: function (response) {
-                },
-                error: function (response) {
-                }
-            });
-        });
-
-        // This little guy will hide our modal
-        $('#create').click(function() {
-            document.getElementById("ingredients_list").submit();
-        });
-
-
-
-    </script>
-
 </form>
 
 {% endblock %}

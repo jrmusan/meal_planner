@@ -42,6 +42,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 @app.route('/', methods=('GET', 'POST'))
 def user_page():
 
+	# Could build a custom decorator to have this code in just one place
 	if "user_id" in session:
 		return redirect(url_for('selected_recipes'))
 

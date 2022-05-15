@@ -2,19 +2,29 @@
 
 {% block content %}
 
-<!-- TODO fix this -->
-<meta id="ingredient-data" data-name="ingredient-data" data-value="{{ingredients}}">
-
 <script>
 
     var table = ''; 
 
-    
-    // var djangoData = $('#ingredient-data').data().value;
-    // console.log(typeof djangoData);
-    // djangoData.forEach(function(dataPoint) {
-    //     console.log(dataPoint)
-    // });
+    var ingredients_list = []
+
+    let ing_json = {};
+    let all_ingredients = [];
+    {% for ingredient in ingredients %}
+        ing_json = {{ ingredient.json | tojson | safe }}
+        all_ingredients.push(ing_json)
+    {% endfor %}    
+
+    function getIngredientById(ingred_id) {
+        let found_ingredient = {}
+        all_ingredients.forEach(function(ing_json) {
+            if (ing_json.id == ingred_id) {
+                found_ingredient = ing_json;
+                return
+            }
+        });
+        return found_ingredient;
+    }
 
     function getSelected() {
 
@@ -31,12 +41,14 @@
            
             // Build the table
             table += '<table class="table"> <thead> <tr> <th scope="col">Ingredient</th> <th scope="col">Quantity</th> <th scope="col">Unit</th> </tr> </thead> <tbody>'
-            values.forEach(function(ingredient) {
-                table += '<tr> <td>' + ingredient + '</td>'
-                table += '<td>' + '<input type="number" id=' + ingredient + '_quantity' + '></td>'
-                table += '<td> <select id=' + ingredient + '_unit' + '>' + '<option value="cup">Cup</option> <option value="item">Item</option> </select> </td>'
+            values.forEach(function(ing_id) {
+                ingredient = getIngredientById(ing_id);
+                console.log(ingredient)
+                table += '<tr> <td>' + ingredient.name + '</td>'
+                table += '<td>' + '<input type="number" id=' + ingredient.id + '_quantity' + '></td>'
+                table += '<td> <select id=' + ingredient.id + '_unit' + '>' + '<option value="cup">Cup</option> <option value="item">Item</option> </select> </td>'
                 table += '</tr>'
-                }); 
+            }); 
             table += '</tbody> </table>'
             
             // Send this value to the Modal
@@ -59,19 +71,12 @@
             console.log(ingredient)
         }); 
 
-
-        // const name = $("#Onion_quantity").val()
-        // console.log(name)
-
         $.post( '{{ url_for("create") }}', { name: "John", time: "2pm" })
             .done(function( data ) {
                 alert( "Data Loaded: " + data );
             });
     };
 
-    function getIngredientById(ingred_id) {
-        
-    }
 </script>
 
 <h1>{% block title %} Create a New Recipe {% endblock %}</h1>

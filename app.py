@@ -132,8 +132,7 @@ def create():
 			flash('Name is required!', 'error')
 		else:
 			recipe_id = Recipe.instert_recipe(name.strip(), selected_ingredients, session['user_id'], notes, cuisine)
-
-			return recipe(recipe_id)
+			return redirect(url_for('recipe', recipe_id=recipe_id))
 		
 	return render_template('create.html', ingredients=ingredients)
 

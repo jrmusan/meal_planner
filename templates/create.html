@@ -5,9 +5,9 @@
 <script>
 
     var table = ''; 
-
     var ingredients_list = []
 
+    // This loop makes us a list of ingredient dicts
     let ing_json = {};
     let all_ingredients = [];
     {% for ingredient in ingredients %}
@@ -36,8 +36,6 @@
             
             // Get the ingredients selected from the dropdown
             const values = $('#ingredients').val();
-            console.log(values)
-            // const values = $('#ingredients').children("option:selected");
            
             // Build the table
             table += '<table class="table"> <thead> <tr> <th scope="col">Ingredient</th> <th scope="col">Quantity</th> <th scope="col">Unit</th> </tr> </thead> <tbody>'
@@ -45,7 +43,7 @@
                 ingredient = getIngredientById(ing_id);
                 console.log(ingredient)
                 table += '<tr> <td>' + ingredient.name + '</td>'
-                table += '<td>' + '<input type="number" id=' + ingredient.id + '_quantity' + '></td>'
+                table += '<td>' + '<input type="number" id=' + ingredient.id + '_quantity' + ' class="ing-qty-field"' + '></td>'
                 table += '<td> <select id=' + ingredient.id + '_unit' + '>' + '<option value="cup">Cup</option> <option value="item">Item</option> </select> </td>'
                 table += '</tr>'
             }); 
@@ -56,25 +54,30 @@
         }
     }
     
-    // This little guy will hide our modal
+    // This will gather the ingredient unit/quantities and post them
     function save() {
+        
+        // So first get all the quantites for each selected ingredient
+        let ing_quantity = $('.ing-qty-field')
+        for (var obj of ing_quantity) {
+            // Next for now, lets log each ingredients quantity
+            console.log($(obj).val());
+        }
 
-        // This is jQuery
-        $('#unitModal').modal('hide');
 
         // Get the ingredients selected from the dropdown
         const values = $('#ingredients').val();
 
         let selected_ingredients = []
 
-        values.forEach(function(ingredient) {
-            console.log(ingredient)
-        }); 
+        //values.forEach(function(ingredient) {
+        //    console.log(ingredient)
+        //}); 
 
-        $.post( '{{ url_for("create") }}', { name: "John", time: "2pm" })
-            .done(function( data ) {
-                alert( "Data Loaded: " + data );
-            });
+        //$.post( '{{ url_for("create") }}', { name: "John", time: "2pm" })
+        //    .done(function( data ) {
+        //       alert( "Data Loaded: " + data );
+        //    });
     };
 
 </script>
@@ -114,7 +117,7 @@
 
     <br/><em style="font-size:0.8rem;">Can't find an ingredient? <a href="{{url_for('add_ingredient')}}">Create one here.</a></em>
 
-    <br/><button type="submit" id="create" class="btn btn-primary" style="margin-top:15px; font-size:1.5rem;">Create Recipe</button>
+    <br/><button type="button" id="create" class="btn btn-primary" onclick="save()" style="margin-top:15px; font-size:1.5rem;">Create Recipe</button>
 
     <!-- Modal -->
     <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalTitle" aria-hidden="true">
@@ -133,7 +136,7 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" onclick="save()" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
             </div>
         </div>
         </div>

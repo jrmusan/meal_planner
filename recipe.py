@@ -51,12 +51,9 @@ class Recipe:
 
 		# Need id for each ingredient this recipe uses
 		for ingredient in ingredients:
-
-			# First get the ingredient id
-			ingredient_id = Recipe.db_obj.execute(f"SELECT id FROM ingredients where name = '{ingredient}'").fetchone()
 			
-			# Next we need to insert this into the menu_map table (HARDCODING quantity and unit for now)
-			Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient_id['id'], recipe_id, quantity, unit))
+			# Next we need to insert this into the menu_map table
+			Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient['id'], recipe_id, ingredient['qt'], ingredient['unit']))
 
 		return recipe_id
 

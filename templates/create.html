@@ -76,11 +76,9 @@
         })
 
         // Add ingredients in to the post_data
-        post_data["ing"] = ing_qt_dict_list
+        post_data["selected_ingredients"] = ing_qt_dict_list
         // Remove un-nedded key/val
         delete post_data["ingredients"];
-
-        console.log(post_data)
 
         post_data_string = JSON.stringify(post_data)
 

@@ -82,10 +82,12 @@
 
         console.log(post_data)
 
-        //$.post( '{{ url_for("create") }}', { name: "John", time: "2pm" })
-        //    .done(function( data ) {
-        //       alert( "Data Loaded: " + data );
-        //    });
+        post_data_string = JSON.stringify(post_data)
+
+        $.post( '{{ url_for("create") }}', post_data_string, null, "json")
+            .done(function( data ) {
+            console.log(post_data)
+        });
     };
 
 </script>

@@ -116,22 +116,30 @@ def create():
 	# Checks if a post was sent
 	if request.method == 'POST':
 		# If so grab the input data from the page submitted
-		name = request.form['name']
-		notes = request.form['notes']
-		cuisine = request.form['cuisine']
+		# name = request.form['name']
+		# notes = request.form['notes']
+		# cuisine = request.form['cuisine']
 
-		# unit_1 = request.form['Macaroni_quantity']
-		print(f"form: {request.form}")
+		post_data = request.get_json(force=True)
 
-		# Get ingredients from form
-		needed_ingredients = request.values.getlist('ingredients')
+		print(f"{post_data = }")
+
+		# ing_stuff = request.form["ing"]
+		# print(f"ing_stuff: {ing_stuff}")
+
+
+		# # unit_1 = request.form['Macaroni_quantity']
+		# print(f"form: {request.form}")
+
+		# # Get ingredients from form
+		# needed_ingredients = request.values.getlist('ingredients')
 		
-		if not name:
-			flash('Name is required!', 'error')
-		else:
-			recipe_id = Recipe.instert_recipe(name.strip(), needed_ingredients, session['user_id'], notes, cuisine)
+		# if not name:
+		# 	flash('Name is required!', 'error')
+		# else:
+		# 	recipe_id = Recipe.instert_recipe(name.strip(), needed_ingredients, session['user_id'], notes, cuisine)
 
-			return recipe(recipe_id)
+		# 	return recipe(recipe_id)
 		
 	return render_template('create.html', ingredients=ingredients)
 

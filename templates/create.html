@@ -41,9 +41,8 @@
             table += '<table class="table"> <thead> <tr> <th scope="col">Ingredient</th> <th scope="col">Quantity</th> <th scope="col">Unit</th> </tr> </thead> <tbody>'
             values.forEach(function(ing_id) {
                 ingredient = getIngredientById(ing_id);
-                console.log(ingredient)
-                table += '<tr class="ing-qty-row"> <td>' + ingredient.name + '</td>'
-                table += '<td>' + '<input type="number" id=' + ingredient.id + '_quantity' + '></td>'
+                table += '<tr class="ing-qty-row" data-ing-id="' + ingredient.id + '"> <td>' + ingredient.name + '</td>'
+                table += '<td>' + '<input type="number"></td>'
                 table += '<td> <select id=' + ingredient.id + '_unit' + '>' + '<option value="cup">Cup</option> <option value="item">Item</option> </select> </td>'
                 table += '</tr>'
             }); 
@@ -63,15 +62,25 @@
         let ing_qt_row = $('.ing-qty-row')
         for (var row of ing_qt_row) {
             // Next for now, lets log each ingredients quantity
+            let ing_id = $(row).data()['ingId']
             let ing_qty = $(row).find('input').val()
             let ing_sel = $(row).find('select').val()
-            console.log(ing_qty)
-            console.log(ing_sel)
+            ing_qt_dict_list.push({"id": ing_id, "qt": ing_qty, "unit": ing_sel})
         }
 
-        //values.forEach(function(ingredient) {
-        //    console.log(ingredient)
-        //}); 
+        // Converting list of key/val pairs to a dict
+        let form_data = $('form').serializeArray()
+        let post_data = {} 
+        form_data.forEach(function(pair) {
+            post_data[pair.name] = pair.value
+        })
+
+        // Add ingredients in to the post_data
+        post_data["ing"] = ing_qt_dict_list
+        // Remove un-nedded key/val
+        delete post_data["ingredients"];
+
+        console.log(post_data)
 
         //$.post( '{{ url_for("create") }}', { name: "John", time: "2pm" })
         //    .done(function( data ) {

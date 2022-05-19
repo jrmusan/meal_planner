@@ -96,13 +96,12 @@ class Ingredent:
 
 		# Need to get a total count of each ingredient for each recipe
 		for recipe in recipes:
-			print(f"{recipe.name = }")
 			for ingredient in recipe.ingredients:
 
 				# We need to insert or update the count of this ingredient
 				if ingredient.name in ingredient_dict:
-					ingredient_dict[ingredient.name] += ingredient.quantity
+					ingredient_dict[ingredient.name] = f"{float(ingredient_dict[ingredient.name].split()[0]) + ingredient.quantity} {ingredient.unit}"
 				else:
-					ingredient_dict[ingredient.name] = ingredient.quantity
+					ingredient_dict[ingredient.name] = f"{ingredient.quantity} {ingredient.unit}"
 
 		return ingredient_dict

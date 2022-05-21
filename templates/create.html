@@ -36,6 +36,8 @@
             
             // Get the ingredients selected from the dropdown
             const values = $('#ingredients').val();
+
+            const option_list = '<option value="item">Item</option> <option value="cup">Cup</option> <option value="pound">Pound</option> <option value="ounce">Ounce</option> '
            
             // Build the table
             table += '<table class="table"> <thead> <tr> <th scope="col">Ingredient</th> <th scope="col">Quantity</th> <th scope="col">Unit</th> </tr> </thead> <tbody>'
@@ -43,7 +45,7 @@
                 ingredient = getIngredientById(ing_id);
                 table += '<tr class="ing-qty-row" data-ing-id="' + ingredient.id + '"> <td>' + ingredient.name + '</td>'
                 table += '<td>' + '<input type="number"></td>'
-                table += '<td> <select id=' + ingredient.id + '_unit' + '>' + '<option value="cup">Cup</option> <option value="item">Item</option> </select> </td>'
+                table += '<td> <select id=' + ingredient.id + '_unit' + '>' + option_list + ' </select> </td>'
                 table += '</tr>'
             }); 
             table += '</tbody> </table>'

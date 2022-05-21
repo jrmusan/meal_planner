@@ -98,10 +98,15 @@ def recipe(recipe_id):
 	# Get this recipe object
 	recipe_obj = Recipe.get_recipe(id=recipe_id)
 
+	# Get the ingredients with units added to end
+	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
+
+	print(f"{ingredient_dict = }")
+
 	if request.method == 'POST':
 		return redirect(url_for('edit_recipe', recipe_id=recipe_id))
 		
-	return render_template('recipe.html', recipe=recipe_obj)
+	return render_template('recipe.html', recipe=recipe_obj, ing_dict=ingredient_dict)
 
 
 #~~~~~~~~This is our route to create a new recipe~~~~~~~~

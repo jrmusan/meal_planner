@@ -101,8 +101,6 @@ def recipe(recipe_id):
 	# Get the ingredients with units added to end
 	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
 
-	print(f"{ingredient_dict = }")
-
 	if request.method == 'POST':
 		return redirect(url_for('edit_recipe', recipe_id=recipe_id))
 		

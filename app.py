@@ -184,6 +184,9 @@ def plan_meals():
 			recipe_id = Recipe.get_id_from_name(recipe)
 			Recipe.add_to_meal_plan(recipe_id, session['user_id'])
 
+		flash(f"Your Meal Plan has been updated!")
+		return redirect(url_for('selected_recipes'))
+
 	return render_template('meal_plan.html', recipes=recipes)
 
 

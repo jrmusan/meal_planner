@@ -1,16 +1,26 @@
 <!doctype html>
 <html lang="en">
   <head>
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/utensils-solid.svg') }}">
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <script src="{{url_for('static', filename='js/external/jquery/jquery-3.6.0.min.js')}}"></script>
+
+    <!-- Popper must be imported AFTER jquery but BEFORE bootstrap -->
+    <script src="{{url_for('static', filename='js/external/popper/popper.min.js')}}"></script>
+    <!-- <script src="{{url_for('static', filename='js/external/popper/popper.min.js.map')}}"></script> -->
+
+    <script src="{{url_for('static', filename='js/external/bootstrap/bootstrap-4.1.3/bootstrap.min.js')}}"></script>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/external/bootstrap/bootstrap-4.1.3/bootstrap.css') }}"> 
+
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/external/bootstrap/bootstrap-select/bootstrap-select.css') }}"> 
+    <script src="{{url_for('static', filename='js/external/bootstrap/bootstrap-select/bootstrap-select.js')}}"></script>
+
 
     <title>{% block title %} {% endblock %}</title>
   </head>

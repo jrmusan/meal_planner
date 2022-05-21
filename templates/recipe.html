@@ -14,14 +14,16 @@
   <table class="table">
       <thead>
         <tr>
-          <th scope="col">Ingredients</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Ingredient</th>
         </tr>
       </thead>
 
       <tbody>
-      {% for ingredient in recipe.ingredients %}
+      {% for key, value in ing_dict.items() %}
           <tr>
-          <td>{{  ingredient }}</td>
+          <td>{{  value  }}</td>
+          <td>{{  key  }}</td>
           </tr>
       {% endfor %}
       </tbody>

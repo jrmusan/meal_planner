@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import json
 import sys
 import os
 import sqlite3
@@ -42,6 +43,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 @app.route('/', methods=('GET', 'POST'))
 def user_page():
 
+	# Could build a custom decorator to have this code in just one place
 	if "user_id" in session:
 		return redirect(url_for('selected_recipes'))
 
@@ -96,10 +98,13 @@ def recipe(recipe_id):
 	# Get this recipe object
 	recipe_obj = Recipe.get_recipe(id=recipe_id)
 
+	# Get the ingredients with units added to end
+	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
+
 	if request.method == 'POST':
 		return redirect(url_for('edit_recipe', recipe_id=recipe_id))
-
-	return render_template('recipe.html', recipe=recipe_obj)
+		
+	return render_template('recipe.html', recipe=recipe_obj, ing_dict=ingredient_dict)
 
 
 #~~~~~~~~This is our route to create a new recipe~~~~~~~~
@@ -115,19 +120,21 @@ def create():
 	# Checks if a post was sent
 	if request.method == 'POST':
 		# If so grab the input data from the page submitted
-		name = request.form['name']
-		notes = request.form['notes']
-		cuisine = request.form['cuisine']
+		post_data = request.get_json(force=True)
 
-		# Get ingredients from form
-		needed_ingredients = request.values.getlist('ingredients')
+		name = post_data['name']
+		notes = post_data['notes']
+		cuisine = post_data['cuisine']
+		selected_ingredients = post_data['selected_ingredients']
 		
 		if not name:
 			flash('Name is required!', 'error')
 		else:
-			recipe_id = Recipe.instert_recipe(name.strip(), needed_ingredients, session['user_id'], notes, cuisine)
+			recipe_id = Recipe.instert_recipe(name.strip(), selected_ingredients, session['user_id'], notes, cuisine)
+			redirect_url = url_for('recipe', recipe_id=recipe_id)
 
-			return recipe(recipe_id)
+			# This will return data back to the jquery method, which will then redirect. 
+			return json.dumps({'success' : True, 'url': redirect_url}), 200, {'ContentType' : 'application/json'}
 		
 	return render_template('create.html', ingredients=ingredients)
 

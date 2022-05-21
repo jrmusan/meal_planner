@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import json
+from json import JSONEncoder
+
 from database import Database
 
 class Ingredent:
@@ -13,9 +16,17 @@ class Ingredent:
 		self.category = category
 		self.quantity = quantity
 		self.unit = unit
+
 		
 	def __repr__(self):
 		return self.name
+
+	@property
+	def json(self):
+		return {"id": self.id, "name": self.name}
+
+	def toJson(self):
+		return json.dumps(self, default=lambda o: o.__dict__)
 
 	# This is used to compare ingredients to others
 	def __eq__(self, other):
@@ -85,13 +96,12 @@ class Ingredent:
 
 		# Need to get a total count of each ingredient for each recipe
 		for recipe in recipes:
-			print(f"{recipe.name = }")
 			for ingredient in recipe.ingredients:
 
 				# We need to insert or update the count of this ingredient
 				if ingredient.name in ingredient_dict:
-					ingredient_dict[ingredient.name] += ingredient.quantity
+					ingredient_dict[ingredient.name] = f"{float(ingredient_dict[ingredient.name].split()[0]) + ingredient.quantity} {ingredient.unit}"
 				else:
-					ingredient_dict[ingredient.name] = ingredient.quantity
+					ingredient_dict[ingredient.name] = f"{ingredient.quantity} {ingredient.unit}"
 
 		return ingredient_dict

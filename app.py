@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import json
 import sys
 import os
 import sqlite3
@@ -99,7 +100,7 @@ def recipe(recipe_id):
 
 	if request.method == 'POST':
 		return redirect(url_for('edit_recipe', recipe_id=recipe_id))
-
+		
 	return render_template('recipe.html', recipe=recipe_obj)
 
 
@@ -118,21 +119,19 @@ def create():
 		# If so grab the input data from the page submitted
 		post_data = request.get_json(force=True)
 
-		print(f"{post_data = }")
-
 		name = post_data['name']
 		notes = post_data['notes']
 		cuisine = post_data['cuisine']
-
 		selected_ingredients = post_data['selected_ingredients']
-
-		print(f"{selected_ingredients = }")
 		
 		if not name:
 			flash('Name is required!', 'error')
 		else:
 			recipe_id = Recipe.instert_recipe(name.strip(), selected_ingredients, session['user_id'], notes, cuisine)
-			return redirect(url_for('recipe', recipe_id=recipe_id))
+			redirect_url = url_for('recipe', recipe_id=recipe_id)
+
+			# This will return data back to the jquery method, which will then redirect. 
+			return json.dumps({'success' : True, 'url': redirect_url}), 200, {'ContentType' : 'application/json'}
 		
 	return render_template('create.html', ingredients=ingredients)
 

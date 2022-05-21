@@ -82,10 +82,15 @@
 
         post_data_string = JSON.stringify(post_data)
 
-        $.post( '{{ url_for("create") }}', post_data_string, null, "json")
-            .done(function( data ) {
-            console.log(post_data)
-        });
+       $.ajax({
+            type: "POST",
+            url: '{{ url_for("create") }}',
+            data: post_data_string,
+            dataType: "json",
+            success: function(response) {
+                window.location.href = response.url;
+            }
+         });
     };
 
 </script>

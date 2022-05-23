@@ -22,7 +22,7 @@
       <tbody>
       {% for key, value in ing_dict.items() %}
           <tr>
-          <td>{{  value  }}</td>
+          <td>{{  value  | replace("item", "") | replace(".0", "")}}</td>
           <td>{{  key  }}</td>
           </tr>
       {% endfor %}

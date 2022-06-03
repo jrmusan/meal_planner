@@ -45,19 +45,19 @@
         {% for ingredient in ingredients %}
 
             {% if ingredient in recipe.ingredients %}
-                "<option selected>{{  ingredient.name  }} </option>"
+                "<option selected value="{{  ingredient.id }}">{{  ingredient.name  }}</option>"
             {% else %}
-                "<option>{{  ingredient.name  }} </option>"
+                "<option value="{{  ingredient.id }}">{{  ingredient.name  }}</option>"
             {% endif %}
         {% endfor %}
 
     </select>  
 
+    <button type="button" class="btn btn-primary" onclick="getSelected()" data-toggle="modal" data-target="#unitModal">Modify</button>
+
     <div class="mx-auto" style="width: 200px;">
         <button class="btn btn-outline-secondary" name="submit_button" type="submit" value="new">Update</button>
     </div>
-
-    <button type="button" class="btn btn-primary" onclick="getSelected()" data-toggle="modal" data-target="#unitModal">Add</button>
 
     <!-- Modal -->
     <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalTitle" aria-hidden="true">

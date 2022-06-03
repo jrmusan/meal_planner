@@ -3,6 +3,23 @@
 {% block content %}
 <h2>{% block title %} {{ recipe.name }} {% endblock %}</h2>
 
+<script src="{{url_for('static', filename='js/internal/unit_scripts.js')}}"></script>
+
+<script>
+
+    var table = ''; 
+    var ingredients_list = []
+
+    // This loop makes us a list of ingredient dicts
+    let ing_json = {};
+    let all_ingredients = [];
+    {% for ingredient in ingredients %}
+        ing_json = {{ ingredient.json | tojson | safe }}
+        all_ingredients.push(ing_json)
+    {% endfor %}
+
+</script>
+
 <form method="post">
 
     <div class="form-group">
@@ -24,7 +41,7 @@
 
 
     <!--This is for the dynamic boxes-->
-    <select name='ingredients' class="selectpicker" multiple data-live-search="true">
+    <select name='ingredients' id='ingredients' class="selectpicker" multiple data-live-search="true">
         {% for ingredient in ingredients %}
 
             {% if ingredient in recipe.ingredients %}
@@ -38,6 +55,31 @@
 
     <div class="mx-auto" style="width: 200px;">
         <button class="btn btn-outline-secondary" name="submit_button" type="submit" value="new">Update</button>
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="getSelected()" data-toggle="modal" data-target="#unitModal">Add</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Input Quantity</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+
+                <p id="ingredients_list"></p>
+
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+        </div>
     </div>
 
 </form>

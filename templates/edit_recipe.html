@@ -18,6 +18,46 @@
         all_ingredients.push(ing_json)
     {% endfor %}
 
+    // This will gather the ingredient unit/quantities and post them
+    function save() {
+
+        let ing_qt_dict_list = []
+        
+        // So first get all the quantites for each selected ingredient
+        let ing_qt_row = $('.ing-qty-row')
+        for (var row of ing_qt_row) {
+            // Next for now, lets log each ingredients quantity
+            let ing_id = $(row).data()['ingId']
+            let ing_qty = $(row).find('input').val()
+            let ing_sel = $(row).find('select').val()
+            ing_qt_dict_list.push({"id": ing_id, "qt": ing_qty, "unit": ing_sel})
+        }
+
+        // Converting list of key/val pairs to a dict
+        let form_data = $('form').serializeArray()
+        let post_data = {} 
+        form_data.forEach(function(pair) {
+            post_data[pair.name] = pair.value
+        })
+
+        // Add ingredients in to the post_data
+        post_data["selected_ingredients"] = ing_qt_dict_list
+        // Remove un-nedded key/val
+        delete post_data["ingredients"];
+
+        post_data_string = JSON.stringify(post_data)
+
+        $.ajax({
+            type: "POST",
+            url: '{{ url_for("edit_recipe",  recipe_id=recipe.id) }}',
+            data: post_data_string,
+            dataType: "json",
+            success: function(response) {
+                window.location.href = response.url;
+            }
+        });
+    };
+
 </script>
 
 <form method="post">
@@ -55,9 +95,7 @@
 
     <button type="button" class="btn btn-primary" onclick="getSelected()" data-toggle="modal" data-target="#unitModal">Modify</button>
 
-    <div class="mx-auto" style="width: 200px;">
-        <button class="btn btn-outline-secondary" name="submit_button" type="submit" value="new">Update</button>
-    </div>
+    <br/><button type="button" id="update" class="btn btn-primary" onclick="save()" style="margin-top:15px; font-size:1.5rem;">Update Recipe</button>
 
     <!-- Modal -->
     <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalTitle" aria-hidden="true">

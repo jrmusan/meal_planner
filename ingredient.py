@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import re
 import json
 from json import JSONEncoder
 
@@ -39,6 +40,10 @@ class Ingredent:
 		Args:
 			conn (Connection): This is the connection to our db
 		"""
+
+		# Lets do a little cleanup on the name
+		letter_cleanup = re.compile("[^a-zA-Z0-9\\s]")
+		letter_cleanup.sub('', self.name)
 
 		Ingredent.db_obj.execute("INSERT INTO ingredients(name, category) VALUES (?, ?)", (self.name, self.category))
 			

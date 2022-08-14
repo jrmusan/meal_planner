@@ -22,6 +22,7 @@ function getSelected() {
         
         // Get the ingredients selected from the dropdown
         const values = $('#ingredients').val();
+        console.log(values)
 
         const option_list = '<option value="item">Item</option> <option value="cup">Cup</option> <option value="pound">Pound</option> <option value="ounce">Ounce</option> '
         

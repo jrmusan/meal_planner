@@ -225,6 +225,12 @@ def edit_recipe(recipe_id):
 
 	# Get the ingredients for auto complete 
 	ingredients = Ingredent.list_ingredients()
+	print(ingredients)
+
+	# Get the ingredients with units added to end
+	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
+	ingredient_dict_json = json.dumps(ingredient_dict)
+	print(ingredient_dict)
 
 	if request.method == 'POST':
 
@@ -242,7 +248,7 @@ def edit_recipe(recipe_id):
 		return json.dumps({'success' : True, 'url': redirect_url}), 200, {'ContentType' : 'application/json'}
 		
 		
-	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj)
+	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj, ing_dict=ingredient_dict_json)
 
 
 if __name__ == "__main__":

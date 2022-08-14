@@ -43,7 +43,7 @@ class Ingredent:
 
 		# Lets do a little cleanup on the name
 		letter_cleanup = re.compile("[^a-zA-Z0-9\\s]")
-		letter_cleanup.sub('', self.name)
+		self.name = letter_cleanup.sub('', self.name)
 
 		Ingredent.db_obj.execute("INSERT INTO ingredients(name, category) VALUES (?, ?)", (self.name, self.category))
 			

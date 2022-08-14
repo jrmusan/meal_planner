@@ -46,7 +46,7 @@ class Recipe:
 
 		# Lets do a little cleanup on the name
 		letter_cleanup = re.compile("[^a-zA-Z0-9\\s]")
-		letter_cleanup.sub('', name)
+		name = letter_cleanup.sub('', name)
 
 		# First lets just add the recipe into the recipes table
 		Recipe.db_obj.execute("INSERT INTO recipes(name, notes, cuisine, user_id) VALUES (?, ?, ?, ?)", (name, notes, cuisine, user_id))

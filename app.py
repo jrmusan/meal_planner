@@ -229,8 +229,16 @@ def edit_recipe(recipe_id):
 
 	# Get the ingredients with units added to end
 	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
-	ingredient_dict_json = json.dumps(ingredient_dict)
-	print(ingredient_dict)
+
+	ing_unit_list = []
+
+	# Trying to make this into a format that javascript can use in the table maker
+	for key, val in ingredient_dict.items():
+		ing_unit_list.append({"id": key.split('-')[1], "name": key.split('-')[0], "unit": val})
+
+	ingredient_dict_json = json.dumps(ing_unit_list)
+
+	print(f"{ing_unit_list = }")
 
 	if request.method == 'POST':
 

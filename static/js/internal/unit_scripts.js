@@ -31,7 +31,7 @@ function getSelected() {
         values.forEach(function(ing_id) {
             ingredient = getIngredientById(ing_id);
             table += '<tr class="ing-qty-row" data-ing-id="' + ingredient.id + '"> <td>' + ingredient.name + '</td>'
-            table += '<td>' + '<input type="number" value=' + ingredient.quantity + '></td>'
+            table += '<td>' + '<input type="number" value=1></td>'
             table += '<td> <select id=' + ingredient.id + '_unit' + '>' + option_list + ' </select> </td>'
             table += '</tr>'
         }); 

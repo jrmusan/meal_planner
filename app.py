@@ -218,23 +218,45 @@ def get_user():
 @app.route('/edit_recipe/<int:recipe_id>', methods=('GET', 'POST'))
 def edit_recipe(recipe_id):
 
+	#~~~~~~~THIS WILL NEED THE SAME REFACTORING THAT CREATE NEEDED TO GET MODAL DATA~~~~~~~
+
 	# Get this recipe object
 	recipe_obj = Recipe.get_recipe(id=recipe_id)
 
 	# Get the ingredients for auto complete 
 	ingredients = Ingredent.list_ingredients()
+	print(ingredients)
+
+	# Get the ingredients with units added to end
+	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
+
+	ing_unit_list = []
+
+	# Trying to make this into a format that javascript can use in the table maker
+	for key, val in ingredient_dict.items():
+		ing_unit_list.append({"id": key.split('-')[1], "name": key.split('-')[0], "unit": val})
+
+	ingredient_dict_json = json.dumps(ing_unit_list)
+
+	print(f"{ing_unit_list = }")
 
 	if request.method == 'POST':
 
-		selected_ingredients = request.values.getlist('ingredients')
-		name = request.form['name']
-		notes = request.form['notes']
-		cuisine = request.form['cuisine']
+		post_data = request.get_json(force=True)
+		name = post_data['name']
+		notes = post_data['notes']
+		cuisine = post_data['cuisine']
+		selected_ingredients = post_data['selected_ingredients']
 		
 		recipe_obj.update_recipe(selected_ingredients, name, notes, cuisine)
-		return redirect(url_for('selected_recipes', recipe_id=recipe_obj.id))
+
+
+		# This will return data back to the jquery method, which will then redirect. 
+		redirect_url = url_for('recipe', recipe_id=recipe_obj.id)
+		return json.dumps({'success' : True, 'url': redirect_url}), 200, {'ContentType' : 'application/json'}
 		
-	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj)
+		
+	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj, ing_dict=ingredient_dict_json)
 
 
 if __name__ == "__main__":

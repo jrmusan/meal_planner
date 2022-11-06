@@ -105,8 +105,8 @@ class Ingredent:
 
 				# We need to insert or update the count of this ingredient
 				if ingredient.name in ingredient_dict:
-					ingredient_dict[ingredient.name] = f"{float(ingredient_dict[ingredient.name].split()[0]) + ingredient.quantity} {ingredient.unit}"
+					ingredient_dict[ingredient.name + "-" + str(ingredient.id)] = f"{float(ingredient_dict[ingredient.name].split()[0]) + ingredient.quantity} {ingredient.unit}"
 				else:
-					ingredient_dict[ingredient.name] = f"{ingredient.quantity} {ingredient.unit}"
+					ingredient_dict[ingredient.name + "-" + str(ingredient.id)] = f"{ingredient.quantity} {ingredient.unit}"
 
 		return ingredient_dict

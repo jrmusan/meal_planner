@@ -3,6 +3,70 @@
 {% block content %}
 <h2>{% block title %} {{ recipe.name }} {% endblock %}</h2>
 
+<script src="{{url_for('static', filename='js/internal/unit_scripts.js')}}"></script>
+
+<script>
+
+    var table = ''; 
+    var ingredients_list = []
+
+    console.log('~~~~~~~EDIT_RECIPE~~~~~~')
+    console.log({{  ing_dict | tojson }})
+
+    // This loop makes us a list of ingredient dicts
+    let ing_json = {};
+    let all_ingredients = [];
+    {% for ingredient in ingredients %}
+        //console.log({{ ingredient.json | tojson | safe  }})
+        ing_json = {{ ingredient.json | tojson | safe  }}
+        all_ingredients.push(ing_json)
+    {% endfor %}
+
+    console.log(all_ingredients)
+
+    // This will gather the ingredient unit/quantities and post them
+    // NEED TO FIND A WAY TO PUT THIS BACK IN UNIT_SCIRPTS.JS
+    function save() {
+
+        let ing_qt_dict_list = []
+        
+        // So first get all the quantites for each selected ingredient
+        let ing_qt_row = $('.ing-qty-row')
+        for (var row of ing_qt_row) {
+            // Next for now, lets log each ingredients quantity
+            let ing_id = $(row).data()['ingId']
+            let ing_qty = $(row).find('input').val()
+            let ing_sel = $(row).find('select').val()
+            ing_qt_dict_list.push({"id": ing_id, "qt": ing_qty, "unit": ing_sel})
+        }
+
+        // Converting list of key/val pairs to a dict
+        let form_data = $('form').serializeArray()
+        let post_data = {} 
+        form_data.forEach(function(pair) {
+            post_data[pair.name] = pair.value
+        })
+
+        // Add ingredients in to the post_data
+        post_data["selected_ingredients"] = ing_qt_dict_list
+        // Remove un-nedded key/val
+        delete post_data["ingredients"];
+
+        post_data_string = JSON.stringify(post_data)
+
+        $.ajax({
+            type: "POST",
+            url: '{{ url_for("edit_recipe",  recipe_id=recipe.id) }}',
+            data: post_data_string,
+            dataType: "json",
+            success: function(response) {
+                window.location.href = response.url;
+            }
+        });
+    };
+
+</script>
+
 <form method="post">
 
     <div class="form-group">
@@ -24,20 +88,43 @@
 
 
     <!--This is for the dynamic boxes-->
-    <select name='ingredients' class="selectpicker" multiple data-live-search="true">
+    <select name='ingredients' id='ingredients' class="selectpicker" multiple data-live-search="true">
         {% for ingredient in ingredients %}
 
             {% if ingredient in recipe.ingredients %}
-                "<option selected>{{  ingredient.name  }} </option>"
+                "<option selected value="{{  ingredient.id }}">{{  ingredient.name  }}</option>"
             {% else %}
-                "<option>{{  ingredient.name  }} </option>"
+                "<option value="{{  ingredient.id }}">{{  ingredient.name  }}</option>"
             {% endif %}
         {% endfor %}
 
     </select>  
 
-    <div class="mx-auto" style="width: 200px;">
-        <button class="btn btn-outline-secondary" name="submit_button" type="submit" value="new">Update</button>
+    <button type="button" class="btn btn-primary" onclick="getSelected()" data-toggle="modal" data-target="#unitModal">Modify</button>
+
+    <br/><button type="button" id="update" class="btn btn-primary" onclick="save()" style="margin-top:15px; font-size:1.5rem;">Update Recipe</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Input Quantity</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+
+                <p id="ingredients_list"></p>
+
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+        </div>
     </div>
 
 </form>

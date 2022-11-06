@@ -22,6 +22,7 @@ function getSelected() {
         
         // Get the ingredients selected from the dropdown
         const values = $('#ingredients').val();
+        console.log(values)
 
         const option_list = '<option value="item">Item</option> <option value="cup">Cup</option> <option value="pound">Pound</option> <option value="ounce">Ounce</option> '
         
@@ -30,7 +31,7 @@ function getSelected() {
         values.forEach(function(ing_id) {
             ingredient = getIngredientById(ing_id);
             table += '<tr class="ing-qty-row" data-ing-id="' + ingredient.id + '"> <td>' + ingredient.name + '</td>'
-            table += '<td>' + '<input type="number"></td>'
+            table += '<td>' + '<input type="number" value=' + ingredient.quantity + '></td>'
             table += '<td> <select id=' + ingredient.id + '_unit' + '>' + option_list + ' </select> </td>'
             table += '</tr>'
         }); 
@@ -41,42 +42,3 @@ function getSelected() {
     }
 }
 
-// This will gather the ingredient unit/quantities and post them
-function save() {
-
-    let ing_qt_dict_list = []
-    
-    // So first get all the quantites for each selected ingredient
-    let ing_qt_row = $('.ing-qty-row')
-    for (var row of ing_qt_row) {
-        // Next for now, lets log each ingredients quantity
-        let ing_id = $(row).data()['ingId']
-        let ing_qty = $(row).find('input').val()
-        let ing_sel = $(row).find('select').val()
-        ing_qt_dict_list.push({"id": ing_id, "qt": ing_qty, "unit": ing_sel})
-    }
-
-    // Converting list of key/val pairs to a dict
-    let form_data = $('form').serializeArray()
-    let post_data = {} 
-    form_data.forEach(function(pair) {
-        post_data[pair.name] = pair.value
-    })
-
-    // Add ingredients in to the post_data
-    post_data["selected_ingredients"] = ing_qt_dict_list
-    // Remove un-nedded key/val
-    delete post_data["ingredients"];
-
-    post_data_string = JSON.stringify(post_data)
-
-    $.ajax({
-        type: "POST",
-        url: '{{ url_for("create") }}',
-        data: post_data_string,
-        dataType: "json",
-        success: function(response) {
-            window.location.href = response.url;
-        }
-        });
-};

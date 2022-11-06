@@ -196,8 +196,7 @@ class Recipe:
 
 			# Next we need to insert this into the menu_map table (HARDCODING quantity and unit for now)
 			for ingredient in selected_ings:
-				ingredient_id = Recipe.db_obj.execute(f"SELECT id FROM ingredients where name = '{ingredient}'").fetchone()
-				Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient_id['id'], self.id, quantity, unit))
+				Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient.get("id"), self.id, ingredient.get("qt"), ingredient.get("unit")))
 
 		# Next check if we need to update the recipe
 		if self.name != name or self.notes != notes or self.cuisine != cuisine:

@@ -102,7 +102,12 @@ def recipe(recipe_id):
 	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
 
 	if request.method == 'POST':
-		return redirect(url_for('edit_recipe', recipe_id=recipe_id))
+
+		if request.form['submit_button'] == 'edit':
+			# Delete this recipe, redirect to home
+			return redirect(url_for('user_page'))
+		else:
+			return redirect(url_for('edit_recipe', recipe_id=recipe_id))
 		
 	return render_template('recipe.html', recipe=recipe_obj, ing_dict=ingredient_dict)
 

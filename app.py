@@ -102,9 +102,10 @@ def recipe(recipe_id):
 	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
 
 	if request.method == 'POST':
-
-		if request.form['submit_button'] == 'edit':
+		if request.form['submit_button'] == 'delete':
 			# Delete this recipe, redirect to home
+			recipe_obj.delete()
+			flash("Deleted that nasty recipe, ewww!!!")
 			return redirect(url_for('user_page'))
 		else:
 			return redirect(url_for('edit_recipe', recipe_id=recipe_id))

@@ -2,6 +2,8 @@
 
 import re
 from os import stat
+import logging
+
 from ingredient import Ingredent
 from database import Database
 
@@ -201,5 +203,23 @@ class Recipe:
 		# Next check if we need to update the recipe
 		if self.name != name or self.notes != notes or self.cuisine != cuisine:
 			Recipe.db_obj.execute('UPDATE recipes SET name = ?, notes = ?, cuisine = ?'' WHERE id = ?', (name, str(notes), cuisine, self.id))
+
+
+	def delete(self):
+		"""
+		Given an id of a recipe, scrape it away from the DB
+
+		"""
+
+		# First lets drop it from selected meals just incase its currently selected
+		Recipe.db_obj.execute(f"DELETE FROM selected_meals where recipe_id = {self.id}")
+
+		# Next we are going to drop all the ingredients for this recipe
+		Recipe.db_obj.execute(f"DELETE FROM menu_map where recipe_id = {self.id}")
+
+		# Lastly, lets delete this recipe!
+		Recipe.db_obj.execute(f"DELETE FROM recipes where id = {self.id}")
+
+		logging.info("Deleted a recipe")
 
 

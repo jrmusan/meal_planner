@@ -105,7 +105,7 @@ def recipe(recipe_id):
 		if request.form['submit_button'] == 'delete':
 			# Delete this recipe, redirect to home
 			recipe_obj.delete()
-			flash("Deleted that nasty recipe, ewww!!!")
+			flash(f"Deleted {recipe_obj.name}, ewww!!!")
 			return redirect(url_for('user_page'))
 		else:
 			return redirect(url_for('edit_recipe', recipe_id=recipe_id))

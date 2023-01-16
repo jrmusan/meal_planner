@@ -170,6 +170,7 @@ def add_ingredient():
 			# Lets write this to the database!
 			ing_obj = Ingredent(name.strip(), category=category)
 			ing_obj.insert_ingredient()
+			flash(f'Added: {name.strip()}')
 			return redirect(url_for('add_ingredient'))
 	
 	return render_template('add_ingredient.html')

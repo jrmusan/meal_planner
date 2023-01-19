@@ -171,9 +171,9 @@ def add_ingredient():
 			ing_obj = Ingredent(name.strip(), category=category)
 			ing_obj.insert_ingredient()
 			flash(f'Added: {name.strip()}')
-			return redirect(url_for('add_ingredient'))
+			return redirect(url_for('add_ingredient'), ingredients=ingredients)
 	
-	return render_template('add_ingredient.html')
+	return render_template('add_ingredient.html', ingredients=ingredients)
 		
 
 @app.route('/plan_meals', methods=('GET', 'POST'))

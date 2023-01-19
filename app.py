@@ -204,24 +204,6 @@ def plan_meals():
 	return render_template('meal_plan.html', recipes=recipes)
 
 
-@app.route('/user_id', methods=('GET', 'POST'))
-def get_user():
-
-	if request.method == 'POST':
-
-		# Check if we were given a user ID
-		if request.form['submit_button'] == 'enter':
-			user_id = request.form['user_id']
-			print(f"{user_id = }")
-			session['user_id'] = user_id
-
-		elif request.form['submit_button'] == 'Generate new Meal Plan ID':
-			# Generates a user id, writes it to the db
-			random_num()
-			User.insert_user(session['user_id'])
-
-	return render_template('user.html')
-
 @app.route('/edit_recipe/<int:recipe_id>', methods=('GET', 'POST'))
 def edit_recipe(recipe_id):
 

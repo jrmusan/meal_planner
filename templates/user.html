@@ -2,10 +2,10 @@
 <html>
    <head>
       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
       <style>@import url("static/css/style.css");</style>
    </head>
    <body>
-
       <div class="bg-img">
          <form method="post" class="container">
             <h1>Lets Meal Plan</h1>
@@ -14,6 +14,10 @@
             <button type="submit" name="submit_button" class="btn" value="enter">Enter</button>
             <button class="btn" name="submit_button" type="submit" value="new">Generate new Meal Plan ID</button>
          </form>
+         {% block content %} {% endblock %}
+         {% for error, message in get_flashed_messages(with_categories=true) %}
+         <div class="alert alert-danger alert-dismissible fade in text-center">{{ message }}</div>
+         {% endfor %}
       </div>
    </body>
 </html>

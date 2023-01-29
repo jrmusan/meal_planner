@@ -2,15 +2,10 @@
 {% block content %}
 
 <!-- These are for the autocomplete on add ingredient -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">  
-</script>  
 
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">  
-</script>  
-
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
-    rel="stylesheet" type="text/css"/> 
-
+<!-- Look into using newer versions of jquery -->
+<script src="{{url_for('static', filename='js/external/jquery/jquery-1.7.1.js')}}"></script>  
+<script src="{{url_for('static', filename='js/external/jquery/jquery-ui-1.8.16.js')}}"></script>
 <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/external/jquery-1.8.16/ui-darkness/jquery-ui.css') }}"> 
 
 <!-- These are for the autocomplete on add ingredient -->

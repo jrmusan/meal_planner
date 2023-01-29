@@ -64,7 +64,7 @@ class Ingredent:
 		ingredient_objs = []
 		
 		for ing in ingredients:
-			ingredient_obj = Ingredent(ing['name'], ing['id'], ing['category'])
+			ingredient_obj = Ingredent(ing['name'].capitalize(), ing['id'], ing['category'])
 			
 			ingredient_objs.append(ingredient_obj)
 			

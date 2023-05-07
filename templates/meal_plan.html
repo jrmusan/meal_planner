@@ -6,7 +6,7 @@
 <form method="post">
 
     <div class="input-group mb-3">
-        <select name='recipes' class="selectpicker" multiple data-live-search="true", id="recipe-picker">
+        <select name='recipes' class="selectpicker" multiple data-live-search="true", id="recipe-picker" ontouchstart="preventKeyboard(event)">
             {% for recipe in recipes %}
     
                 {% if recipe.selected %}
@@ -26,15 +26,14 @@
 </form>
 
 <script>
-    var selectEl = document.getElementById("recipe-picker");
-    
-    selectEl.addEventListener("touchstart", function() {
-      selectEl.removeAttribute("readonly");
-    });
-    
-    selectEl.addEventListener("blur", function() {
-      selectEl.setAttribute("readonly", "readonly");
-    });
+    function preventKeyboard(event) {
+      var target = event.target;
+      target.focus();
+      setTimeout(function() {
+        target.blur();
+      }, 100);
+    }
+    </script>
 </script>
     
 {% endblock %}

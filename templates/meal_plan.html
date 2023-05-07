@@ -6,7 +6,7 @@
 <form method="post">
 
     <div class="input-group mb-3">
-        <select name='recipes' class="selectpicker">
+        <select name='recipes' class="selectpicker" multiple>
             {% for recipe in recipes %}
     
                 {% if recipe.selected %}
@@ -24,5 +24,16 @@
     
     
 </form>
+
+<script>
+    function preventKeyboard(event) {
+      var target = event.target;
+      target.focus();
+      setTimeout(function() {
+        target.blur();
+      }, 100);
+    }
+    </script>
+</script>
     
 {% endblock %}

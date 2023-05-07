@@ -6,7 +6,7 @@
 <form method="post">
 
     <div class="input-group mb-3">
-        <select name='recipes' class="selectpicker" multiple data-live-search="true">
+        <select name='recipes' class="selectpicker" multiple data-live-search="true", id="recipe-picker">
             {% for recipe in recipes %}
     
                 {% if recipe.selected %}
@@ -24,5 +24,17 @@
     
     
 </form>
+
+<script>
+    var selectEl = document.getElementById("recipe-picker");
+    
+    selectEl.addEventListener("touchstart", function() {
+      selectEl.removeAttribute("readonly");
+    });
+    
+    selectEl.addEventListener("blur", function() {
+      selectEl.setAttribute("readonly", "readonly");
+    });
+</script>
     
 {% endblock %}

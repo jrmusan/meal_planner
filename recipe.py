@@ -223,3 +223,22 @@ class Recipe:
 		logging.info("Deleted a recipe")
 
 
+	def list_all_recipes(self):
+		"""
+		This will list all recipes in the databse reguardless of the user id
+
+		Returns:
+			sqlite3.Row Obj: Ingredient rows
+		"""
+		
+		# Grab all the recipes from the db
+		recipes = Recipe.db_obj.execute(f'SELECT * FROM recipes').fetchall()
+		
+		recipe_objs = []
+		
+		# Lets turn them into objs
+		for recipe in recipes:
+			recipe_obj = Recipe(recipe['name'], recipe['id'], recipe['notes'], recipe['cuisine'])
+			recipe_objs.append(recipe_obj)
+				
+		return recipe_objs

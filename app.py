@@ -247,6 +247,14 @@ def edit_recipe(recipe_id):
 		
 	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj, ing_dict=ingredient_dict_json)
 
+@app.route('/copy_recipe/', methods=('GET', 'POST'))
+def copy_recipe():
+
+	# Lets get all the recipes
+	recipes = Recipe.list_all_recipes()
+
+	return render_template('copy_recipe.html', recipes=recipes)
+
 
 if __name__ == "__main__":
 	app.run()

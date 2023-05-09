@@ -222,8 +222,8 @@ class Recipe:
 
 		logging.info("Deleted a recipe")
 
-
-	def list_all_recipes(self):
+	@staticmethod
+	def list_all_recipes():
 		"""
 		This will list all recipes in the databse reguardless of the user id
 
@@ -242,3 +242,4 @@ class Recipe:
 			recipe_objs.append(recipe_obj)
 				
 		return recipe_objs
+	

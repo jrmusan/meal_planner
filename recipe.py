@@ -58,9 +58,15 @@ class Recipe:
 
 		# Need id for each ingredient this recipe uses
 		for ingredient in ingredients:
-			
-			# Next we need to insert this into the menu_map table
-			Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient['id'], recipe_id, ingredient['qt'], ingredient['unit']))
+
+			# If we have ingredient objs this is a bit easier
+			if isinstance(ingredient, dict):
+				# Next we need to insert this into the menu_map table
+				Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient['id'], recipe_id, ingredient['qt'], ingredient['unit']))
+
+			else:
+				print('Inseting ingredient object')
+				Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient.id, recipe_id, ingredient.quantity, ingredient.unit))
 
 		return recipe_id
 
@@ -232,6 +238,7 @@ class Recipe:
 		"""
 		
 		# Grab all the recipes from the db
+		# TODO: Have this only list recipes that this user doesn't have
 		recipes = Recipe.db_obj.execute(f'SELECT * FROM recipes').fetchall()
 		
 		recipe_objs = []
@@ -242,4 +249,22 @@ class Recipe:
 			recipe_objs.append(recipe_obj)
 				
 		return recipe_objs
-	
+
+	@staticmethod
+	def copy_recipe(recipe_obj, user_id):
+		"""
+		Given a recipe ID copy all its data over to the other user
+
+		Args:
+			recipe_obj: (Recipe): ID of recipe to copy over to other user
+			user_id (int): Id of the user to copy the recipe to
+		"""
+
+		# We want to make sure we copy everything from the recipe to another user
+		# Need to ensure that either user can edit the recipe
+
+		print("Got recipe object")
+		print(recipe_obj)
+
+		# To make this simple lets just call insert recipe with the current users id
+		new_id = Recipe.instert_recipe(recipe_obj.name, recipe_obj.ingredients, user_id)

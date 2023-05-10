@@ -247,13 +247,30 @@ def edit_recipe(recipe_id):
 		
 	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj, ing_dict=ingredient_dict_json)
 
-@app.route('/copy_recipe/', methods=('GET', 'POST'))
-def copy_recipe():
+@app.route('/copy_recipes/', methods=('GET', 'POST'))
+def copy_recipes():
 
 	# Lets get all the recipes
 	recipes = Recipe.list_all_recipes()
 
 	return render_template('copy_recipe.html', recipes=recipes)
+
+
+if __name__ == "__main__":
+	app.run()
+
+@app.route('/copy_recipe/<int:recipe_id>', methods=('GET', 'POST'))
+def copy_recipe(recipe_id):
+
+	print("~~~~~GOT INSIDE~~~~")
+
+	# Get this recipe object
+	recipe_obj = Recipe.get_recipe(id=recipe_id)
+
+	# Get the ingredients with units added to end
+	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
+
+	return render_template('recipe_no_edit.html', recipe=recipe_obj, ing_dict=ingredient_dict)
 
 
 if __name__ == "__main__":

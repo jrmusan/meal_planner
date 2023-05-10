@@ -5,7 +5,7 @@
     
 <!--Using a jinja for loop, this will loop over each item returned from app.py-->
     {% for recipe in recipes %}
-        <a href="{{ url_for('recipe', recipe_id=recipe.id) }}">
+        <a href="{{ url_for('copy_recipe', recipe_id=recipe.id) }}">
             <h2>{{ recipe.name }}</h2>
         </a>
         <span class="badge badge-primary">{{ recipe.cuisine }}</span>

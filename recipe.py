@@ -57,16 +57,17 @@ class Recipe:
 		recipe_id = Recipe.db_obj.cursor.lastrowid
 
 		# Need id for each ingredient this recipe uses
+		insert_cmd = "INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)"
+
 		for ingredient in ingredients:
 
 			# If we have ingredient objs this is a bit easier
 			if isinstance(ingredient, dict):
 				# Next we need to insert this into the menu_map table
-				Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient['id'], recipe_id, ingredient['qt'], ingredient['unit']))
+				Recipe.db_obj.execute(insert_cmd, (ingredient['id'], recipe_id, ingredient['qt'], ingredient['unit']))
 
 			else:
-				print('Inseting ingredient object')
-				Recipe.db_obj.execute("INSERT INTO menu_map(ingredient_id, recipe_id, quantity, unit) VALUES (?, ?, ?, ?)", (ingredient.id, recipe_id, ingredient.quantity, ingredient.unit))
+				Recipe.db_obj.execute(insert_cmd, (ingredient.id, recipe_id, ingredient.quantity, ingredient.unit))
 
 		return recipe_id
 
@@ -94,7 +95,7 @@ class Recipe:
 		return recipe_objs
 
 	@staticmethod
-	def get_id_from_name(name):
+	def get_id_from_name(name, user_id):
 		"""
 		Given a recipe name, get its id
 
@@ -107,7 +108,7 @@ class Recipe:
 
 		print(f"In Recipe.py trying to get recipe id from name: ({name})")
 
-		id = Recipe.db_obj.execute(f"SELECT id FROM recipes where name = '{name}'").fetchone()
+		id = Recipe.db_obj.execute(f"SELECT id FROM recipes where name = '{name}' AND user_id = '{user_id}'").fetchone()
 		return id["id"]
 
 	@staticmethod # ~~~~~~~~~~~~CONSIDER THIS METHOD USING EITHER A NAME OR ID~~~~~~~~~~~~
@@ -144,7 +145,7 @@ class Recipe:
 		Args:
 			user_id (int): Id of the user to get selected recipes for
 		"""
-
+		
 		Recipe.db_obj.execute(f"DELETE FROM selected_meals where user_id = {user_id}")
 
 	@staticmethod
@@ -229,9 +230,13 @@ class Recipe:
 		logging.info("Deleted a recipe")
 
 	@staticmethod
-	def list_all_recipes():
+	def list_all_recipes(user_id):
 		"""
 		This will list all recipes in the databse reguardless of the user id
+
+		Args:
+			user_id (int): Id of the user find recipes that dont belong to the current user
+
 
 		Returns:
 			sqlite3.Row Obj: Ingredient rows
@@ -239,7 +244,7 @@ class Recipe:
 		
 		# Grab all the recipes from the db
 		# TODO: Have this only list recipes that this user doesn't have
-		recipes = Recipe.db_obj.execute(f'SELECT * FROM recipes').fetchall()
+		recipes = Recipe.db_obj.execute(f'SELECT * FROM recipes where user_id != {user_id}').fetchall()
 		
 		recipe_objs = []
 		
@@ -260,11 +265,5 @@ class Recipe:
 			user_id (int): Id of the user to copy the recipe to
 		"""
 
-		# We want to make sure we copy everything from the recipe to another user
-		# Need to ensure that either user can edit the recipe
-
-		print("Got recipe object")
-		print(recipe_obj)
-
 		# To make this simple lets just call insert recipe with the current users id
-		new_id = Recipe.instert_recipe(recipe_obj.name, recipe_obj.ingredients, user_id)
+		new_id = Recipe.instert_recipe(recipe_obj.name, recipe_obj.ingredients, user_id, '\n'.join(recipe_obj.notes), recipe_obj.cuisine)

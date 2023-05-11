@@ -195,7 +195,7 @@ def plan_meals():
 		for recipe in selected_recipes:
 
 			# First lets get its id
-			recipe_id = Recipe.get_id_from_name(recipe)
+			recipe_id = Recipe.get_id_from_name(recipe, session['user_id'])
 			Recipe.add_to_meal_plan(recipe_id, session['user_id'])
 
 		flash(f"Your Meal Plan has been updated!")
@@ -214,7 +214,6 @@ def edit_recipe(recipe_id):
 
 	# Get the ingredients for auto complete 
 	ingredients = Ingredent.list_ingredients()
-	print(ingredients)
 
 	# Get the ingredients with units added to end
 	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
@@ -239,7 +238,6 @@ def edit_recipe(recipe_id):
 		
 		recipe_obj.update_recipe(selected_ingredients, name, notes, cuisine)
 
-
 		# This will return data back to the jquery method, which will then redirect. 
 		redirect_url = url_for('recipe', recipe_id=recipe_obj.id)
 		return json.dumps({'success' : True, 'url': redirect_url}), 200, {'ContentType' : 'application/json'}
@@ -251,13 +249,9 @@ def edit_recipe(recipe_id):
 def copy_recipes():
 
 	# Lets get all the recipes
-	recipes = Recipe.list_all_recipes()
+	recipes = Recipe.list_all_recipes(session['user_id'])
 
 	return render_template('copy_recipe.html', recipes=recipes)
-
-
-if __name__ == "__main__":
-	app.run()
 
 @app.route('/copy_recipe/<int:recipe_id>', methods=('GET', 'POST'))
 def copy_recipe(recipe_id):

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{% block title %} {{ recipe.name }} {% endblock %}</h2>
+
+<form method="post">
+
+  <span class="badge badge-primary">{{ recipe.cuisine }}</span>
+
+  {% for line in recipe.notes %}
+      <div>{{ line }}</div>
+  {% endfor %}
+
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Quantity</th>
+          <th scope="col">Ingredient</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {% for key, value in ing_dict.items() %}
+          <tr>
+          <td>{{  value  | replace("item", "") | replace(".0", "")}}</td>
+          <td>{{  key.split("-")[0]  }}</td>
+          </tr>
+      {% endfor %}
+      </tbody>
+
+  </table>
+
+  <div class="mx-auto" style="width: 200px;">
+    <button class="btn btn-outline-secondary" name="submit_button" type="submit" value="copy">Copy</button>
+  </div>
+
+</form>
+
+{% endblock %}

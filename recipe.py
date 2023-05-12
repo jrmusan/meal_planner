@@ -199,7 +199,7 @@ class Recipe:
 		"""
 
 		# TODO: Find a smarter way to do this instead of just dropping everything for the Recipe		
-		if self.ingredients != selected_ings:
+		if len(selected_ings) >= 1 and self.ingredients != selected_ings:
 			# First we are going to drop all the ingredients for this recipe
 			Recipe.db_obj.execute(f"DELETE FROM menu_map where recipe_id = {self.id}")
 

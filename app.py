@@ -226,8 +226,6 @@ def edit_recipe(recipe_id):
 
 	ingredient_dict_json = json.dumps(ing_unit_list)
 
-	print(f"{ing_unit_list = }")
-
 	if request.method == 'POST':
 
 		post_data = request.get_json(force=True)

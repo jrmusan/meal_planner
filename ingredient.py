@@ -103,10 +103,12 @@ class Ingredent:
 		for recipe in recipes:
 			for ingredient in recipe.ingredients:
 
+				ing_key = ingredient.name + "-" + ingredient.unit
+
 				# We need to insert or update the count of this ingredient
-				if ingredient.name in ingredient_dict:
-					ingredient_dict[ingredient.name + "-" + str(ingredient.id)] = f"{float(ingredient_dict[ingredient.name].split()[0]) + ingredient.quantity} {ingredient.unit}"
+				if ing_key in ingredient_dict.keys():
+					ingredient_dict[ing_key] = f"{float(ingredient_dict[ing_key].split()[0]) + float(ingredient.quantity)} {ingredient.unit}"
 				else:
-					ingredient_dict[ingredient.name + "-" + str(ingredient.id)] = f"{ingredient.quantity} {ingredient.unit}"
+					ingredient_dict[ing_key] = f"{ingredient.quantity} {ingredient.unit}"
 
 		return ingredient_dict

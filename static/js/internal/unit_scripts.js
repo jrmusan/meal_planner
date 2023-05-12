@@ -24,7 +24,7 @@ function getSelected() {
         const values = $('#ingredients').val();
         console.log(values)
 
-        const option_list = '<option value="item">Item</option> <option value="cup">Cup</option> <option value="pound">Pound</option> <option value="ounce">Ounce</option> '
+        const option_list = '<option value="item">Item</option> <option value="cup">Cup</option> <option value="pound">Pound</option> <option value="ounce">Ounce</option> <option value="tbsp">Tbsp</option> <option value="tsp">Tsp</option>'
         
         // Build the table
         table += '<table class="table"> <thead> <tr> <th scope="col">Ingredient</th> <th scope="col">Quantity</th> <th scope="col">Unit</th> </tr> </thead> <tbody>'

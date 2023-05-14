@@ -63,7 +63,7 @@ def user_page():
 
 			# Check if this user id is already being used
 			if User.check_user(user_id):
-				flash(f"Meal Plan ID {user_id} already exists", "error")
+				flash(f"Meal Plan ID {user_id} already exists. Be more creative", "error")
 			else:
 				flash(f"Your Meal Plan Id is {user_id} please save this somewhere")
 				User.insert_user(user_id)

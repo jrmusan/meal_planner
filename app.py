@@ -58,7 +58,7 @@ def user_page():
 			else:
 				flash(f"Meal Plan ID {user_id} does not exist", "error")
 
-		# Generates a Meal plan id, writes it to the db
+		# Lets user pick a new Meal plan id, writes it to the db
 		elif request.form['submit_button'] == 'new':
 
 			# Check if this user id is already being used

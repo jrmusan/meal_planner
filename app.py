@@ -17,15 +17,6 @@ from database import Database
 
 db_obj = Database()
 
-
-def random_num():
-	
-	random_num = random.randint(0000, 9999)
-
-	session['user_id'] = random_num
-	return None
-
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(12).hex()
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
@@ -49,6 +40,12 @@ def user_page():
 
 	if request.method == 'POST':
 
+		# Try to get the userID
+		user_id = request.form.get('user_id')
+		if not user_id:
+			flash("You need to enter a Meal Plan Id")
+			return render_template('user.html')
+
 		# Check if we were given a user ID
 		if request.form['submit_button'] == 'enter':
 			user_id = request.form['user_id']
@@ -63,11 +60,16 @@ def user_page():
 
 		# Generates a Meal plan id, writes it to the db
 		elif request.form['submit_button'] == 'new':
-			random_num()
-			flash(f"Your Meal Plan Id is {session['user_id']} please save this somewhere")
-			User.insert_user(session['user_id'])
-			session.permanent = True
-			return redirect(url_for('selected_recipes'))
+
+			# Check if this user id is already being used
+			if User.check_user(user_id):
+				flash(f"Meal Plan ID {user_id} already exists", "error")
+			else:
+				flash(f"Your Meal Plan Id is {user_id} please save this somewhere")
+				User.insert_user(user_id)
+				session['user_id'] = user_id
+				session.permanent = True
+				return redirect(url_for('selected_recipes'))
 
 	return render_template('user.html')
 	

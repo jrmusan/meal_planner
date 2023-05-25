@@ -1,5 +1,3 @@
-from os import stat
-from ingredient import Ingredent
 from database import Database
 
 class User:

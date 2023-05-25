@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 
 import re
-import json
-from json import JSONEncoder
-
 from database import Database
 
 class Ingredent:

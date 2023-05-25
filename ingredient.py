@@ -110,3 +110,28 @@ class Ingredent:
 					ingredient_dict[ing_key] = f"{ingredient.quantity} {ingredient.unit}"
 
 		return ingredient_dict
+
+	def delete(self):
+		"""
+		This is to only be ran locally now to clean up the database
+		Basically check to see if any recipe is using the given ingredient
+
+		STRECH GOAL: Return simular ingredients with simular names
+
+		STRECH GOAL: Write function to get all ingredients NOT used by any recipes
+		"""
+
+		# First check if any recipe is using this ingredient
+		recipeIds = Ingredent.db_obj.execute(f'SELECT recipe_id FROM menu_map where ingredient_id = {self.id}').fetchall()
+
+		if len(recipeIds) >= 1:
+
+			print(f"{self.name} is NOT safe to delete, its being used by:")
+			for sqlRow in recipeIds:
+				recipeId = sqlRow["recipe_id"]
+				recipe_name = Ingredent.db_obj.execute(f'SELECT name FROM recipes where id = {recipeId}').fetchone()
+				print(recipe_name["name"])
+
+		else:
+			print(f"{self.name} is safe to delete... Deleting")
+			recipe_name = Ingredent.db_obj.execute(f"DELETE FROM ingredients where id = {self.id}")

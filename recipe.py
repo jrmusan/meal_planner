@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import re
-from os import stat
 import logging
 
 from ingredient import Ingredent

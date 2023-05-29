@@ -13,7 +13,7 @@
             <label for="email"><b>Meal PlanID</label>
             <input type="text" placeholder="Enter Meal PlanID" name="user_id">
             <button type="submit" name="submit_button" class="btn" value="enter">Enter</button>
-            <button class="btn" name="submit_button" type="submit" value="new">Generate new Meal Plan ID</button>
+            <button class="btn" name="submit_button" type="submit" value="new">Create new Meal Plan ID</button>
          </form>
          {% block content %} {% endblock %}
          {% for error, message in get_flashed_messages(with_categories=true) %}

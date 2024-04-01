@@ -48,12 +48,12 @@ def delete_specific_ingredient(conn, id):
     rows = cur.fetchall()
 
     if len(rows) > 0:
-        print(f"\n~~~Ingredient with ID: {id} is being used in a recipe. Cannot delete~~~\n)
+        print(f"\n~~~Ingredient with ID: {id} is being used in a recipe. Cannot delete~~~\n")
         return
     else:
-        cur.execute(f'\n~~~DELETE FROM ingredients WHERE id={id}~~~/n')
+        cur.execute(f'DELETE FROM ingredients WHERE id={id}')
         conn.commit()
-        print(f"Deleted ingredient with ID: {id}")
+        print(f"\n~~~Deleted ingredient with ID: {id}~~~")
 
 def get_user_input(conn):
         

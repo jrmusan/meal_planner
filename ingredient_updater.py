@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     for ingredient in ingredients:
         print(f"Name: {ingredient[1]}")
-        input_category = input("Enter the new category: 1: Meat\n2: Produce\n3: Dairy\n4: Other\n")
+        input_category = input("Enter the new category: \n1: Meat\n2: Produce\n3: Dairy\n4: Other\n")
         if input_category == "1":
             input_category = "Meat"
         elif input_category == "2":

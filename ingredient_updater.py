@@ -61,7 +61,15 @@ if __name__ == "__main__":
     ingredients = select_all_ingreidents(conn)
 
     for ingredient in ingredients:
-        if ingredient[2] == "":
-            print(f"Name: {ingredient[1]}")
-            input_category = input("Enter the new category: 1: Meat, 2: Produce, 3: Dairy, 4: Other\n")
-            update_ingredient(ingredient[0], input_category, conn)
+        print(f"Name: {ingredient[1]}")
+        input_category = input("Enter the new category: 1: Meat\n2: Produce\n3: Dairy\n4: Other\n")
+        if input_category == "1":
+            input_category = "Meat"
+        elif input_category == "2":
+            input_category = "Produce"
+        elif input_category == "3":
+            input_category = "Dairy"
+        elif input_category == "4":
+            input_category = "Other"
+
+        update_ingredient(ingredient[0], input_category, conn)

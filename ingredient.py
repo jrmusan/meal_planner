@@ -97,19 +97,20 @@ class Ingredent:
 		# Lets use a dict where the keys are the ingredient names and values is quantity
 		ingredient_dict = {}
 
+		ingredient_objs = []
+
 		# Need to get a total count of each ingredient for each recipe
 		for recipe in recipes:
 			for ingredient in recipe.ingredients:
 
-				ing_key = ingredient.name + "-" + ingredient.unit
-
-				# We need to insert or update the count of this ingredient
-				if ing_key in ingredient_dict.keys():
-					ingredient_dict[ing_key] = f"{float(ingredient_dict[ing_key].split()[0]) + float(ingredient.quantity)} {ingredient.unit}"
+				if ingredient.name in ingredient_dict.keys():
+					ingredient_objs[ingredient.name].quantity =+ ingredient.quantity 
+					print("Updating ingredient")
+					print(f"{ingredient.name} quantity {ingredient_dict[ingredient.name].quantity}")
 				else:
-					ingredient_dict[ing_key] = f"{ingredient.quantity} {ingredient.unit}"
+					ingredient_objs.append(ingredient)
 
-		return ingredient_dict
+		return ingredient_objs
 
 	def delete(self):
 		"""

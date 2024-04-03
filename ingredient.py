@@ -94,19 +94,16 @@ class Ingredent:
 		
 		"""
 
-		# Lets use a dict where the keys are the ingredient names and values is quantity
-		ingredient_dict = {}
-
 		ingredient_objs = []
 
 		# Need to get a total count of each ingredient for each recipe
 		for recipe in recipes:
 			for ingredient in recipe.ingredients:
-
-				if ingredient.name in ingredient_dict.keys():
-					ingredient_objs[ingredient.name].quantity =+ ingredient.quantity 
-					print("Updating ingredient")
-					print(f"{ingredient.name} quantity {ingredient_dict[ingredient.name].quantity}")
+				
+				# Check if this ingredient is already in the list
+				if any(ing.name == ingredient.name for ing in ingredient_objs):
+					existing_ingredient = next(ing for ing in ingredient_objs if ing.name == ingredient.name)
+					existing_ingredient.quantity += ingredient.quantity
 				else:
 					ingredient_objs.append(ingredient)
 

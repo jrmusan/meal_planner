@@ -13,25 +13,29 @@
     {% endfor %}
 
     <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Quantity</th>
-            <th scope="col">Name</th>
-          </tr>
-        </thead>
+      <thead>
+        <tr>
+          <th scope="col">Quantity</th>
+          <th scope="col">Name</th>
+        </tr>
+      </thead>
 
-        <!--This will sort ingredients by catagory and list them accordingly-->
-        <b>Ingredients</b>
-        <tbody>
-        {% for ingredient in ingredients %}
+      <!--This will sort ingredients by category and list them accordingly-->
+      <b>Ingredients</b>
+      <tbody>
+        {% for category, ingredients in ingredients|groupby('category') %}
+          <tr>
+            <th colspan="2">{{ category }}</th>
+          </tr>
+          {% for ingredient in ingredients %}
             <tr>
-            <td>{{ ingredient.quantity }}</td>
-            <td>{{ ingredient.name }}</td>
+              <td>{{ ingredient.quantity }}</td>
+              <td>{{ ingredient.name }}</td>
             </tr>
+          {% endfor %}
         {% endfor %}
       </tbody>
-
-      </table>
+    </table>
 
       <div class="fixed-bottom">
         <input class="form-control form-control-sm" type="text" placeholder="Current Meal Plan ID: {{  user_id  }}" readonly>

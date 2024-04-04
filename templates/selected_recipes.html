@@ -17,25 +17,41 @@
         <tr>
           <th scope="col">Quantity</th>
           <th scope="col">Name</th>
+          <th scope="col">Remove</th> <!-- Added column for checkboxes -->
         </tr>
       </thead>
 
-      <!--This will sort ingredients by category and list them accordingly-->
-      <b>Ingredients</b>
-      <tbody>
-        {% for category, ingredients in ingredients|groupby('category') %}
-          <tr>
-            <th colspan="2">{{ category }}</th>
-          </tr>
-          {% for ingredient in ingredients %}
+        <!--This will sort ingredients by category and list them accordingly-->
+        <b>Ingredients</b>
+        <tbody>
+          {% for category, ingredients in ingredients|groupby('category') %}
             <tr>
-              <td>{{ ingredient.quantity }}</td>
-              <td>{{ ingredient.name }}</td>
+              <th colspan="3">{{ category }}</th>
             </tr>
+            {% for ingredient in ingredients %}
+              <tr>
+                <td>{{ ingredient.quantity }}</td>
+                <td>{{ ingredient.name }}</td>
+                <td><input type="checkbox" onclick="moveToDone(this)"></td> <!-- Modified onclick function -->
+              </tr>
+            {% endfor %}
           {% endfor %}
-        {% endfor %}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+
+      <h1>Done</h1> <!-- Added "Done" title -->
+      <table id="doneTable" class="table">
+        <tbody>
+        </tbody>
+      </table>
+
+      <script>
+        function moveToDone(checkbox) {
+          var row = checkbox.parentNode.parentNode;
+          var doneTable = document.getElementById("doneTable");
+          doneTable.getElementsByTagName("tbody")[0].appendChild(row);
+        }
+      </script>
 
       <div class="fixed-bottom">
         <input class="form-control form-control-sm" type="text" placeholder="Current Meal Plan ID: {{  user_id  }}" readonly>

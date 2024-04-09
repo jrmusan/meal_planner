@@ -17,7 +17,7 @@
         <tr>
           <th scope="col">Quantity</th>
           <th scope="col">Name</th>
-          <th scope="col">Remove</th> <!-- Added column for checkboxes -->
+          <th scope="col">Done</th> <!-- Added column for remove button -->
         </tr>
       </thead>
 
@@ -29,10 +29,10 @@
               <th colspan="3">{{ category }}</th>
             </tr>
             {% for ingredient in ingredients %}
-              <tr>
+              <tr onclick="moveToDone(this)">
                 <td>{{ ingredient.quantity }}</td>
                 <td>{{ ingredient.name }}</td>
-                <td><input type="checkbox" onclick="moveToDone(this)"></td> <!-- Modified onclick function -->
+                <td><button class="btn btn-danger">Remove</button></td> <!-- Added remove button -->
               </tr>
             {% endfor %}
           {% endfor %}
@@ -46,8 +46,7 @@
       </table>
 
       <script>
-        function moveToDone(checkbox) {
-          var row = checkbox.parentNode.parentNode;
+        function moveToDone(row) {
           var doneTable = document.getElementById("doneTable");
           doneTable.getElementsByTagName("tbody")[0].appendChild(row);
         }

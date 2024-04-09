@@ -216,15 +216,7 @@ def edit_recipe(recipe_id):
 	ingredients = Ingredent.list_ingredients()
 
 	# Get the ingredients with units added to end
-	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
-
-	ing_unit_list = []
-
-	# Trying to make this into a format that javascript can use in the table maker
-	for key, val in ingredient_dict.items():
-		ing_unit_list.append({"id": key.split('-')[1], "name": key.split('-')[0], "unit": val})
-
-	ingredient_dict_json = json.dumps(ing_unit_list)
+	ingredient_list = Ingredent.ingredient_combiner([recipe_obj])
 
 	if request.method == 'POST':
 
@@ -241,7 +233,7 @@ def edit_recipe(recipe_id):
 		return json.dumps({'success' : True, 'url': redirect_url}), 200, {'ContentType' : 'application/json'}
 		
 		
-	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj, ing_dict=ingredient_dict_json)
+	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj, ing_dict=ingredient_list)
 
 @app.route('/copy_recipes/', methods=('GET', 'POST'))
 def copy_recipes():

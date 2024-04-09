@@ -160,10 +160,11 @@ def add_ingredient():
 
 		if not name:
 			flash('Name is required!', 'error')
-		if not category:
+		
+		elif not category:
 			flash('Category is required!', 'error')
 
-		if name.lower() in ingredients:
+		elif name.lower() in ingredients:
 			flash(f'{name} already exists!', 'error')
 			
 		else:

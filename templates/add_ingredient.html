@@ -20,12 +20,14 @@
                placeholder="Ingredient name" class="form-control"
                value="{{ request.form['name'] }}" id="tags">
     </div>
+    
     <label for="category">Category</label>
     <select name='category' id='category' class="selectpicker">
-        "<option value="Meat">Meat</option>"
-        "<option value="Produce">Produce</option>"
-        "<option value="Dairy">Dairy</option>"
-        "<option value="Other">Other</option>"
+        <option value="">Select a category</option>
+        <option value="Meat">Meat</option>
+        <option value="Produce">Produce</option>
+        <option value="Dairy">Dairy</option>
+        <option value="Other">Other</option>
     </select>  
 
     

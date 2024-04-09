@@ -13,24 +13,44 @@
     {% endfor %}
 
     <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Quantity</th>
-            <th scope="col">Name</th>
-          </tr>
-        </thead>
+      <thead>
+        <tr>
+          <th scope="col">Quantity</th>
+          <th scope="col">Name</th>
+          <th scope="col">Done</th> <!-- Added column for remove button -->
+        </tr>
+      </thead>
 
+        <!--This will sort ingredients by category and list them accordingly-->
         <b>Ingredients</b>
         <tbody>
-        {% for key, value in ingredients.items() %}
+          {% for category, ingredients in ingredients|groupby('category') %}
             <tr>
-            <td>{{  value  | replace("item", "") | replace(".0", "")}}</td>
-            <td>{{  key.split("-")[0]  }}</td>
+              <th colspan="3">{{ category }}</th>
             </tr>
-        {% endfor %}
+            {% for ingredient in ingredients %}
+              <tr onclick="moveToDone(this)">
+                <td>{{ ingredient.quantity }}</td>
+                <td>{{ ingredient.name }}</td>
+                <td><button class="btn btn-danger">Remove</button></td> <!-- Added remove button -->
+              </tr>
+            {% endfor %}
+          {% endfor %}
         </tbody>
-
       </table>
+
+      <h1>Done</h1> <!-- Added "Done" title -->
+      <table id="doneTable" class="table">
+        <tbody>
+        </tbody>
+      </table>
+
+      <script>
+        function moveToDone(row) {
+          var doneTable = document.getElementById("doneTable");
+          doneTable.getElementsByTagName("tbody")[0].appendChild(row);
+        }
+      </script>
 
       <div class="fixed-bottom">
         <input class="form-control form-control-sm" type="text" placeholder="Current Meal Plan ID: {{  user_id  }}" readonly>

@@ -20,12 +20,16 @@
                placeholder="Ingredient name" class="form-control"
                value="{{ request.form['name'] }}" id="tags">
     </div>
+    
+    <label for="category">Category</label>
+    <select name='category' id='category' class="selectpicker">
+        <option value="">Select a category</option>
+        <option value="Meat">Meat</option>
+        <option value="Produce">Produce</option>
+        <option value="Dairy">Dairy</option>
+        <option value="Other">Other</option>
+    </select>  
 
-    <div class="form-group">
-        <label for="category">Category</label>
-        <textarea name="category" placeholder="Ingredient category"
-                  class="form-control">{{ request.form['category'] }}</textarea>
-    </div>
     
     <div class="mx-auto" style="width: 200px;">
         <button type="submit" class="btn btn-primary">Submit</button>

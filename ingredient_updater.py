@@ -71,5 +71,9 @@ if __name__ == "__main__":
             input_category = "Dairy"
         elif input_category == "4":
             input_category = "Other"
+        else:
+            print("Invalid input. Please try again.")
+            continue
+
 
         update_ingredient(ingredient[0], input_category, conn)

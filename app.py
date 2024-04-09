@@ -80,10 +80,10 @@ def selected_recipes():
 	recipes = Recipe.get_selected_recipes(session['user_id'])
 
 	# Need to pass in a full list of ingredients we need for all these recipes
-	ingredient_dict = Ingredent.ingredient_combiner(recipes)
+	ingredient_list = Ingredent.ingredient_combiner(recipes)
 
 	# We render this page by passing in the posts we just returned from the db
-	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_dict, user_id=session['user_id'])
+	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_list, user_id=session['user_id'])
 
 
 #~~~~~~~~This is our route to see a recipe~~~~~~~~
@@ -97,7 +97,7 @@ def recipe(recipe_id):
 	recipe_obj = Recipe.get_recipe(id=recipe_id)
 
 	# Get the ingredients with units added to end
-	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
+	ingredient_list = Ingredent.ingredient_combiner([recipe_obj])
 
 	if request.method == 'POST':
 		if request.form['submit_button'] == 'delete':
@@ -108,7 +108,7 @@ def recipe(recipe_id):
 		else:
 			return redirect(url_for('edit_recipe', recipe_id=recipe_id))
 		
-	return render_template('recipe.html', recipe=recipe_obj, ing_dict=ingredient_dict)
+	return render_template('recipe.html', recipe=recipe_obj, ingredients=ingredient_list)
 
 
 #~~~~~~~~This is our route to create a new recipe~~~~~~~~
@@ -160,8 +160,11 @@ def add_ingredient():
 
 		if not name:
 			flash('Name is required!', 'error')
+		
+		elif not category:
+			flash('Category is required!', 'error')
 
-		if name.lower() in ingredients:
+		elif name.lower() in ingredients:
 			flash(f'{name} already exists!', 'error')
 			
 		else:
@@ -214,15 +217,7 @@ def edit_recipe(recipe_id):
 	ingredients = Ingredent.list_ingredients()
 
 	# Get the ingredients with units added to end
-	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
-
-	ing_unit_list = []
-
-	# Trying to make this into a format that javascript can use in the table maker
-	for key, val in ingredient_dict.items():
-		ing_unit_list.append({"id": key.split('-')[1], "name": key.split('-')[0], "unit": val})
-
-	ingredient_dict_json = json.dumps(ing_unit_list)
+	ingredient_list = Ingredent.ingredient_combiner([recipe_obj])
 
 	if request.method == 'POST':
 
@@ -239,7 +234,7 @@ def edit_recipe(recipe_id):
 		return json.dumps({'success' : True, 'url': redirect_url}), 200, {'ContentType' : 'application/json'}
 		
 		
-	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj, ing_dict=ingredient_dict_json)
+	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj, ing_dict=ingredient_list)
 
 @app.route('/copy_recipes/', methods=('GET', 'POST'))
 def copy_recipes():

@@ -29,10 +29,11 @@
               <th colspan="3">{{ category }}</th>
             </tr>
             {% for ingredient in ingredients %}
-              <tr onclick="moveToDone(this)">
+                <tr onclick="moveToDone(this)">
                 <td>{{ ingredient.quantity }}</td>
                 <td>{{ ingredient.name }}</td>
-                <td><button class="btn btn-danger">Remove</button></td> <!-- Added remove button -->
+                <td><button class="btn btn-success">&#10003;</button></td> <!-- Changed remove button to checkmark symbol -->
+              </tr>
               </tr>
             {% endfor %}
           {% endfor %}

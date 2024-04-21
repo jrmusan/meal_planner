@@ -29,33 +29,38 @@
               <th colspan="3">{{ category }}</th>
             </tr>
             {% for ingredient in ingredients %}
-                <tr onclick="moveToDone(this)">
+              <tr data-ingredient-id="{{ ingredient.id }}" data-ingredient-inCart="{{ ingredient.in_cart }}">
                 <td>{{ ingredient.quantity }}</td>
                 <td>{{ ingredient.name }}</td>
-                <td><button class="btn btn-success">&#10003;</button></td> <!-- Changed remove button to checkmark symbol -->
-              </tr>
+                <td>
+                  <button class="btn btn-success" onclick="updateIngredient(event, this)">&#10003;</button>
+                </td>
               </tr>
             {% endfor %}
           {% endfor %}
         </tbody>
-      </table>
+        </table>
 
-      <h1>Done</h1> <!-- Added "Done" title -->
-      <table id="doneTable" class="table">
-        <tbody>
-        </tbody>
-      </table>
 
-      <script>
-        function moveToDone(row) {
-          var doneTable = document.getElementById("doneTable");
-          doneTable.getElementsByTagName("tbody")[0].appendChild(row);
-        }
-      </script>
+          <script>
+            function updateIngredient(event, button) {
+              event.preventDefault();  // prevent the default action
 
-      <div class="fixed-bottom">
-        <input class="form-control form-control-sm" type="text" placeholder="Current Meal Plan ID: {{  user_id  }}" readonly>
-      </div>
+              var row = button.parentNode.parentNode;  // get the row
+              var ingredientId = row.getAttribute('data-ingredient-id');  // get the ingredient ID
+              console.log('/update-ingredient/' + ingredientId,);
+
+              $.ajax({
+              type: "POST",
+              url: '/update-ingredient/' + ingredientId,
+              });
+          }
+
+          </script>
+
+        <div class="fixed-bottom">
+          <input class="form-control form-control-sm" type="text" placeholder="Current Meal Plan ID: {{  user_id  }}" readonly>
+        </div>
      
     
 {% endblock %}

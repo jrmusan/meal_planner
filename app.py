@@ -10,6 +10,7 @@ from recipe import Recipe
 from user import User
 
 from database import Database
+from flask import jsonify
 
 db_obj = Database()
 
@@ -259,6 +260,14 @@ def copy_recipe(recipe_id):
 			flash(f"Copied {recipe_obj.name}, YUM!!!")
 
 	return render_template('recipe_no_edit.html', recipe=recipe_obj, ing_dict=ingredient_dict)
+
+@app.route('/update-ingredient/<int:ingredient_id>', methods=['POST'])
+def update_ingredient(ingredient_id):
+
+	print(f"Updating ingredient to be set as used {ingredient_id}")
+	Ingredent.set_ingredient_as_selected(ingredient_id, session['user_id'])
+
+	return redirect(url_for('selected_recipes'))
 
 
 if __name__ == "__main__":

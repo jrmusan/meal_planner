@@ -8,13 +8,14 @@ class Ingredent:
 
 	db_obj = Database()
 	
-	def __init__(self, name, id = 0, category = "", quantity = 1, unit = ""):
+	def __init__(self, name, id = 0, category = "", quantity = 1, unit = "", in_cart = 0):
 	
 		self.name = name
 		self.id = id
 		self.category = category
 		self.quantity = quantity
 		self.unit = unit
+		self.in_cart = in_cart
 
 		
 	def __repr__(self):
@@ -75,10 +76,10 @@ class Ingredent:
 		"""
 		
 		# Get the data for this ingredient
-		ingredient_row = Ingredent.db_obj.execute(f"SELECT name, category FROM ingredients where id = '{id}'").fetchone()
+		ingredient_row = Ingredent.db_obj.execute(f"SELECT name, category, in_cart FROM ingredients where id = '{id}'").fetchone()
 
 		# Instantiate an Ingredent object with eveyrthing it needs
-		ing_obj = Ingredent(ingredient_row['name'], id, ingredient_row['category'], quantity, unit)
+		ing_obj = Ingredent(ingredient_row['name'], id, ingredient_row['category'], quantity, unit, ingredient_row['in_cart'])
 		return ing_obj
 
 	@staticmethod

@@ -83,6 +83,9 @@ def selected_recipes():
 	# Need to pass in a full list of ingredients we need for all these recipes
 	ingredient_list = Ingredent.ingredient_combiner(recipes)
 
+	for ingredient in ingredient_list:
+		print(type(ingredient.in_cart))
+
 	# We render this page by passing in the posts we just returned from the db
 	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_list, user_id=session['user_id'])
 

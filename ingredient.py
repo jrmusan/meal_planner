@@ -144,6 +144,7 @@ class Ingredent:
 			ingredient_id (int): Id of the ingredient to set as selected
 			user_id (int): Id of the user to set the ingredient as selected for
 		"""
- 
-		Ingredent.db_obj.execute("UPDATE ingredients SET in_cart = ? WHERE id = ?", (user_id, ingredient_id))
 
+		Ingredent.db_obj.execute("INSERT INTO user_cart_mapping(user_id, ingredient_id) VALUES (?, ?)", (ingredient_id, user_id))
+
+	

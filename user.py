@@ -28,3 +28,14 @@ class User:
         """
 
         return User.db_obj.execute(f"SELECT id FROM user_table where user_id = '{user_id}'").fetchone()
+    
+    def get_in_cart_items(user_id):
+        """
+        Gets all the ingredients user currently has in their cart
+
+        Args:
+            user_id (int): Id of the user to get ingreidents currently in cart
+
+        """
+
+        return User.db_obj.execute(f"SELECT * FROM user_cart_mapping where user_id = '{user_id}'").fetchall()

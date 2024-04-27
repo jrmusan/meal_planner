@@ -48,7 +48,7 @@ def user_page():
 			user_id = request.form['user_id']
 
 			# Check if this id exists
-			if User.check_user(user_id):
+			if User.get_backend_id(user_id):
 				session['user_id'] = user_id
 				session.permanent = True
 				return redirect(url_for('selected_recipes'))
@@ -59,7 +59,7 @@ def user_page():
 		elif request.form['submit_button'] == 'new':
 
 			# Check if this user id is already being used
-			if User.check_user(user_id):
+			if User.get_backend_id(user_id):
 				flash(f"Meal Plan ID {user_id} already exists. Be more creative", "error")
 			else:
 				flash(f"Your Meal Plan Id is {user_id} please save this somewhere")
@@ -83,11 +83,12 @@ def selected_recipes():
 	# Need to pass in a full list of ingredients we need for all these recipes
 	ingredient_list = Ingredent.ingredient_combiner(recipes)
 
-	for ingredient in ingredient_list:
-		print(type(ingredient.in_cart))
+	users_in_cart_items = User.get_in_cart_items(session['user_id'])
+	print(f"Users in cart items: {users_in_cart_items}")
+	
 
 	# We render this page by passing in the posts we just returned from the db
-	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_list, user_id=session['user_id'])
+	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_list, user_id=session['user_id'], users_in_cart_items = users_in_cart_items)
 
 
 #~~~~~~~~This is our route to see a recipe~~~~~~~~

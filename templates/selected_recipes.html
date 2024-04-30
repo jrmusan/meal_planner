@@ -28,8 +28,7 @@
         <th colspan="3">{{ category }}</th>
         </tr>
         {% for ingredient in ingredients %}
-        <!-- FIX THIS TO WORK FOR MORE THAN JUST MY SINGLE MEAL PLANNER ID -->
-          {% if ingredient.in_cart != 1726 %}
+            {% if ingredient.id not in users_in_cart_items %}
             <tr data-ingredient-id="{{ ingredient.id }}" data-ingredient-inCart="{{ ingredient.in_cart }}">
             <td>{{ ingredient.quantity }}</td>
             <td>{{ ingredient.name }}</td>
@@ -54,8 +53,7 @@
       <tbody>
       {% for category, ingredients in ingredients|groupby('category') %}
         {% for ingredient in ingredients %}
-          <!-- FIX THIS TO WORK FOR MORE THAN JUST MY SINGLE MEAL PLANNER ID -->
-          {% if ingredient.in_cart == 1726 %}
+          {% if ingredient.id in users_in_cart_items %}
           <tr>
             <td>{{ ingredient.quantity }}</td>
             <td>{{ ingredient.name }}</td>
@@ -68,16 +66,19 @@
 
     <script>
       function updateIngredient(event, button) {
-      event.preventDefault();  // prevent the default action
+        event.preventDefault();  // prevent the default action
 
-      var row = button.parentNode.parentNode;  // get the row
-      var ingredientId = row.getAttribute('data-ingredient-id');  // get the ingredient ID
-      console.log('/update-ingredient/' + ingredientId,);
+        var row = button.parentNode.parentNode;  // get the row
+        var ingredientId = row.getAttribute('data-ingredient-id');  // get the ingredient ID
+        console.log('/update-ingredient/' + ingredientId);
 
-      $.ajax({
-        type: "POST",
-        url: '/update-ingredient/' + ingredientId,
-      });
+        $.ajax({
+          type: "POST",
+          url: '/update-ingredient/' + ingredientId,
+          success: function() {
+            location.reload();  // force a refresh of the webpage
+          }
+        });
       }
     </script>
 

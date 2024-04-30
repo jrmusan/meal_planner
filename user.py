@@ -40,5 +40,9 @@ class User:
             user_id (int): Id of the user to get ingreidents currently in cart
 
         """
-
-        return User.db_obj.execute(f"SELECT * FROM user_cart_mapping where user_id = '{user_id}'").fetchall()
+        ing_list = []
+        rows_objs = User.db_obj.execute(f"SELECT ingredient_id FROM user_cart_mapping where user_id = '{user_id}'").fetchall()
+        for row in rows_objs:
+            ing_list.append(row["ingredient_id"])
+            
+        return ing_list

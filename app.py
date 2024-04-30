@@ -84,11 +84,9 @@ def selected_recipes():
 	ingredient_list = Ingredent.ingredient_combiner(recipes)
 
 	users_in_cart_items = User.get_in_cart_items(session['user_id'])
-	print(f"Users in cart items: {users_in_cart_items}")
-	
 
 	# We render this page by passing in the posts we just returned from the db
-	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_list, user_id=session['user_id'], users_in_cart_items = users_in_cart_items)
+	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_list, user_id=session['user_id'], users_in_cart_items=users_in_cart_items, ingredient_ids=users_in_cart_items)
 
 
 #~~~~~~~~This is our route to see a recipe~~~~~~~~

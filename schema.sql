@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS user_table (
 );
 
 CREATE TABLE IF NOT EXISTS user_cart_mapping (
-    base_id INTEGER , 
-    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    ingredient_id INTEGER
+    user_id INTEGER,
+    ingredient_id INTEGER,
+    PRIMARY KEY(user_id. ingredient_id)
 );

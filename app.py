@@ -192,6 +192,7 @@ def plan_meals():
 	if request.method == 'POST':
 
 		Recipe.delete_user_meals(session['user_id'])
+		User.delete_user_cart(session['user_id'])
 
 		selected_recipes = request.values.getlist('recipes')
 

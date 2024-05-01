@@ -44,5 +44,14 @@ class User:
         rows_objs = User.db_obj.execute(f"SELECT ingredient_id FROM user_cart_mapping where user_id = '{user_id}'").fetchall()
         for row in rows_objs:
             ing_list.append(row["ingredient_id"])
-            
+
         return ing_list
+    
+    def delete_user_cart(user_id):
+        """
+        Deletes all the ingredients from the user's cart
+
+        Args:
+            user_id (int): Id of the user to delete all ingredients from cart
+        """
+        User.db_obj.execute(f"DELETE FROM user_cart_mapping where user_id = {user_id}")

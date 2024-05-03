@@ -2,8 +2,7 @@
 CREATE TABLE IF NOT EXISTS ingredients (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    category TEXT NOT NULL,
-    in_cart INTEGER
+    category TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS recipes (

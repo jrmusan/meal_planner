@@ -10,6 +10,7 @@ from recipe import Recipe
 from user import User
 
 from database import Database
+from flask import jsonify
 
 db_obj = Database()
 
@@ -47,7 +48,7 @@ def user_page():
 			user_id = request.form['user_id']
 
 			# Check if this id exists
-			if User.check_user(user_id):
+			if User.get_backend_id(user_id):
 				session['user_id'] = user_id
 				session.permanent = True
 				return redirect(url_for('selected_recipes'))
@@ -58,7 +59,7 @@ def user_page():
 		elif request.form['submit_button'] == 'new':
 
 			# Check if this user id is already being used
-			if User.check_user(user_id):
+			if User.get_backend_id(user_id):
 				flash(f"Meal Plan ID {user_id} already exists. Be more creative", "error")
 			else:
 				flash(f"Your Meal Plan Id is {user_id} please save this somewhere")
@@ -82,8 +83,10 @@ def selected_recipes():
 	# Need to pass in a full list of ingredients we need for all these recipes
 	ingredient_list = Ingredent.ingredient_combiner(recipes)
 
+	users_in_cart_items = User.get_in_cart_items(session['user_id'])
+
 	# We render this page by passing in the posts we just returned from the db
-	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_list, user_id=session['user_id'])
+	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_list, user_id=session['user_id'], users_in_cart_items=users_in_cart_items, ingredient_ids=users_in_cart_items)
 
 
 #~~~~~~~~This is our route to see a recipe~~~~~~~~
@@ -189,6 +192,7 @@ def plan_meals():
 	if request.method == 'POST':
 
 		Recipe.delete_user_meals(session['user_id'])
+		User.delete_user_cart(session['user_id'])
 
 		selected_recipes = request.values.getlist('recipes')
 
@@ -259,6 +263,14 @@ def copy_recipe(recipe_id):
 			flash(f"Copied {recipe_obj.name}, YUM!!!")
 
 	return render_template('recipe_no_edit.html', recipe=recipe_obj, ing_dict=ingredient_dict)
+
+@app.route('/update-ingredient/<int:ingredient_id>', methods=['POST'])
+def update_ingredient(ingredient_id):
+
+	print(f"Updating ingredient to be set as used {ingredient_id}")
+	Ingredent.set_ingredient_as_selected(ingredient_id, session['user_id'])
+
+	return redirect(url_for('selected_recipes'))
 
 
 if __name__ == "__main__":

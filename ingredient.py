@@ -15,7 +15,6 @@ class Ingredent:
 		self.category = category
 		self.quantity = quantity
 		self.unit = unit
-
 		
 	def __repr__(self):
 		return self.name
@@ -133,3 +132,16 @@ class Ingredent:
 		else:
 			print(f"{self.name} is safe to delete... Deleting")
 			recipe_name = Ingredent.db_obj.execute(f"DELETE FROM ingredients where id = {self.id}")
+
+	@staticmethod
+	def	set_ingredient_as_selected(ingredient_id, user_id):
+		"""
+		This will set the ingredient as selected for the user
+
+		Args:
+			ingredient_id (int): Id of the ingredient to set as selected
+			user_id (int): Id of the user to set the ingredient as selected for
+		"""
+
+		Ingredent.db_obj.execute("INSERT INTO user_cart_mapping(user_id, ingredient_id) VALUES (?, ?)", (user_id, ingredient_id))
+

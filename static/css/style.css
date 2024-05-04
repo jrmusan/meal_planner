@@ -3,57 +3,65 @@ h1 {
     color: brown;
     text-align: center;
     padding: 10px;
+    border-radius: 10px; /* Add rounded corner */
 }
 
-/*I don't think this is being used correctly in create.html*/
 .input-group {
     margin-top: 10px;
     margin-bottom: 10px;
+    border-radius: 10px; /* Add rounded corner */
 }
-
 
 body, html {
     height: 100%;
     font-family: Arial, Helvetica, sans-serif;
-    }
-    * {
+}
+
+* {
     box-sizing: border-box;
-    }
-    .bg-img {
+}
+
+.bg-img {
     /* The image used */
     background-image: url(/static/images/pretty.png);
-   /* Full height */
-   height: 100%;
+    /* Full height */
+    height: 100%;
 
-   /* Center and scale the image nicely */
-   background-position: center;
-   background-repeat: no-repeat;
-   background-size: cover;
-   }
-    /* Add styles to the form container */
-    .container {
-     position: absolute;
-     left: 50%;
-     top: 50%;
-     -webkit-transform: translate(-50%, -50%);
-     transform: translate(-50%, -50%);
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Add styles to the form container */
+.container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     padding: 16px;
     background-color: white;
-    }
-    /* Full-width input fields */
-    input[type=text], input[type=password] {
+    border-radius: 10px; /* Add rounded corner */
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
     width: 100%;
     padding: 15px;
     margin: 5px 0 22px 0;
     border: none;
     background: #f1f1f1;
-    }
-    input[type=text]:focus, input[type=password]:focus {
+    border-radius: 10px; /* Add rounded corner */
+}
+
+input[type=text]:focus, input[type=password]:focus {
     background-color: #ddd;
     outline: none;
-    }
-    /* Set a style for the submit button */
-    .btn {
+}
+
+/* Set a style for the submit button */
+.btn {
     background-color: #04AA6D;
     color: white;
     padding: 16px 20px;
@@ -61,8 +69,10 @@ body, html {
     cursor: pointer;
     width: 100%;
     opacity: 0.9;
-    margin-top:10px;
-    }
-    .btn:hover {
+    margin-top: 10px;
+    border-radius: 10px; /* Add rounded corner */
+}
+
+.btn:hover {
     opacity: 1;
-    }
+}

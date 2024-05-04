@@ -111,7 +111,6 @@ class Recipe:
 		id = Recipe.db_obj.execute(f"SELECT id FROM recipes where name = '{name}' AND user_id = '{user_id}'").fetchone()
 		return id["id"]
 
-	@staticmethod # ~~~~~~~~~~~~CONSIDER THIS METHOD USING EITHER A NAME OR ID~~~~~~~~~~~~
 	def get_recipe(id):
 		"""
 		This will get the recipe along with its ingredient objects
@@ -227,8 +226,6 @@ class Recipe:
 		# Lastly, lets delete this recipe!
 		Recipe.db_obj.execute(f"DELETE FROM recipes where id = {self.id}")
 
-		logging.info("Deleted a recipe")
-
 	@staticmethod
 	def list_all_recipes(user_id):
 		"""
@@ -243,7 +240,6 @@ class Recipe:
 		"""
 		
 		# Grab all the recipes from the db
-		# TODO: Have this only list recipes that this user doesn't have
 		recipes = Recipe.db_obj.execute(f'SELECT * FROM recipes where user_id != {user_id}').fetchall()
 		
 		recipe_objs = []

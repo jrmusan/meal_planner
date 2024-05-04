@@ -73,8 +73,7 @@ class Recipe:
 	@staticmethod
 	def list_recipes(user_id):
 		"""
-		This will return all the recipes in our database (THIS SHOULD JUST CALL GET_RECIPE)
-		
+		Returns all the recipes for this user in alphabetical order
 		Args:
 			user_id (int): Id of the user to get selected recipes for 
 		Returns:
@@ -90,6 +89,8 @@ class Recipe:
 		for recipe in recipes:
 			recipe_obj = Recipe(recipe['name'], recipe['id'], recipe['notes'], recipe['cuisine'])
 			recipe_objs.append(recipe_obj)
+
+		recipe_objs.sort(key=lambda recipe: recipe.name)
 				
 		return recipe_objs
 

@@ -6,23 +6,23 @@
 <form method="post">
 
     <div class="input-group mb-3">
-        <select name='recipes' class="selectpicker" multiple>
+        <select name='recipes' class="selectpicker" multiple data-live-search="true">
             {% for recipe in recipes %}
-    
+
                 {% if recipe.selected %}
-                    "<option selected>{{  recipe.name  }} </option>"
+                    <option selected>{{  recipe.name  }} </option>
                 {% else %}
-                    "<option>{{  recipe.name  }} </option>"
+                    <option>{{  recipe.name  }} </option>
                 {% endif %}
-    
+
             {% endfor %}
         </select>   
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" name="submit_button" type="submit">Update</button>
+            <button class="btn btn-outline-secondary" name="submit_button" value="submit_button" type="submit">Update</button>
         </div>
     </div>
     
-    
+    <button class="btn btn-danger" name="submit_button" value="remove_button" type="submit">Remove All Selected Recipes</button>
 </form>
     
 {% endblock %}

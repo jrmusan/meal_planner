@@ -2,7 +2,7 @@
 
 import json
 import os
-from flask import Flask, render_template, request, url_for, flash, redirect, session
+from flask import Flask, render_template, request, url_for, flash, redirect, session, redirect, url_for
 from datetime import timedelta
 
 from ingredient import Ingredent
@@ -10,21 +10,12 @@ from recipe import Recipe
 from user import User
 
 from database import Database
-from flask import jsonify
 
 db_obj = Database()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(12).hex()
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
-
-"""
-================================================================================
-|																			   |
-|				 Below are the app routes which give route us to  pages		   |
-|																			   |
-================================================================================
-"""
 
 
 # This is just for the base home page route
@@ -191,17 +182,24 @@ def plan_meals():
 
 	if request.method == 'POST':
 
-		Recipe.delete_user_meals(session['user_id'])
-		User.delete_user_cart(session['user_id'])
+		if request.form['submit_button'] == 'remove_button':
+			print("~~~~Removing all selected recipes~~~~")
+			# Lets delete all the selected meals for this user
+			User.remove_selected_recipes(session['user_id'])
+			return redirect(url_for('plan_meals'))
 
-		selected_recipes = request.values.getlist('recipes')
+		else:
+			Recipe.delete_user_meals(session['user_id'])
+			User.delete_user_cart(session['user_id'])
 
-		# Need a way to convert a name into an id
-		for recipe in selected_recipes:
+			selected_recipes = request.values.getlist('recipes')
 
-			# First lets get its id
-			recipe_id = Recipe.get_id_from_name(recipe, session['user_id'])
-			Recipe.add_to_meal_plan(recipe_id, session['user_id'])
+			# Need a way to convert a name into an id
+			for recipe in selected_recipes:
+
+				# First lets get its id
+				recipe_id = Recipe.get_id_from_name(recipe, session['user_id'])
+				Recipe.add_to_meal_plan(recipe_id, session['user_id'])
 
 		flash(f"Your Meal Plan has been updated!")
 		return redirect(url_for('selected_recipes'))

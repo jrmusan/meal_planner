@@ -55,3 +55,13 @@ class User:
             user_id (int): Id of the user to delete all ingredients from cart
         """
         User.db_obj.execute(f"DELETE FROM user_cart_mapping where user_id = {user_id}")
+
+    def remove_selected_recipes(user_id):
+        """
+        Removes all the selected meals for this user 
+
+        Args:
+            user_id (int): Id of the user to get selected recipes for
+        """
+        
+        User.db_obj.execute(f"DELETE FROM selected_meals where user_id = {user_id}")

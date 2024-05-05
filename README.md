@@ -7,4 +7,4 @@ This way you can easily see all the ingredients needed for the grocery trip!
 
 # Web App is in TESTING
 You are welcome to use it, but I cannot promise that your data will be saved...
-[Live Hosted Site](https://jrmusan.pythonanywhere.com/)
+[Live Hosted Site](foodu8.com)

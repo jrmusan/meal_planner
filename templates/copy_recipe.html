@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Lets Meal Plan {% endblock %}</h1>
+    <h1>{% block title %} Below is all the user recipes which you don't have {% endblock %}</h1>
     
 <!--Using a jinja for loop, this will loop over each item returned from app.py-->
     {% for recipe in recipes %}

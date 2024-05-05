@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Lets Meal Plan {% endblock %}</h1>
-    
+
+<div class="text-center" style="font-family: 'Comic Sans MS', cursive;">
+  <h3><b>Selected meals</b></h3>
+</div>
 <!--Using a jinja for loop, this will loop over each item returned from app.py-->
+  <div class="text-center">
     {% for recipe in recipes %}
         <a href="{{ url_for('recipe', recipe_id=recipe.id) }}">
             <h2>{{ recipe.name }}</h2>
@@ -11,38 +14,45 @@
         <span class="badge badge-primary">{{ recipe.cuisine }}</span>
         <hr>
     {% endfor %}
+  </div>
 
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">Quantity</th>
-        <th scope="col">Name</th>
-        <th scope="col">Done</th> <!-- Added column for remove button -->
-      </tr>
+    <div class="text-center" style="font-family: 'Comic Sans MS', cursive;">
+      <h3><b>Combined Required ingredients</b></h3>
+    </div>
+
+    <table class="table table-striped table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">In cart</th>
+        </tr>
       </thead>
 
       <!--This will sort ingredients by category and list them accordingly-->
-      <b>Ingredients</b>
       <tbody>
-      {% for category, ingredients in ingredients|groupby('category') %}
-        <th colspan="3">{{ category }}</th>
-        </tr>
-        {% for ingredient in ingredients %}
+        {% for category, ingredients in ingredients|groupby('category') %}
+          <tr>
+            <th colspan="2">{{ category }}</th>
+          </tr>
+          {% for ingredient in ingredients %}
             {% if ingredient.id not in users_in_cart_items %}
-            <tr data-ingredient-id="{{ ingredient.id }}" data-ingredient-inCart="{{ ingredient.in_cart }}">
-            <td>{{ ingredient.quantity }}</td>
-            <td>{{ ingredient.name }}</td>
-            <td>
-              <button class="btn btn-success" onclick="updateIngredient(event, this)">&#10003;</button>
-            </td>
-            </tr>
-          {% endif %}
+              <tr data-ingredient-id="{{ ingredient.id }}" data-ingredient-inCart="{{ ingredient.in_cart }}">
+                <td>{{ ingredient.quantity }} {{ ingredient.name }}</td>
+                <td>
+                  <button class="btn btn-success" onclick="updateIngredient(event, this)" style="background-color: transparent; border-radius: 50%;">
+                    <span style="color: black;">&#10003;</span>
+                  </button>
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
         {% endfor %}
-      {% endfor %}
       </tbody>
-    </table>
+      </table>
 
-    <b>In cart</b>
+    <div class="text-center" style="font-family: 'Comic Sans MS', cursive;">
+      <h3><b>In cart</b></h3>
+    </div>
     <table class="table">
       <thead>
       <tr>

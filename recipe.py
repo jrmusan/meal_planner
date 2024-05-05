@@ -73,8 +73,7 @@ class Recipe:
 	@staticmethod
 	def list_recipes(user_id):
 		"""
-		This will return all the recipes in our database (THIS SHOULD JUST CALL GET_RECIPE)
-		
+		Returns all the recipes for this user in alphabetical order
 		Args:
 			user_id (int): Id of the user to get selected recipes for 
 		Returns:
@@ -90,6 +89,8 @@ class Recipe:
 		for recipe in recipes:
 			recipe_obj = Recipe(recipe['name'], recipe['id'], recipe['notes'], recipe['cuisine'])
 			recipe_objs.append(recipe_obj)
+
+		recipe_objs.sort(key=lambda recipe: recipe.name)
 				
 		return recipe_objs
 
@@ -110,7 +111,6 @@ class Recipe:
 		id = Recipe.db_obj.execute(f"SELECT id FROM recipes where name = '{name}' AND user_id = '{user_id}'").fetchone()
 		return id["id"]
 
-	@staticmethod # ~~~~~~~~~~~~CONSIDER THIS METHOD USING EITHER A NAME OR ID~~~~~~~~~~~~
 	def get_recipe(id):
 		"""
 		This will get the recipe along with its ingredient objects
@@ -226,8 +226,6 @@ class Recipe:
 		# Lastly, lets delete this recipe!
 		Recipe.db_obj.execute(f"DELETE FROM recipes where id = {self.id}")
 
-		logging.info("Deleted a recipe")
-
 	@staticmethod
 	def list_all_recipes(user_id):
 		"""
@@ -242,7 +240,6 @@ class Recipe:
 		"""
 		
 		# Grab all the recipes from the db
-		# TODO: Have this only list recipes that this user doesn't have
 		recipes = Recipe.db_obj.execute(f'SELECT * FROM recipes where user_id != {user_id}').fetchall()
 		
 		recipe_objs = []

@@ -90,7 +90,6 @@ def recipe(recipe_id):
 	# Get this recipe object
 	recipe_obj = Recipe.get_recipe(id=recipe_id)
 
-	# Get the ingredients with units added to end
 	ingredient_list = Ingredent.ingredient_combiner([recipe_obj])
 
 	if request.method == 'POST':
@@ -218,7 +217,6 @@ def edit_recipe(recipe_id):
 	# Get the ingredients for auto complete 
 	ingredients = Ingredent.list_ingredients()
 
-	# Get the ingredients with units added to end
 	ingredient_list = Ingredent.ingredient_combiner([recipe_obj])
 
 	if request.method == 'POST':
@@ -252,15 +250,14 @@ def copy_recipe(recipe_id):
 	# Get this recipe object
 	recipe_obj = Recipe.get_recipe(id=recipe_id)
 
-	# Get the ingredients with units added to end
-	ingredient_dict = Ingredent.ingredient_combiner([recipe_obj])
+	ingredient_list = Ingredent.ingredient_combiner([recipe_obj])
 
 	if request.method == 'POST':
 		if request.form['submit_button'] == 'copy':
 			Recipe.copy_recipe(recipe_obj, session['user_id'])
 			flash(f"Copied {recipe_obj.name}, YUM!!!")
 
-	return render_template('recipe_no_edit.html', recipe=recipe_obj, ing_dict=ingredient_dict)
+	return render_template('recipe_no_edit.html', recipe=recipe_obj, ingredients=ingredient_list)
 
 @app.route('/update-ingredient/<int:ingredient_id>', methods=['POST'])
 def update_ingredient(ingredient_id):

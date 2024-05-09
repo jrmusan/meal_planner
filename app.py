@@ -31,7 +31,7 @@ def user_page():
 		# Try to get the userID
 		user_id = request.form.get('user_id')
 		if not user_id:
-			flash("You need to enter a Meal Plan Id")
+			flash("You need to enter a Meal Plan Id - If you don't have one, enter a number you will remember")
 			return render_template('user.html')
 
 		# Check if we were given a user ID

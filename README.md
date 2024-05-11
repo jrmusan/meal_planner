@@ -1,6 +1,6 @@
 
 # The Meal Planner
-Explore now at [foodu8.com](foodu8.com)
+Explore now at [foodu8.com](https://foodu8.com)
 
 ## Why Does This Exist?
 Tired of spending countless hours every week deciding what to cook, my wife and I sought a solution. Instead of endlessly scrolling through a notepad app on our phones, I decided to streamline the process through programming.

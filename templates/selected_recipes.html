@@ -37,7 +37,7 @@
           {% for ingredient in ingredients %}
             {% if ingredient.id not in users_in_cart_items %}
               <tr data-ingredient-id="{{ ingredient.id }}" data-ingredient-inCart="{{ ingredient.in_cart }}">
-                <td>{{ ingredient.quantity }} {{ ingredient.name }}</td>
+                <td>{{ ingredient.quantity }} {% if ingredient.unit != "item" %}{{ ingredient.unit }}{% endif %} {{ ingredient.name }}</td>
                 <td>
                   <button class="btn btn-success" onclick="updateIngredient(event, this)" style="background-color: transparent; border-radius: 50%;">
                     <span style="color: black;">&#10003;</span>

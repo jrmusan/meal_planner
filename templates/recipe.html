@@ -15,7 +15,6 @@
       <thead>
         <tr>
           <th scope="col">Quantity</th>
-          <th scope="col">Unit</th>
           <th scope="col">Ingredient</th>
         </tr>
       </thead>
@@ -23,7 +22,7 @@
       <tbody>
         {% for ingredient in ingredients %}
             <tr>
-            <td>{{ ingredient.quantity }} {{ ingredient.unit }}</td>
+              <td>{{ ingredient.quantity }} {% if ingredient.unit != "item" %}{{ ingredient.unit }}{% endif %} {{ ingredient.name }}</td>
             <td>{{ ingredient.name }}</td>
             </tr>
         {% endfor %}

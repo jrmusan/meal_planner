@@ -12,15 +12,18 @@ function getIngredientById(ingred_id) {
     return found_ingredient;
 }
 
-function getSelected() {
+function getSelected(idfk) {
 
     // Doing this enables us to show/hide the modal and reserve its data
     // TODO: THIS WILL NOT ALLOW USERS TO UPDATE INGREDIENTS ONCE ADD SAVE HAS BEEN PRESSED
 
     // Get the ingredients selected from the dropdown
     const values = $('#ingredients').val();
+    // const ing_dict = $('#ing_dict').val();
 
     console.log("Running getSelected(), and wiping modal")
+    console.log("Yolo", idfk)
+
     var table = '';
 
 
@@ -31,7 +34,7 @@ function getSelected() {
     values.forEach(function(ing_id) {
         ingredient = getIngredientById(ing_id);
         table += '<tr class="ing-qty-row" data-ing-id="' + ingredient.id + '"> <td>' + ingredient.name + '</td>'
-        table += '<td>' + '<input type="number" value=1></td>'
+        table += '<td>' + '<input type="number" value=2></td>'
         table += '<td> <select id=' + ingredient.id + '_unit' + '>' + option_list + ' </select> </td>'
         table += '</tr>'
     });

@@ -218,9 +218,7 @@ def edit_recipe(recipe_id):
 	ingredients = Ingredent.list_ingredients()
 
 	ingredient_obj_list = Ingredent.ingredient_combiner([recipe_obj])
-
 	ingredient_list = [{"id": ing.id, "quantity": ing.quantity, "unit": ing.unit} for ing in ingredient_obj_list]
-	print(f"~~~~~~~~ingredient_list: {ingredient_list} - {type(ingredient_list[0])}")
 
 	if request.method == 'POST':
 

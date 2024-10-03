@@ -30,12 +30,17 @@ function getSelected(idfk) {
     const option_list = '<option value="item">Item</option> <option value="cup">Cup</option> <option value="pound">Pound</option> <option value="ounce">Ounce</option> <option value="tbsp">Tbsp</option> <option value="tsp">Tsp</option>'
 
     // Build the table
+
+    // We don't really know IF A NEW INGREDIENT WAS PICKED
+    // A user could have selected a new ingredient, so we might not have a quantity for each ingredient
+
     table += '<table class="table"> <thead> <tr> <th scope="col">Ingredient</th> <th scope="col">Quantity</th> <th scope="col">Unit</th> </tr> </thead> <tbody>'
     values.forEach(function(ing_id) {
-        ingredient = getIngredientById(ing_id);
-        table += '<tr class="ing-qty-row" data-ing-id="' + ingredient.id + '"> <td>' + ingredient.name + '</td>'
+        unitless_ingredient = getIngredientById(ing_id);
+        unit_ingredient = getQuantityForIngredient(ing_id, ing_dict);
+        table += '<tr class="ing-qty-row" data-ing-id="' + unitless_ingredient.id + '"> <td>' + unitless_ingredient.name + '</td>'
         table += '<td>' + '<input type="number" value=2></td>'
-        table += '<td> <select id=' + ingredient.id + '_unit' + '>' + option_list + ' </select> </td>'
+        table += '<td> <select id=' + unitless_ingredient.id + '_unit' + '>' + option_list + ' </select> </td>'
         table += '</tr>'
     });
     table += '</tbody> </table>'

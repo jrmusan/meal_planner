@@ -217,10 +217,10 @@ def edit_recipe(recipe_id):
 	# Get the ingredients for auto complete 
 	ingredients = Ingredent.list_ingredients()
 
-	ingredient_list_obj = Ingredent.ingredient_combiner([recipe_obj])
+	ingredient_obj_list = Ingredent.ingredient_combiner([recipe_obj])
 
-	ingredient_list = [ing.toJson() for ing in ingredient_list_obj]
-	print(f"~~~~~~~~ingredient_list: {ingredient_list} - {type(ingredient_list)}")
+	ingredient_list = [{"id": ing.id, "quantity": ing.quantity, "unit": ing.unit} for ing in ingredient_obj_list]
+	print(f"~~~~~~~~ingredient_list: {ingredient_list} - {type(ingredient_list[0])}")
 
 	if request.method == 'POST':
 
@@ -237,7 +237,7 @@ def edit_recipe(recipe_id):
 		return json.dumps({'success' : True, 'url': redirect_url}), 200, {'ContentType' : 'application/json'}
 		
 		
-	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj, ing_dict=ingredient_list[0])
+	return render_template('edit_recipe.html', ingredients=ingredients, recipe=recipe_obj, ing_dict=ingredient_list)
 
 @app.route('/copy_recipes/', methods=('GET', 'POST'))
 def copy_recipes():

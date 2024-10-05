@@ -39,6 +39,32 @@ function getQuantityForIngredient(ingredient_id, ing_dict) {
     }
 }
 
+function getUnitForIngredient(unit_ingredient) {
+
+    if (unit_ingredient.unit == "item") {
+        return '<option value="item" selected>Item</option> <option value="cup">Cup</option> <option value="pound">Pound</option> <option value="ounce">Ounce</option> <option value="tbsp">Tbsp</option> <option value="tsp">Tsp</option>'
+    }
+    if (unit_ingredient.unit == "cup") {
+        return '<option value="item">Item</option> <option value="cup" selected>Cup</option> <option value="pound">Pound</option> <option value="ounce">Ounce</option> <option value="tbsp">Tbsp</option> <option value="tsp">Tsp</option>'
+    }
+    if (unit_ingredient.unit == "pound") {
+        return '<option value="item">Item</option> <option value="cup">Cup</option> <option value="pound" selected>Pound</option> <option value="ounce">Ounce</option> <option value="tbsp">Tbsp</option> <option value="tsp">Tsp</option>'
+    }
+    if (unit_ingredient.unit == "ounce") {
+        return '<option value="item">Item</option> <option value="cup">Cup</option> <option value="pound">Pound</option> <option value="ounce" selected>Ounce</option> <option value="tbsp">Tbsp</option> <option value="tsp">Tsp</option>'
+    }
+    if (unit_ingredient.unit == "tbsp") {
+        return '<option value="item">Item</option> <option value="cup">Cup</option> <option value="pound">Pound</option> <option value="ounce">Ounce</option> <option value="tbsp" selected>Tbsp</option> <option value="tsp">Tsp</option>'
+    }
+    if (unit_ingredient.unit == "tsp") {
+        return '<option value="item">Item</option> <option value="cup">Cup</option> <option value="pound">Pound</option> <option value="ounce">Ounce</option> <option value="tbsp">Tbsp</option> <option value="tsp" selected>Tsp</option>'
+    } else{
+        return '<option value="item">Item</option> <option value="cup">Cup</option> <option value="pound">Pound</option> <option value="ounce">Ounce</option> <option value="tbsp">Tbsp</option> <option value="tsp">Tsp</option>'
+    }
+
+
+}
+
 
 function getSelected(ing_dict) {
 
@@ -50,7 +76,6 @@ function getSelected(ing_dict) {
     console.log("Running getSelected(), and wiping modal")
 
     var table = '';
-    const option_list = '<option value="item">Item</option> <option value="cup">Cup</option> <option value="pound">Pound</option> <option value="ounce">Ounce</option> <option value="tbsp">Tbsp</option> <option value="tsp">Tsp</option>'
 
     // Build data for the modal
     // All ingredients need to be included, new ingredients will have a quantity of 1.
@@ -58,9 +83,10 @@ function getSelected(ing_dict) {
     values.forEach(function(ing_id) {
         unitless_ingredient = getIngredientById(ing_id);
         unit_ingredient = getQuantityForIngredient(ing_id, ing_dict);
+        selected_unit_ingredient = getUnitForIngredient(unit_ingredient);
         table += '<tr class="ing-qty-row" data-ing-id="' + unitless_ingredient.id + '"> <td>' + unitless_ingredient.name + '</td>'
         table += '<td>' + '<input type="number" value=' + unit_ingredient.quantity + '></td>'
-        table += '<td> <select id=' + unitless_ingredient.id + '_unit' + '>' + option_list + ' </select> </td>'
+        table += '<td> <select id=' + unitless_ingredient.id + '_unit' + '>' + selected_unit_ingredient + ' </select> </td>'
         table += '</tr>'
     });
     table += '</tbody> </table>'

@@ -217,7 +217,8 @@ def edit_recipe(recipe_id):
 	# Get the ingredients for auto complete 
 	ingredients = Ingredent.list_ingredients()
 
-	ingredient_list = Ingredent.ingredient_combiner([recipe_obj])
+	ingredient_obj_list = Ingredent.ingredient_combiner([recipe_obj])
+	ingredient_list = [{"id": ing.id, "quantity": ing.quantity, "unit": ing.unit} for ing in ingredient_obj_list]
 
 	if request.method == 'POST':
 

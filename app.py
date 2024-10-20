@@ -113,6 +113,9 @@ def create():
 	
 	# Get the ingredients for auto complete
 	ingredients = Ingredent.list_ingredients()
+
+	ingredient_list = [{"id": ing.id, "quantity": ing.quantity, "unit": ing.unit} for ing in ingredients]
+
 		
 	# Checks if a post was sent
 	if request.method == 'POST':
@@ -133,8 +136,7 @@ def create():
 			# This will return data back to the jquery method, which will then redirect. 
 			return json.dumps({'success' : True, 'url': redirect_url}), 200, {'ContentType' : 'application/json'}
 		
-	return render_template('create.html', ingredients=ingredients)
-
+	return render_template('create.html', ingredients=ingredients, ing_dict=ingredient_list)
 
 #~~~~~~~~This is our route to add a new ingredient~~~~~~~~
 @app.route('/add_ingredient', methods=('GET', 'POST'))

@@ -34,7 +34,7 @@ function getQuantityForIngredient(ingredient_id, ing_dict) {
     if (Object.keys(found_ingredient).length > 0) {
         return found_ingredient
     } else {
-            var quantity = {quantity: 0, unit: "Item"};
+            var quantity = {quantity: 1, unit: "Item"};
             return quantity
     }
 }

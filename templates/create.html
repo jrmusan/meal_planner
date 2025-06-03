@@ -93,11 +93,22 @@
     </select>
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" onclick="getSelected({{ ing_dict }})" data-toggle="modal" data-target="#unitModal">Add</button>
+    <button type="button" class="btn btn-primary" onclick="getSelected({{ ing_dict }})" data-toggle="modal" data-target="#unitModal">Add quantities</button>
 
+    <!-- We need to have the create button toggle the modal -->
+     
     <br/><em style="font-size:0.8rem;">Can't find an ingredient? <a href="{{url_for('add_ingredient')}}">Create one here.</a></em>
 
-    <br/><button type="button" id="create" class="btn btn-primary" onclick="save()" style="margin-top:15px; font-size:1.5rem;">Create Recipe</button>
+    <br/><button type="button" id="create" class="btn btn-primary" onclick="if (addButtonPressed) save()" style="margin-top:15px; font-size:1.5rem;" disabled>Create Recipe</button>
+
+    <script>
+        let addButtonPressed = false;
+
+        document.querySelector('button[onclick^="getSelected"]').addEventListener('click', function() {
+            addButtonPressed = true;
+            document.getElementById('create').disabled = false;
+        });
+    </script>
 
     <!-- Modal -->
     <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalTitle" aria-hidden="true">

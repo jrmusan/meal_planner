@@ -98,7 +98,7 @@
     </select>
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" onclick="getSelected()" data-toggle="modal" data-target="#unitModal">Add</button>
+    <button type="button" class="btn btn-primary" onclick="getSelected({{ ing_dict }})" data-toggle="modal" data-target="#unitModal">Add</button>
 
     <br/><em style="font-size:0.8rem;">Can't find an ingredient? <a href="{{url_for('add_ingredient')}}">Create one here.</a></em>
 

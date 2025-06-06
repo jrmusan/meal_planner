@@ -56,7 +56,12 @@
             dataType: "json",
             success: function(response) {
                 window.location.href = response.url;
-            }
+            },
+            error: function(response) {
+                let error = response.responseJSON.error;
+                // Display the error message
+                alert(error);
+                }
             });
     };
 

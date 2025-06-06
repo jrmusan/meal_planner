@@ -2,8 +2,9 @@
 
 import json
 import os
-from flask import Flask, render_template, request, url_for, flash, redirect, session, redirect, url_for
+from flask import Flask, jsonify, render_template, request, url_for, flash, redirect, session, redirect, url_for
 from datetime import timedelta
+from better_profanity import profanity
 
 from services.ingredient import Ingredent
 from services.recipe import Recipe
@@ -128,7 +129,9 @@ def create():
 		selected_ingredients = post_data['selected_ingredients']
 		
 		if not name:
-			flash('Name is required!', 'error')
+			return jsonify({'error': 'A name is required'}), 400
+		elif profanity.contains_profanity(name):
+			return jsonify({'error': 'Profanity is not allowed...'}), 400
 		else:
 			recipe_id = Recipe.instert_recipe(name.strip(), selected_ingredients, session['user_id'], notes, cuisine)
 			redirect_url = url_for('recipe', recipe_id=recipe_id)
@@ -155,6 +158,9 @@ def add_ingredient():
 
 		if not name:
 			flash('Name is required!', 'error')
+
+		elif profanity.contains_profanity(name):
+			flash('Profanity is not allowed!', 'error')
 		
 		elif not category:
 			flash('Category is required!', 'error')

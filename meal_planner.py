@@ -5,9 +5,9 @@ import os
 from flask import Flask, render_template, request, url_for, flash, redirect, session, redirect, url_for
 from datetime import timedelta
 
-from ingredient import Ingredent
-from recipe import Recipe
-from user import User
+from services.ingredient import Ingredent
+from services.recipe import Recipe
+from services.user import User
 
 from database import Database
 

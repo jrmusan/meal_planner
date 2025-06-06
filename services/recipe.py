@@ -3,7 +3,7 @@
 import re
 import logging
 
-from ingredient import Ingredent
+from services.ingredient import Ingredent
 from database import Database
 
 class Recipe:

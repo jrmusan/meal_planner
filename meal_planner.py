@@ -6,9 +6,9 @@ from flask import Flask, jsonify, render_template, request, url_for, flash, redi
 from datetime import timedelta
 from better_profanity import profanity
 
-from ingredient import Ingredent
-from recipe import Recipe
-from user import User
+from services.ingredient import Ingredent
+from services.recipe import Recipe
+from services.user import User
 
 from database import Database
 

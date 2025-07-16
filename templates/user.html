@@ -16,6 +16,11 @@
             <button type="submit" name="submit_button" class="btn" value="enter">Enter</button>
             <button class="btn" name="submit_button" type="submit" value="new">Create new Meal Plan ID</button>
          </form>
+          <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);">
+            <div class="text-center">
+              <a href="{{ url_for('about') }}" class="btn btn-info">About Me</a>
+            </div>
+          </div>
          {% block content %} {% endblock %}
          {% for error, message in get_flashed_messages(with_categories=true) %}
          <div class="alert alert-danger alert-dismissible fade in text-center">{{ message }}</div>

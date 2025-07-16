@@ -4,90 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>About Foodu8</title>
-  <style>
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.6;
-      background-color: #f9f9f9;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #4CAF50;
-      color: white;
-      padding: 2rem 1rem;
-      text-align: center;
-    }
-
-    main {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
-    }
-
-    h2 {
-      color: #4CAF50;
-      margin-top: 2rem;
-    }
-
-    ul {
-      list-style-type: decimal;
-      padding-left: 1.5rem;
-    }
-
-    .section {
-      background-color: white;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      margin-bottom: 2rem;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #1e1e1e;
-        color: #ddd;
-      }
-
-      .section {
-        background-color: #2a2a2a;
-      }
-
-      h2 {
-        color: #81c784;
-      }
-
-      header {
-        background-color: #388e3c;
-      }
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/external/bootstrap/bootstrap-3.4.1/bootstrap.css') }}"> 
+  <style>@import url("static/css/style.css");</style>
 </head>
 <body>
-  <header>
-    <h1>Welcome to Foodu8!</h1>
-    <p>Meal planning made easier</p>
-  </header>
+<header class="bg-img">
+</header>
 
-  <main>
-    <div class="section">
-      <h2>🥦 What is this website for?</h2>
+  <main class="container" style="max-width: 800px; margin-top: 2rem;">
+    <div class="section" style="background-color: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+      <h2 style="color: #4CAF50; text-align: center;">What is this website for?</h2>
       <p><strong>Foodu8</strong> is a simple meal planning tool that helps you stay organized when it’s time to go grocery shopping.</p>
       <p>Instead of scrambling to remember what you need, just pick the meals you want to make—and we’ll give you one clean, combined grocery list with everything you need. No more back-and-forth between your recipes and shopping cart.</p>
     </div>
 
-    <div class="section">
-      <h2>🛒 How does it work?</h2>
-      <ul>
-        <li><strong>Create an account</strong> — It’s quick. Just pick a 4-digit PIN.</li>
-        <li><strong>Add your favorite recipes</strong> — Give each recipe a name and list the ingredients you use.</li>
-        <li><strong>Plan your week</strong> — When you're ready to shop, select the meals you want to make.</li>
-        <li><strong>Get your grocery list</strong> — We automatically add up the ingredients across all your chosen meals and organize them into a tidy shopping list.</li>
+    <div class="section" style="background-color: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+      <h2 style="color: #4CAF50; text-align: center;">How does it work?</h2>
+      <ul style="list-style-type: decimal; padding-left: 1.5rem;">
+        <li style="margin-bottom: 0.5rem;"><strong>Create an account</strong> — It’s quick. Just pick a 4-digit PIN.</li>
+        <li style="margin-bottom: 0.5rem;"><strong>Add your favorite recipes</strong> — Give each recipe a name and list the ingredients you use.</li>
+        <li style="margin-bottom: 0.5rem;"><strong>Plan your week</strong> — When you're ready to shop, select the meals you want to make.</li>
+        <li style="margin-bottom: 0.5rem;"><strong>Get your grocery list</strong> — We automatically add up the ingredients across all your chosen meals and organize them into a tidy shopping list.</li>
       </ul>
       <p>That’s it! Meal planning made easier.</p>
     </div>
   </main>
 </body>
 </html>
+
+

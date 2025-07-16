@@ -13,7 +13,9 @@
 
   <main class="container" style="max-width: 800px; margin-top: 2rem;">
     <div class="text-center">
-        <img src="{{ url_for('static', filename='images/inline_logo.png') }}" alt="Logo" style="width: 300px; height: auto;">
+        <a href="{{ url_for('user_page') }}">
+            <img src="{{ url_for('static', filename='images/inline_logo.png') }}" alt="Logo" style="width: 300px; height: auto;">
+        </a>
     </div>
     <div class="section" style="background-color: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 2rem;">
       <h2 style="color: #4CAF50; text-align: center;">What is this website for?</h2>

@@ -19,6 +19,11 @@ app.config['SECRET_KEY'] = os.urandom(12).hex()
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 
 
+# This is a basic about me apge
+@app.route('/about')
+def about():
+	return render_template('about_me.html')
+
 # This is just for the base home page route
 @app.route('/', methods=('GET', 'POST'))
 def user_page():

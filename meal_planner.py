@@ -128,6 +128,9 @@ def create():
 		# If so grab the input data from the page submitted
 		post_data = request.get_json(force=True)
 
+		# This is to make mypy happy
+		assert isinstance(post_data, dict), "Expected JSON object"
+
 		name = post_data['name']
 		notes = post_data['notes']
 		cuisine = post_data['cuisine']
@@ -236,6 +239,9 @@ def edit_recipe(recipe_id):
 	if request.method == 'POST':
 
 		post_data = request.get_json(force=True)
+		
+		# This is to make mypy happy
+		assert isinstance(post_data, dict), "Expected JSON object"
 		name = post_data['name']
 		notes = post_data['notes']
 		cuisine = post_data['cuisine']

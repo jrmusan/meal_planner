@@ -20,8 +20,7 @@ app = Flask(__name__)
 # Load local .env for development (no-op if no file). 
 load_dotenv()
 
-# For local/dev, fallback to a .secret_key file next to this script so the key
-# is stable across restarts (prevents session cookies from being invalidated).
+# For local/dev, fallback to a .env file next to this script so the key
 secret = os.environ.get('SECRET_KEY')
 if not secret:
 	secret_file = os.path.join(os.path.dirname(__file__), '.env')
@@ -37,7 +36,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 # Set session cookie attributes (set SESSION_COOKIE_SECURE to true in production when using HTTPS)
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['SESSION_COOKIE_SECURE'] = False
+app.config['SESSION_COOKIE_SECURE'] = True
 
 
 # This is a basic about me apge

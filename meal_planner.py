@@ -24,7 +24,7 @@ load_dotenv()
 # is stable across restarts (prevents session cookies from being invalidated).
 secret = os.environ.get('SECRET_KEY')
 if not secret:
-	secret_file = os.path.join(os.path.dirname(__file__), '.secret_key')
+	secret_file = os.path.join(os.path.dirname(__file__), '.env')
 	try:
 		with open(secret_file, 'r') as f:
 			secret = f.read().strip()

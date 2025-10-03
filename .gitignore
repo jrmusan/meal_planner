@@ -134,4 +134,4 @@ dmypy.json
 .pyre/
 
 # No secret keys in version control
-.secret_key
+.env

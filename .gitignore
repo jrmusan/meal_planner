@@ -132,3 +132,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# No secret keys in version control
+.secret_key

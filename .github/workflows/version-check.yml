@@ -1,0 +1,26 @@
+name: Ensure VERSION file updated
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  version-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # so we can compare against base branch
+
+      - name: Check if VERSION file was modified
+        run: |
+          if git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -q "^VERSION$"; then
+            echo "✅ VERSION file was updated."
+          else
+            echo "❌ VERSION file must be updated in this PR."
+            exit 1
+          fi
+

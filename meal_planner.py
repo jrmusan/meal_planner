@@ -2,6 +2,7 @@
 
 import json
 import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify, render_template, request, url_for, flash, redirect, session, redirect, url_for
 from datetime import timedelta
 from better_profanity import profanity
@@ -15,8 +16,27 @@ from database import Database
 db_obj = Database()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(12).hex()
+
+# Load local .env for development (no-op if no file). 
+load_dotenv()
+
+# For local/dev, fallback to a .env file next to this script so the key
+secret = os.environ.get('SECRET_KEY')
+if not secret:
+	secret_file = os.path.join(os.path.dirname(__file__), '.env')
+	try:
+		with open(secret_file, 'r') as f:
+			secret = f.read().strip()
+	except FileNotFoundError:
+		print("You need to create a .secret_key file with a random string in it to use this app.")
+
+app.config['SECRET_KEY'] = secret
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
+
+# Set session cookie attributes (set SESSION_COOKIE_SECURE to true in production when using HTTPS)
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = True
 
 
 # This is a basic about me apge
@@ -128,6 +148,9 @@ def create():
 		# If so grab the input data from the page submitted
 		post_data = request.get_json(force=True)
 
+		# This is to make mypy happy
+		assert isinstance(post_data, dict), "Expected JSON object"
+
 		name = post_data['name']
 		notes = post_data['notes']
 		cuisine = post_data['cuisine']
@@ -236,6 +259,9 @@ def edit_recipe(recipe_id):
 	if request.method == 'POST':
 
 		post_data = request.get_json(force=True)
+		
+		# This is to make mypy happy
+		assert isinstance(post_data, dict), "Expected JSON object"
 		name = post_data['name']
 		notes = post_data['notes']
 		cuisine = post_data['cuisine']

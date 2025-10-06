@@ -55,9 +55,36 @@ def delete_specific_ingredient(conn, id):
         conn.commit()
         print(f"\n~~~Deleted ingredient with ID: {id}~~~")
 
+def find_and_delete_duplicates(conn):
+    """
+    Find and delete duplicate ingredients
+    :param conn: the Connection object
+    :return:
+    """
+    cur = conn.cursor()
+    cur.execute('SELECT name, COUNT(*) c FROM ingredients GROUP BY name HAVING c > 1')
+    rows = cur.fetchall()
+
+    duplicates = [row[0] for row in rows]
+
+    if not duplicates:
+        print("\n~~~No duplicate ingredients found~~~\n")
+        return
+
+    print(f"\n~~~Found {len(duplicates)} duplicate ingredients. Deleting duplicates...~~~\n")
+
+    for name in duplicates:
+        print(f"Processing duplicates for ingredient: {name}")
+        cur.execute(f'SELECT id FROM ingredients WHERE name="{name}"')
+        ids = cur.fetchall()
+        # Keep the first ID, delete the rest
+        ids_to_delete = [id[0] for id in ids[1:]]
+        for id in ids_to_delete:
+            delete_specific_ingredient(conn, id)
+
 def get_user_input(conn):
         
-    print("\n1: List all ingreidents \n2: Delete specific ingrediet (Provide ID)\n3: Exit\n")
+    print("\n0: Find and delete duplicate ingredients \n1: List all ingreidents \n2: Delete specific ingrediet (Provide ID)\n3: Exit\n")
     to_do = input("What would you like to do? ")
     return int(to_do)
 
@@ -74,6 +101,10 @@ if __name__ == "__main__":
     to_do = get_user_input(conn)
 
     while to_do != 3:
+        if to_do == 0:
+            find_and_delete_duplicates(conn)
+            to_do = get_user_input(conn)
+
         if to_do == 1:
             print("Here are all the ingredients: \n")
             select_all_ingreidents(conn)
@@ -84,6 +115,7 @@ if __name__ == "__main__":
             to_do = get_user_input(conn)
 
         elif to_do == 3:
-            conn.close()
+            if conn is not None:
+                conn.close()
             print("Exiting...")
             break

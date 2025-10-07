@@ -4,21 +4,7 @@
 (function () {
   'use strict';
 
-  // Inject required CSS for swipe animation so template doesn't need inline styles
-  (function injectStyles() {
-  const css = `
-  .swipe-row { cursor: pointer; transition: transform 150ms ease; }
-  /* swiping now nudges right */
-  .swipe-row.swiping { transform: translateX(12px); }
-  /* removed slides right and fades out */
-  .swipe-row.removed { transform: translateX(120%); opacity: 0; transition: transform 300ms ease, opacity 300ms ease; }
-  .swipe-hint { font-size: 0.85em; color: #666; margin-bottom: 8px; }
-  `;
-    const style = document.createElement('style');
-    style.setAttribute('type', 'text/css');
-    style.textContent = css;
-    document.head.appendChild(style);
-  })();
+  // Swipe/animation styles are provided by static/css/style.css
 
   // Send the POST to mark ingredient used (no reload on success)
   function sendMarkUsedRequest(ingredientId) {

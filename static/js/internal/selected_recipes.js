@@ -20,40 +20,96 @@
     document.head.appendChild(style);
   })();
 
-  // Send the POST to mark ingredient used and reload on success
+  // Send the POST to mark ingredient used (no reload on success)
   function sendMarkUsedRequest(ingredientId) {
-    if (!ingredientId) return;
+    if (!ingredientId) return Promise.reject(new Error('no id'));
     console.log('marking used', ingredientId);
-    $.ajax({
-      type: 'POST',
-      url: '/update-ingredient/' + ingredientId,
-      success: function () { location.reload(); },
-      error: function (xhr, status, err) { console.error('Failed to mark used', err); }
+    return new Promise(function (resolve, reject) {
+      $.ajax({
+        type: 'POST',
+        url: '/update-ingredient/' + ingredientId,
+        success: function () { resolve(); },
+        error: function (xhr, status, err) { reject(err || status); }
+      });
     });
   }
 
+  function showToast(message, timeout = 4000) {
+    try {
+      const id = 'toast-network-error';
+      let root = document.getElementById(id);
+      if (root) root.remove();
+      root = document.createElement('div');
+      root.id = id;
+      root.style.position = 'fixed';
+      root.style.left = '50%';
+      root.style.bottom = '24px';
+      root.style.transform = 'translateX(-50%)';
+      root.style.background = 'rgba(0,0,0,0.85)';
+      root.style.color = 'white';
+      root.style.padding = '10px 14px';
+      root.style.borderRadius = '6px';
+      root.style.zIndex = 9999;
+      root.style.fontSize = '14px';
+      root.textContent = message;
+      document.body.appendChild(root);
+      setTimeout(function () {
+        try { root.remove(); } catch (e) {}
+      }, timeout);
+    } catch (e) {
+      console.error('toast failed', e);
+    }
+  }
+
+  // Optimistic remove: animate, remove from DOM, send request; on error reinsert & toast
   function markUsedWithAnimation(row) {
     if (!row || row.dataset._animating) return;
     row.dataset._animating = '1';
     const id = row.getAttribute('data-ingredient-id');
+
+    // Keep a reference to the node and its parent for potential rollback
+    const parent = row.parentNode;
+    const nextSibling = row.nextSibling;
+
+    // Start animation
     row.classList.add('removed');
 
-    // Wait for transition to finish or fallback after 400ms
-    let called = false;
-    function finish() {
-      if (called) return; called = true;
-      sendMarkUsedRequest(id);
+    // After animation completes (or fallback), remove the row from DOM and then send request
+    let cleanedUp = false;
+    function cleanupAndSend() {
+      if (cleanedUp) return; cleanedUp = true;
+
+      // Remove row from DOM but keep the object in memory for rollback
+      try { parent.removeChild(row); } catch (e) { /* ignore */ }
+
+      sendMarkUsedRequest(id).then(function () {
+        // success: nothing else to do; the UI already removed the item optimistically
+      }).catch(function (err) {
+        // rollback: reinsert the row back to its original location and show toast
+        try {
+          if (nextSibling && nextSibling.parentNode === parent) {
+            parent.insertBefore(row, nextSibling);
+          } else {
+            parent.appendChild(row);
+          }
+          row.classList.remove('removed');
+          delete row.dataset._animating;
+        } catch (e) {
+          console.error('rollback failed', e);
+        }
+        showToast('Network error: failed to mark ingredient. It has been restored.');
+      });
     }
 
-    const onTransition = function (e) {
+    // Wait for transitionend or fallback
+    function onTransition(e) {
       if (e.propertyName === 'transform' || e.propertyName === 'opacity') {
         row.removeEventListener('transitionend', onTransition);
-        finish();
+        cleanupAndSend();
       }
-    };
-
+    }
     row.addEventListener('transitionend', onTransition);
-    setTimeout(finish, 400);
+    setTimeout(cleanupAndSend, 450);
   }
 
   function attachHandlers() {

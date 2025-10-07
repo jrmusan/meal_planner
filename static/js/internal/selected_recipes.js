@@ -82,11 +82,29 @@
       // Remove row from DOM but keep the object in memory for rollback
       try { parent.removeChild(row); } catch (e) { /* ignore */ }
 
+      // Create an optimistic row in the 'In cart' table (but preserve scroll)
+      const inCartBody = document.getElementById('in-cart-body');
+      let optimisticRow = null;
+      if (inCartBody) {
+        // preserve scroll position
+        const scrollY = window.scrollY;
+        optimisticRow = document.createElement('tr');
+        const qty = row.getAttribute('data-quantity') || '';
+        const unit = row.getAttribute('data-unit') || '';
+        const name = row.getAttribute('data-name') || '';
+        optimisticRow.className = 'optimistic-in-cart';
+        optimisticRow.innerHTML = `<td>${qty}</td><td>${unit && unit !== 'item' ? unit + ' ' : ''}${name}</td>`;
+        inCartBody.appendChild(optimisticRow);
+        // restore scroll to avoid moving user's viewport
+        window.scrollTo(0, scrollY);
+      }
+
       sendMarkUsedRequest(id).then(function () {
         // success: nothing else to do; the UI already removed the item optimistically
       }).catch(function (err) {
         // rollback: reinsert the row back to its original location and show toast
         try {
+          if (optimisticRow && optimisticRow.parentNode) optimisticRow.parentNode.removeChild(optimisticRow);
           if (nextSibling && nextSibling.parentNode === parent) {
             parent.insertBefore(row, nextSibling);
           } else {

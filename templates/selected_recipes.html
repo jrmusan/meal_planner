@@ -30,20 +30,25 @@
       </thead>
 
       <!--This will sort ingredients by category and list them accordingly-->
-      <tbody>
+  <tbody>
         {% for category, ingredients in ingredients|groupby('category') %}
           <tr>
             <th>{{ category }}</th>
           </tr>
           {% for ingredient in ingredients %}
             {% if ingredient.id not in users_in_cart_items %}
-              <tr class="swipe-row" data-ingredient-id="{{ ingredient.id }}" data-ingredient-inCart="{{ ingredient.in_cart }}">
+              <tr class="swipe-row"
+                  data-ingredient-id="{{ ingredient.id }}"
+                  data-ingredient-inCart="{{ ingredient.in_cart }}"
+                  data-quantity="{{ ingredient.quantity }}"
+                  data-unit="{{ ingredient.unit }}"
+                  data-name="{{ ingredient.name }}">
                 <td>{{ ingredient.quantity }} {% if ingredient.unit != "item" %}{{ ingredient.unit }}{% endif %} {{ ingredient.name }}</td>
               </tr>
             {% endif %}
           {% endfor %}
         {% endfor %}
-      </tbody>
+  </tbody>
     </table>
 
     <div class="text-center" style="font-family: 'Comic Sans MS', cursive;">
@@ -56,7 +61,7 @@
         <th scope="col">Name</th>
       </tr>
       </thead>
-      <tbody>
+  <tbody id="in-cart-body">
       {% for category, ingredients in ingredients|groupby('category') %}
         {% for ingredient in ingredients %}
           {% if ingredient.id in users_in_cart_items %}

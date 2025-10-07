@@ -33,8 +33,9 @@ body, html {
     background-size: cover;
 }
 
-/* Add styles to the form container */
-.container {
+/* Add styles to a centered form container (use this class on specific pages only)
+   NOTE: don't override Bootstrap's .container globally - that breaks page flow/scrolling */
+.centered-container {
     position: absolute;
     left: 50%;
     top: 50%;

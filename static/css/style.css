@@ -98,3 +98,23 @@ input[type=text]:focus, input[type=password]:focus {
     background-color: #c82333 !important;
     border-color: #bd2130 !important;
 }
+
+/* Make the recipe select (bootstrap-select) look neutral/gray on the meal plan page */
+#recipes-select,
+.bootstrap-select .dropdown-toggle {
+    background-color: #f5f5f5 !important;
+    color: #333 !important;
+    border: 1px solid #dcdcdc !important;
+    box-shadow: none !important;
+}
+
+#recipes-select:focus,
+.bootstrap-select .dropdown-toggle:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.03) !important;
+}
+
+/* Make the dropdown caret and text subtle */
+.bootstrap-select .dropdown-toggle .filter-option {
+    color: #333 !important;
+}

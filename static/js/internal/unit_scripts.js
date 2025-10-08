@@ -1,16 +1,16 @@
 var table = ''; 
-var ingredients_list = []
-
-
+var ingredients_list = [];
 
 /**
  * Given an ingredient id, return the ingredient json object
- * Searches through a list of ingredients created in edit_recipt.html
+ * Searches through all_ingredients provided in window.createPage config
  * @param {int} ingred_id - id of the ingredient to get
  * @returns {Object} - ingredient json object
  */
 function getIngredientById(ingred_id) {
-    let found_ingredient = {}
+    const cfg = window.createPage || {};
+    const all_ingredients = cfg.all_ingredients || [];
+    let found_ingredient = {};
     all_ingredients.forEach(function(ingredient) {
         if (ingredient.id == ingred_id) {
             found_ingredient = ingredient;

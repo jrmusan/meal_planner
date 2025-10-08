@@ -1,28 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 style="text-align: center; font-family: 'Comic Sans MS', cursive;">{% block title %} Pick some yummy meals {% endblock %}</h1>
-    
-<form method="post">
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="card-title mb-2" style="font-weight:600;">{% block title %}Pick your meals{% endblock %}</h2>
+                <p class="text-muted small mb-3">Search or pick multiple recipes below. Your selection will update the combined shopping list.</p>
 
-    <div class="input-group mb-3">
-        <select name='recipes' class="selectpicker" multiple data-live-search="true">
-            {% for recipe in recipes %}
+                <form method="post">
+                    <div class="form-group">
+                        <label for="recipes-select" class="sr-only">Recipes</label>
+                        <select id="recipes-select" name="recipes" class="selectpicker form-control" multiple data-live-search="true" data-width="100%">
+                            {% for recipe in recipes %}
+                                {% if recipe.selected %}
+                                    <option selected>{{ recipe.name }}</option>
+                                {% else %}
+                                    <option>{{ recipe.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
 
-                {% if recipe.selected %}
-                    <option selected>{{  recipe.name  }} </option>
-                {% else %}
-                    <option>{{  recipe.name  }} </option>
-                {% endif %}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button class="btn btn-primary" name="submit_button" value="submit_button" type="submit">Update selection</button>
+                        <button class="btn btn-danger btn-sm" name="submit_button" value="remove_button" type="submit">Uncheck all</button>
+                    </div>
+                </form>
 
-            {% endfor %}
-        </select>   
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" name="submit_button" value="submit_button" type="submit">Update</button>
+            </div>
         </div>
     </div>
-    
-    <button class="btn btn-danger" name="submit_button" value="remove_button" type="submit">Uncheck All Selected Recipes</button>
-</form>
+</div>
     
 {% endblock %}

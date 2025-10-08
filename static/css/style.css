@@ -61,21 +61,23 @@ input[type=text]:focus, input[type=password]:focus {
     outline: none;
 }
 
-/* Set a style for the submit button */
+/* Set a style for the submit button (smaller and not full-width) */
 .btn {
-    background-color: #04AA6D;
-    color: white;
-    padding: 16px 20px;
-    border: none;
+    background-color: #007bff; /* bootstrap primary */
+    color: #ffffff;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid transparent;
     cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
-    margin-top: 10px;
-    border-radius: 10px; /* Add rounded corner */
+    display: inline-block;
+    width: auto; /* don't force full width */
+    opacity: 0.95;
+    margin-top: 0.25rem;
+    border-radius: 0.25rem;
 }
 
 .btn:hover {
     opacity: 1;
+    filter: brightness(0.98);
 }
 
 /* Swipe / optimistic row styles for selected_recipes */
@@ -83,4 +85,16 @@ input[type=text]:focus, input[type=password]:focus {
 .swipe-row.swiping { transform: translateX(12px); }
 .swipe-row.removed { transform: translateX(120%); opacity: 0; transition: transform 300ms ease, opacity 300ms ease; }
 .swipe-hint { font-size: 0.85em; color: #666; margin-bottom: 8px; }
-.optimistic-in-cart { opacity: 0.95; background: rgba(0, 128, 0, 0.04); }
+.optimistic-in-cart { opacity: 0.95; background: rgba(0, 0, 0, 0.03); }
+
+/* Make danger buttons solid red by default (overrides outline variants) */
+.btn-danger {
+    background-color: #dc3545 !important;
+    color: #ffffff !important;
+    border-color: #dc3545 !important;
+}
+
+.btn-danger:hover {
+    background-color: #c82333 !important;
+    border-color: #bd2130 !important;
+}

@@ -70,7 +70,7 @@
 
     <script src="{{ url_for('static', filename='js/internal/selected_recipes.js') }}"></script>
 
-    <div class="fixed-bottom">
-      <input class="form-control form-control-sm" type="text" placeholder="Current Meal Plan ID: {{  user_id  }}" readonly>
+    <div style="position: fixed; bottom: 0; left: 0; width: 135px;">
+      <input class="form-control form-control-sm" type="text" style="font-size: 0.75rem; height: 24px; border-radius: 4px 4px 0 0; border-bottom: none;" placeholder="Meal Plan ID: {{  user_id  }}" readonly>
     </div>
 {% endblock %}

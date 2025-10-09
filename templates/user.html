@@ -8,18 +8,33 @@
    </head>
    <body>
       <div class="bg-img">
-         <form method="post" class="centered-container">
+             <form method="post" class="centered-container">
+                  <style>
+                      /* page-scoped responsive spacing for the input / enter / create stack */
+                      .stack-gap-enter { margin-top: 6px; }
+                      .stack-gap-create { margin-top: 2px; }
+                      @media (max-width: 480px) {
+                         .stack-gap-enter { margin-top: 4px; }
+                         .stack-gap-create { margin-top: 1px; }
+                      }
+                      @media (min-width: 900px) {
+                         .stack-gap-enter { margin-top: 10px; }
+                         .stack-gap-create { margin-top: 6px; }
+                      }
+                  </style>
             <div class="text-center">
                <img src="{{ url_for('static', filename='images/inline_logo.png') }}" alt="Logo" style="width: 380px; height: auto;">
             </div>
                            <div style="display:flex; align-items:center; gap:14px; justify-content:center;">
-                              <input type="text" name="user_id" placeholder="Enter Meal PlanID" style="flex:0 0 68%; max-width:420px; padding:14px 16px; font-size:1.15rem; border-radius:8px; height:42px; box-sizing:border-box;">
-                              <button type="submit" name="submit_button" value="enter" aria-label="Enter Meal Plan" style="background:transparent; border:none; padding:0; margin-left:10px; display:inline-flex; align-items:center; justify-content:center;">
-                            <img src="{{ url_for('static', filename='images/arrow.png') }}" alt="Enter" style="width:82px; height:86px; object-fit:contain; display:block; transform: translateY(-12px);">
+                              <input type="text" name="user_id" placeholder="Enter Meal Plan ID" style="flex:0 0 68%; max-width:420px; padding:14px 16px; font-size:1.15rem; border-radius:8px; height:42px; box-sizing:border-box;">
+                           </div>
+                           <div class="stack-gap-enter" style="text-align:center;">
+                              <button type="submit" name="submit_button" value="enter" aria-label="Enter Meal Plan" style="background:transparent; border:none; padding:0; display:inline-flex; align-items:center; justify-content:center;">
+                                <img src="{{ url_for('static', filename='images/arrow.png') }}" alt="Enter" style="width:82px; height:86px; object-fit:contain; display:block; transform: translateY(-12px);">
                               </button>
                            </div>
-                                        <div style="text-align:center; margin-top:4px;">
-                                             <button class="btn" name="submit_button" type="submit" value="new" style="padding:12px 22px; font-size:1.15rem; border-radius:8px; background: rgba(212,234,157,1); color: #1a1a1a; border: 1px solid rgba(0,0,0,0.08); cursor:pointer; transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;" 
+                           <div class="stack-gap-create" style="text-align:center;">
+                              <button class="btn" name="submit_button" type="submit" value="new" style="padding:12px 22px; font-size:1.15rem; border-radius:8px; background: rgba(212,234,157,1); color: #1a1a1a; border: 1px solid rgba(0,0,0,0.08); cursor:pointer; transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;" 
                                                 onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 18px rgba(0,0,0,0.12)'; this.style.background='rgba(200,224,137,1)';" 
                                                 onmouseout="this.style.transform='none'; this.style.boxShadow='none'; this.style.background='rgba(212,234,157,1)';" 
                                                 onfocus="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 18px rgba(0,0,0,0.12)'; this.style.outline='3px solid rgba(212,234,157,0.25)';" 

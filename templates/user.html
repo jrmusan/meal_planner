@@ -35,13 +35,13 @@
 
                             /* enter arrow button + image */
                             .enter-btn { background: transparent; border: none; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
-                .enter-btn img { width: 56px; height: 56px; object-fit: contain; display: block; transform: translateY(0); }
+                .enter-btn img { width: 72px; height: 72px; object-fit: contain; display: block; transform: translateY(0); }
 
                                         /* OR pill between buttons */
-                                       .action-stack { display:flex; flex-direction:column; align-items:center; gap:6px; }
+                                       .action-stack { display:flex; flex-direction:column; align-items:center; gap:2px; }
                                         .or-pill {
                                            display: inline-block;
-                                           padding: 6px 14px;
+                                           padding: 4px 14px;
                                            border-radius: 999px;
                                            background: rgba(255,255,255,0.95);
                                            color: #444;
@@ -52,32 +52,32 @@
                                            border: 1px solid rgba(0,0,0,0.04);
                                            font-family: 'Dancing Script', cursive;
                                            font-size: 1.05rem;
-                                           transform: translateY(-20px);
+                                           transform: translateY(-8px);
                                         }
 
                                      @media (max-width: 480px) {
                                                     .stack-gap-enter { margin-top: 0; }
                                                     .stack-gap-create { margin-top: 0; }
-                               .enter-btn img { width: 64px; height: 66px; }
-                               .fp-btn { font-size: 1.05rem; padding: 10px 18px; }
-                                     .or-pill { padding: 5px 10px; font-size: 0.95rem; }
-                                                    .action-stack { gap: 4px; }
+                               .enter-btn img { width: 64px; height: 64px; }
+                               .fp-btn { font-size: 1.05rem; padding: 6px 18px; }
+                                     .or-pill { padding: 2px 10px; font-size: 0.95rem; }
+                                                    .action-stack { gap: 0; }
                                                  }
                             @media (min-width: 900px) {
                                                     .stack-gap-enter { margin-top: 0; }
                                                     .stack-gap-create { margin-top: 0; }
-                               .enter-btn img { width: 92px; height: 96px; }
-                                                    .action-stack { gap: 10px; }
+                               .enter-btn img { width: 86px; height: 86px; }
+                                                    .action-stack { gap: 4px; }
                             }
                         </style>
             <div class="text-center">
                <img src="{{ url_for('static', filename='images/inline_logo.png') }}" alt="Logo" style="width: 380px; height: auto;">
             </div>
-                           <div style="display:flex; align-items:center; gap:14px; justify-content:center;">
-                              <input id="user_id" type="text" name="user_id" placeholder="Enter Meal Plan ID" autocomplete="off" style="flex:0 0 68%; max-width:420px; padding:14px 16px; font-size:1.15rem; border-radius:8px; height:42px; box-sizing:border-box;">
+                           <div style="display:flex; align-items:center; gap:14px; justify-content:center; margin-bottom:-8px;">
+                              <input id="user_id" type="text" name="user_id" placeholder="Enter Meal Plan ID" autocomplete="off" style="flex:0 0 68%; max-width:420px; padding:8px 16px; font-size:1.15rem; border-radius:8px; height:38px; box-sizing:border-box;">
                            </div>
                            <div class="action-stack" style="width:100%;">
-                              <div class="stack-gap-enter" style="text-align:center;">
+                              <div class="stack-gap-enter" style="text-align:center; margin-top:0;">
                                  <button type="submit" name="submit_button" value="enter" aria-label="Enter Meal Plan" class="enter-btn">
                                    <img src="{{ url_for('static', filename='images/arrow.png') }}" alt="Enter">
                                  </button>

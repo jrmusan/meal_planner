@@ -8,35 +8,36 @@
   <style>@import url("static/css/style.css");</style>
 </head>
 <body>
-<header class="bg-img">
-</header>
-
-  <main class="container" style="max-width: 800px; margin-top: 2rem;">
-    <div class="text-center">
+  <div class="bg-img">
+    <form class="centered-container" style="max-width: 880px; padding: 22px;">
+      <div class="text-center" style="margin-bottom: 10px;">
         <a href="{{ url_for('user_page') }}">
-            <img src="{{ url_for('static', filename='images/inline_logo.png') }}" alt="Logo" style="width: 300px; height: auto;">
+          <img src="{{ url_for('static', filename='images/inline_logo.png') }}" alt="Logo" style="width: 340px; height: auto;">
         </a>
-    </div>
-    <div class="section" style="background-color: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 2rem;">
-      <h2 style="color: #4CAF50; text-align: center;">What is this website for?</h2>
-      <p><strong>Foodu8</strong> is a simple meal planning tool that helps you stay organized when it’s time to go grocery shopping.</p>
-      <p>Instead of scrambling to remember what you need, just pick the meals you want to make—and we’ll give you one clean, combined grocery list with everything you need. No more back-and-forth between your recipes and shopping cart.</p>
-    </div>
+      </div>
 
-    <div class="section" style="background-color: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 2rem;">
-      <h2 style="color: #4CAF50; text-align: center;">How does it work?</h2>
-      <ul style="list-style-type: decimal; padding-left: 1.5rem;">
-        <li style="margin-bottom: 0.5rem;"><strong>Create an account</strong> — It’s quick. Just pick a 4-digit PIN.</li>
-        <li style="margin-bottom: 0.5rem;"><strong>Add your favorite recipes</strong> — Give each recipe a name and list the ingredients you use.</li>
-        <li style="margin-bottom: 0.5rem;"><strong>Plan your week</strong> — When you're ready to shop, select the meals you want to make.</li>
-        <li style="margin-bottom: 0.5rem;"><strong>Get your grocery list</strong> — We automatically add up the ingredients across all your chosen meals and organize them into a tidy shopping list.</li>
-      </ul>
-    <p style="text-align: center; font-size: 1.2rem; font-weight: bold; color: #4CAF50;">That’s it! Meal planning made easier.</p>
-    </div>
-    <div class="text-center">
-      <a href="{{ url_for('user_page') }}" class="btn btn-primary" style="min-width: 140px; width: auto; padding-left: 24px; padding-right: 24px;">Back to Meal Planner</a>
-    </div>
-  </main>
+      <div style="background-color: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 1.25rem;">
+        <h2 style="color: #4CAF50; text-align: center;">What is this website for?</h2>
+        <p><strong>Foodu8</strong> is a simple meal planning tool that helps you stay organized when it’s time to go grocery shopping.</p>
+        <p>Instead of scrambling to remember what you need, just pick the meals you want to make—and we’ll give you one clean, combined grocery list with everything you need. No more back-and-forth between your recipes and shopping cart.</p>
+      </div>
+
+      <div style="background-color: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 1.25rem;">
+        <h2 style="color: #4CAF50; text-align: center;">How does it work?</h2>
+        <ul style="list-style-type: decimal; padding-left: 1.5rem;">
+          <li style="margin-bottom: 0.5rem;"><strong>Create an account</strong> — It’s quick. Just pick a 4-digit PIN.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Add your favorite recipes</strong> — Give each recipe a name and list the ingredients you use.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Plan your week</strong> — When you're ready to shop, select the meals you want to make.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Get your grocery list</strong> — We automatically add up the ingredients across all your chosen meals and organize them into a tidy shopping list.</li>
+        </ul>
+        <p style="text-align: center; font-size: 1.2rem; font-weight: bold; color: #4CAF50;">That’s it! Meal planning made easier.</p>
+      </div>
+
+      <div class="text-center">
+        <a href="{{ url_for('user_page') }}" class="btn btn-primary" style="min-width: 140px; width: auto; padding-left: 24px; padding-right: 24px;">Back to Meal Planner</a>
+      </div>
+    </form>
+  </div>
 </body>
 </html>
 

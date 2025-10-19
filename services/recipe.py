@@ -10,13 +10,14 @@ class Recipe:
 
 	db_obj = Database()
 	
-	def __init__(self, name, id=0, ingredients=[], notes="", cuisine=""):
+	def __init__(self, name, id=0, ingredients=[], notes="", cuisine="", times_used=0):
 		
 		self.name = name
 		self.ingredients = ingredients
 		self.id = id
 		self.notes = notes
 		self.cuisine = cuisine
+		self.times_used = times_used
 		
 	def __str__(self):
 		return self.name
@@ -144,10 +145,10 @@ class Recipe:
 			ingredients_list.append(ing_obj)
 
 		# Query recipe database to get recipe table from ID
-		recipe_row = Recipe.db_obj.execute(f"SELECT name, notes, cuisine FROM recipes where id = {id}").fetchone()
+		recipe_row = Recipe.db_obj.execute(f"SELECT name, notes, cuisine, times_used FROM recipes where id = {id}").fetchone()
 
 		# Next instantiate the recipe object
-		recipe_obj = Recipe(recipe_row['name'], id, ingredients_list, recipe_row['notes'].split('\n'), recipe_row['cuisine'])
+		recipe_obj = Recipe(recipe_row['name'], id, ingredients_list, recipe_row['notes'].split('\n'), recipe_row['cuisine'], recipe_row['times_used'])
 
 		return recipe_obj
 

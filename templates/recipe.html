@@ -6,7 +6,10 @@
     <div class="card-body">
       <div class="row mb-4">
         <div class="col">
-          <h1 class="card-title mb-3" style="font-size:2.1rem;">{{ recipe.name }}</h1>
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h1 class="card-title mb-0" style="font-size:2.1rem;">{{ recipe.name }}</h1>
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('usage') }}">View usage</a>
+          </div>
           <div class="d-flex align-items-center gap-2 mb-3">
             {% if recipe.cuisine %}
             <span class="badge bg-primary">{{ recipe.cuisine }}</span>

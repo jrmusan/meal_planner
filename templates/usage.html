@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Most frequently eaten recipes</h2>
+    <a class="btn btn-outline-primary" href="{{ url_for('selected_recipes') }}">Back</a>
+  </div>
+
+  <canvas id="usageChart" width="800" height="300"></canvas>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  (function(){
+    const data = JSON.parse('{{ data|tojson|escape }}');
+    const labels = data.map(d => d.name);
+    const values = data.map(d => d.times_used);
+
+    const ctx = document.getElementById('usageChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Times eaten',
+          data: values,
+          backgroundColor: 'rgba(54, 162, 235, 0.85)'
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  })();
+</script>
+
+{% endblock %}

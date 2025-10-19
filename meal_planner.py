@@ -86,6 +86,30 @@ def selected_recipes():
 	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_list, user_id=session['user_id'], users_in_cart_items=users_in_cart_items, ingredient_ids=users_in_cart_items)
 
 
+@app.route('/usage')
+def usage():
+	"""
+	Renders the usage page for the user.
+
+	The usage page displays the top 10 most frequently used recipes for the user.
+
+	Returns:
+		render_template('usage.html', data=data)
+
+	Where data is a list of dictionaries containing the id, name and times_used of the recipes.
+	"""
+
+	if "user_id" not in session:
+		return redirect(url_for('user_page'))
+
+	# Get top used recipes for this user
+	rows = db_obj.execute(f"SELECT id, name, times_used FROM recipes WHERE user_id = {session['user_id']} ORDER BY times_used DESC LIMIT 10").fetchall()
+
+	data = [{ 'id': r['id'], 'name': r['name'], 'times_used': r['times_used'] } for r in rows]
+
+	return render_template('usage.html', data=data)
+
+
 #~~~~~~~~This is our route to see a recipe~~~~~~~~
 @app.route('/<int:recipe_id>', methods=('GET', 'POST'))
 def recipe(recipe_id):

@@ -24,7 +24,8 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 
 
-    <title>{% block title %} {% endblock %}</title>
+  {% block head %}{% endblock %}
+  <title>{% block title %} {% endblock %}</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -48,9 +49,13 @@
             </li>
 
             <li class="nav-item">
+              <a class="nav-link" href="{{url_for('usage')}}">Historical Meals</a>
+            </li>
+
+            <li class="nav-item">
               <a class="nav-link" href="{{url_for('copy_recipes')}}">Copy Recipe</a>
             </li>
-              
+
             </ul>
         </div>
     </nav>

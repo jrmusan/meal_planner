@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS recipes (
     name TEXT NOT NULL,
     notes TEXT,
     cuisine TEXT, 
-    user_id INTEGER, 
+    user_id INTEGER,
+    times_used INTEGER DEFAULT 0,
     FOREIGN KEY(user_id) REFERENCES user_table(id)
 );
 

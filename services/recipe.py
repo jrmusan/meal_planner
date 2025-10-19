@@ -10,13 +10,14 @@ class Recipe:
 
 	db_obj = Database()
 	
-	def __init__(self, name, id=0, ingredients=[], notes="", cuisine=""):
+	def __init__(self, name, id=0, ingredients=[], notes="", cuisine="", times_used=0):
 		
 		self.name = name
 		self.ingredients = ingredients
 		self.id = id
 		self.notes = notes
 		self.cuisine = cuisine
+		self.times_used = times_used
 		
 	def __str__(self):
 		return self.name
@@ -36,6 +37,20 @@ class Recipe:
 		return False
 	
 		
+	@staticmethod
+	def increment_times_used(recipe_id, user_id):
+		"""
+		Increments the times_used counter for a recipe
+		
+		Args:
+			recipe_id (int): ID of the recipe to increment
+			user_id (int): ID of the user who selected the recipe
+		"""
+		Recipe.db_obj.execute(
+			"UPDATE recipes SET times_used = times_used + 1 WHERE id = ? AND user_id = ?",
+			(recipe_id, user_id)
+		)
+
 	@staticmethod
 	def instert_recipe(name, ingredients, user_id, notes="", cuisine="", quantity=1, unit="cup"):
 		"""
@@ -111,6 +126,7 @@ class Recipe:
 		id = Recipe.db_obj.execute(f"SELECT id FROM recipes where name = '{name}' AND user_id = '{user_id}'").fetchone()
 		return id["id"]
 
+	@staticmethod
 	def get_recipe(id):
 		"""
 		This will get the recipe along with its ingredient objects
@@ -129,10 +145,10 @@ class Recipe:
 			ingredients_list.append(ing_obj)
 
 		# Query recipe database to get recipe table from ID
-		recipe_row = Recipe.db_obj.execute(f"SELECT name, notes, cuisine FROM recipes where id = {id}").fetchone()
+		recipe_row = Recipe.db_obj.execute(f"SELECT name, notes, cuisine, times_used FROM recipes where id = {id}").fetchone()
 
 		# Next instantiate the recipe object
-		recipe_obj = Recipe(recipe_row['name'], id, ingredients_list, recipe_row['notes'].split('\n'), recipe_row['cuisine'])
+		recipe_obj = Recipe(recipe_row['name'], id, ingredients_list, recipe_row['notes'].split('\n'), recipe_row['cuisine'], recipe_row['times_used'])
 
 		return recipe_obj
 

@@ -2,7 +2,6 @@
 
 import json
 import os
-from dotenv import load_dotenv
 from flask import Flask, jsonify, render_template, request, url_for, flash, redirect, session, redirect, url_for
 from datetime import timedelta
 from better_profanity import profanity
@@ -16,27 +15,8 @@ from database import Database
 db_obj = Database()
 
 app = Flask(__name__)
-
-# Load local .env for development (no-op if no file). 
-load_dotenv()
-
-# For local/dev, fallback to a .env file next to this script so the key
-secret = os.environ.get('SECRET_KEY')
-if not secret:
-	secret_file = os.path.join(os.path.dirname(__file__), '.env')
-	try:
-		with open(secret_file, 'r') as f:
-			secret = f.read().strip()
-	except FileNotFoundError:
-		print("You need to create a .secret_key file with a random string in it to use this app.")
-
-app.config['SECRET_KEY'] = secret
+app.config['SECRET_KEY'] = os.urandom(12).hex()
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
-
-# Set session cookie attributes (set SESSION_COOKIE_SECURE to true in production when using HTTPS)
-app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['SESSION_COOKIE_SECURE'] = True
 
 
 # This is a basic about me apge
@@ -106,6 +86,30 @@ def selected_recipes():
 	return render_template('selected_recipes.html', recipes=recipes, ingredients=ingredient_list, user_id=session['user_id'], users_in_cart_items=users_in_cart_items, ingredient_ids=users_in_cart_items)
 
 
+@app.route('/usage')
+def usage():
+	"""
+	Renders the usage page for the user.
+
+	The usage page displays the top 10 most frequently used recipes for the user.
+
+	Returns:
+		render_template('usage.html', data=data)
+
+	Where data is a list of dictionaries containing the id, name and times_used of the recipes.
+	"""
+
+	if "user_id" not in session:
+		return redirect(url_for('user_page'))
+
+	# Get top used recipes for this user
+	rows = db_obj.execute(f"SELECT id, name, times_used FROM recipes WHERE user_id = {session['user_id']} ORDER BY times_used DESC LIMIT 10").fetchall()
+
+	data = [{ 'id': r['id'], 'name': r['name'], 'times_used': r['times_used'] } for r in rows]
+
+	return render_template('usage.html', data=data)
+
+
 #~~~~~~~~This is our route to see a recipe~~~~~~~~
 @app.route('/<int:recipe_id>', methods=('GET', 'POST'))
 def recipe(recipe_id):
@@ -147,9 +151,6 @@ def create():
 	if request.method == 'POST':
 		# If so grab the input data from the page submitted
 		post_data = request.get_json(force=True)
-
-		# This is to make mypy happy
-		assert isinstance(post_data, dict), "Expected JSON object"
 
 		name = post_data['name']
 		notes = post_data['notes']
@@ -235,6 +236,8 @@ def plan_meals():
 				# First lets get its id
 				recipe_id = Recipe.get_id_from_name(recipe, session['user_id'])
 				Recipe.add_to_meal_plan(recipe_id, session['user_id'])
+				# Increment the times_used counter for this recipe
+				Recipe.increment_times_used(recipe_id, session['user_id'])
 
 		flash(f"Your Meal Plan has been updated!")
 		return redirect(url_for('selected_recipes'))
@@ -259,9 +262,6 @@ def edit_recipe(recipe_id):
 	if request.method == 'POST':
 
 		post_data = request.get_json(force=True)
-		
-		# This is to make mypy happy
-		assert isinstance(post_data, dict), "Expected JSON object"
 		name = post_data['name']
 		notes = post_data['notes']
 		cuisine = post_data['cuisine']

@@ -37,6 +37,20 @@ class Recipe:
 	
 		
 	@staticmethod
+	def increment_times_used(recipe_id, user_id):
+		"""
+		Increments the times_used counter for a recipe
+		
+		Args:
+			recipe_id (int): ID of the recipe to increment
+			user_id (int): ID of the user who selected the recipe
+		"""
+		Recipe.db_obj.execute(
+			"UPDATE recipes SET times_used = times_used + 1 WHERE id = ? AND user_id = ?",
+			(recipe_id, user_id)
+		)
+
+	@staticmethod
 	def instert_recipe(name, ingredients, user_id, notes="", cuisine="", quantity=1, unit="cup"):
 		"""
 		This will insert an recipe into our database
@@ -111,6 +125,7 @@ class Recipe:
 		id = Recipe.db_obj.execute(f"SELECT id FROM recipes where name = '{name}' AND user_id = '{user_id}'").fetchone()
 		return id["id"]
 
+	@staticmethod
 	def get_recipe(id):
 		"""
 		This will get the recipe along with its ingredient objects

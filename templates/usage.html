@@ -30,11 +30,18 @@
         }]
       },
       options: {
-        responsive: true,
-        scales: {
-          y: { beginAtZero: true }
+          responsive: true,
+          scales: {
+            y: { 
+              beginAtZero: true,
+              ticks: {
+                // force whole numbers (no decimals)
+                stepSize: 1,
+                callback: function(value) { return Number.isInteger(value) ? value : '' }
+              }
+            }
+          }
         }
-      }
     });
   })();
 </script>

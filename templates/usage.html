@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container py-4">
+<div class="container py-4" style="padding-bottom:100px;">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Most frequently eaten recipes</h2>
-    <a class="btn btn-outline-primary" href="{{ url_for('selected_recipes') }}">Back</a>
   </div>
 
   <canvas id="usageChart" width="800" height="300"></canvas>
 
+</div>
+
+<div style="position:fixed; left:0; right:0; bottom:16px; display:flex; justify-content:center; pointer-events:auto;">
+  <a class="btn btn-primary" href="{{ url_for('selected_recipes') }}">Back</a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

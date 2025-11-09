@@ -57,6 +57,17 @@
             </li>
 
             </ul>
+            <ul class="navbar-nav ml-auto">
+              {% if session.get('user_id') %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('login') }}">Login with Google</a>
+                </li>
+              {% endif %}
+            </ul>
         </div>
     </nav>
     <div class="container">

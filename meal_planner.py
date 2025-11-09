@@ -5,6 +5,7 @@ import os
 from flask import Flask, jsonify, render_template, request, url_for, flash, redirect, session, redirect, url_for
 from datetime import timedelta
 from better_profanity import profanity
+import logging
 
 from services.ingredient import Ingredent
 from services.recipe import Recipe
@@ -17,6 +18,29 @@ db_obj = Database()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(12).hex()
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
+
+# configure logging for easier oauth debugging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+if os.environ.get('DEBUG'):
+	logger.setLevel(logging.DEBUG)
+
+# OAuth setup using google-auth-oauthlib (server-side flow)
+from google_auth_oauthlib.flow import Flow
+from google.oauth2 import id_token
+from google.auth.transport import requests as grequests
+from flask import session
+
+# helper to build client config from env vars (works without a client_secrets.json)
+def _build_google_client_config():
+	return {
+		"web": {
+			"client_id": os.environ.get('GOOGLE_CLIENT_ID'),
+			"client_secret": os.environ.get('GOOGLE_CLIENT_SECRET'),
+			"auth_uri": "https://accounts.google.com/o/oauth2/v2/auth",
+			"token_uri": "https://oauth2.googleapis.com/token",
+		}
+	}
 
 
 # This is a basic about me apge
@@ -41,9 +65,7 @@ def user_page():
 			return render_template('user.html')
 
 		# Check if we were given a user ID
-		if request.form['submit_button'] == 'enter':
-			user_id = request.form['user_id']
-
+		if request.form.get('submit_button') == 'enter':
 			# Check if this id exists
 			if User.get_backend_id(user_id):
 				session['user_id'] = user_id
@@ -53,7 +75,7 @@ def user_page():
 				flash(f"Meal Plan ID {user_id} does not exist", "error")
 
 		# Lets user pick a new Meal plan id, writes it to the db
-		elif request.form['submit_button'] == 'new':
+		elif request.form.get('submit_button') == 'new':
 
 			# Check if this user id is already being used
 			if User.get_backend_id(user_id):
@@ -66,6 +88,92 @@ def user_page():
 				return redirect(url_for('selected_recipes'))
 
 	return render_template('user.html')
+
+
+@app.route('/login')
+def login():
+	# Basic sanity check so we don't forward a malformed request to Google
+	client_id = os.environ.get('GOOGLE_CLIENT_ID')
+	if not client_id:
+		flash('Google OAuth is not configured: GOOGLE_CLIENT_ID is missing in the environment.', 'error')
+		return redirect(url_for('user_page'))
+
+	redirect_uri = url_for('authorize', _external=True)
+	logger.info('Starting Google OAuth login. client_id present=%s, redirect_uri=%s', bool(client_id), redirect_uri)
+	try:
+		client_config = _build_google_client_config()
+		if not client_config['web']['client_id']:
+			flash('Google OAuth CLIENT_ID not configured', 'error')
+			return redirect(url_for('user_page'))
+
+		flow = Flow.from_client_config(
+			client_config,
+			scopes=['openid', 'email', 'profile'],
+			redirect_uri=redirect_uri,
+		)
+
+		authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes='true', prompt='consent')
+		session['oauth_state'] = state
+		logger.info('Google authorize URL: %s', authorization_url)
+		return redirect(authorization_url)
+	except Exception as err:
+		logger.exception('Failed to start google oauth flow')
+		flash(f'Failed to start Google OAuth: {str(err)}', 'error')
+		return redirect(url_for('user_page'))
+
+
+@app.route('/authorize')
+def authorize():
+	try:
+		state = session.pop('oauth_state', None)
+		if not state:
+			flash('Missing OAuth state in session; try logging in again.', 'error')
+			return redirect(url_for('user_page'))
+
+		client_config = _build_google_client_config()
+		flow = Flow.from_client_config(
+			client_config,
+			scopes=['openid', 'email', 'profile'],
+			state=state,
+			redirect_uri=url_for('authorize', _external=True),
+		)
+		# exchange the authorization code for credentials
+		flow.fetch_token(authorization_response=request.url)
+		creds = flow.credentials
+
+		# verify the ID token and extract user info
+		idinfo = id_token.verify_oauth2_token(creds.id_token, grequests.Request(), client_config['web']['client_id'])
+		google_sub = idinfo.get('sub')
+		email = idinfo.get('email')
+		name = idinfo.get('name')
+		logger.info('Google userinfo received: sub=%s, email=%s', google_sub, email)
+	except Exception as err:
+		logger.exception('Google authorize callback processing failed')
+		flash(f'Error completing Google sign-in: {str(err)}', 'error')
+		return redirect(url_for('user_page'))
+
+	# Try find a local user by google_sub
+	local_user = User.get_by_google_sub(google_sub)
+	if not local_user:
+		# Try find by email and associate
+		local_user = User.get_by_email(email)
+		if local_user:
+			User.set_google_for_user(local_user, google_sub, email, name)
+		else:
+			# create a new local user and map
+			new_user_id = User.create_with_google(google_sub, email, name)
+			local_user = new_user_id
+
+	# Set our session just like the existing flow
+	session['user_id'] = local_user
+	session.permanent = True
+	return redirect(url_for('selected_recipes'))
+
+
+@app.route('/logout')
+def logout():
+	session.clear()
+	return redirect(url_for('user_page'))
 	
 
 @app.route('/selected_recipes')
@@ -151,11 +259,13 @@ def create():
 	if request.method == 'POST':
 		# If so grab the input data from the page submitted
 		post_data = request.get_json(force=True)
+		if post_data is None:
+			return jsonify({'error': 'invalid json payload'}), 400
 
-		name = post_data['name']
-		notes = post_data['notes']
-		cuisine = post_data['cuisine']
-		selected_ingredients = post_data['selected_ingredients']
+		name = post_data.get('name')
+		notes = post_data.get('notes')
+		cuisine = post_data.get('cuisine')
+		selected_ingredients = post_data.get('selected_ingredients')
 		
 		if not name:
 			return jsonify({'error': 'A name is required'}), 400
@@ -262,10 +372,12 @@ def edit_recipe(recipe_id):
 	if request.method == 'POST':
 
 		post_data = request.get_json(force=True)
-		name = post_data['name']
-		notes = post_data['notes']
-		cuisine = post_data['cuisine']
-		selected_ingredients = post_data['selected_ingredients']
+		if post_data is None:
+			return jsonify({'error': 'invalid json payload'}), 400
+		name = post_data.get('name')
+		notes = post_data.get('notes')
+		cuisine = post_data.get('cuisine')
+		selected_ingredients = post_data.get('selected_ingredients')
 		
 		recipe_obj.update_recipe(selected_ingredients, name, notes, cuisine)
 
@@ -293,10 +405,9 @@ def copy_recipe(recipe_id):
 	ingredient_list = Ingredent.ingredient_combiner([recipe_obj])
 
 	if request.method == 'POST':
-		if request.form['submit_button'] == 'copy':
+		if request.form.get('submit_button') == 'copy':
 			Recipe.copy_recipe(recipe_obj, session['user_id'])
 			flash(f"Copied {recipe_obj.name}, YUM!!!")
-
 	return render_template('recipe_no_edit.html', recipe=recipe_obj, ingredients=ingredient_list)
 
 @app.route('/update-ingredient/<int:ingredient_id>', methods=['POST'])

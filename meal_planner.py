@@ -10,6 +10,7 @@ import logging
 from services.ingredient import Ingredent
 from services.recipe import Recipe
 from services.user import User
+from dotenv import load_dotenv
 
 from database import Database
 
@@ -18,6 +19,9 @@ db_obj = Database()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(12).hex()
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
+
+# Load environment variables from .env file
+load_dotenv()
 
 # configure logging for easier oauth debugging
 logging.basicConfig(level=logging.INFO)
@@ -35,8 +39,8 @@ from flask import session
 def _build_google_client_config():
 	return {
 		"web": {
-			"client_id": os.environ.get('GOOGLE_CLIENT_ID'),
-			"client_secret": os.environ.get('GOOGLE_CLIENT_SECRET'),
+			"client_id": os.getenv('GOOGLE_CLIENT_ID'),
+			"client_secret": os.getenv('GOOGLE_CLIENT_SECRET'),
 			"auth_uri": "https://accounts.google.com/o/oauth2/v2/auth",
 			"token_uri": "https://oauth2.googleapis.com/token",
 		}

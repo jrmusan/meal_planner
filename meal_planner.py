@@ -97,7 +97,7 @@ def user_page():
 @app.route('/login')
 def login():
 	# Basic sanity check so we don't forward a malformed request to Google
-	client_id = os.environ.get('GOOGLE_CLIENT_ID')
+	client_id = os.getenv('GOOGLE_CLIENT_ID')
 	if not client_id:
 		flash('Google OAuth is not configured: GOOGLE_CLIENT_ID is missing in the environment.', 'error')
 		return redirect(url_for('user_page'))

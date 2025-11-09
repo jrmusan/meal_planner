@@ -74,7 +74,10 @@
                <img src="{{ url_for('static', filename='images/inline_logo.png') }}" alt="Logo" style="width: 380px; height: auto;">
             </div>
                            <div style="display:flex; align-items:center; gap:14px; justify-content:center; margin-bottom:-8px;">
-                              <input id="user_id" type="text" name="user_id" placeholder="Enter Meal Plan ID" autocomplete="off" style="flex:0 0 68%; max-width:420px; padding:8px 16px; font-size:1.15rem; border-radius:8px; height:38px; box-sizing:border-box;">
+                                             <input id="user_id" type="text" name="user_id" placeholder="Enter numeric Meal Plan ID" autocomplete="off" inputmode="numeric" pattern="\d*" aria-label="Meal Plan ID" 
+                                                oninput="this.value = this.value.replace(/\D/g,'')" 
+                                                onpaste="(function(e){e.preventDefault(); var txt=(e.clipboardData||window.clipboardData).getData('text'); this.value=txt.replace(/\D/g,'') }).call(this,event)"
+                                                style="flex:0 0 68%; max-width:420px; padding:8px 16px; font-size:1.15rem; border-radius:8px; height:38px; box-sizing:border-box;">
                            </div>
                            <div class="action-stack" style="width:100%;">
                               <div class="stack-gap-enter" style="text-align:center; margin-top:0;">

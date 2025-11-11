@@ -46,6 +46,13 @@ def _build_google_client_config():
 		}
 	}
 
+# Use the full OAuth scope URLs — google will expand short names like 'email' to these
+SCOPES = [
+	'openid',
+	'https://www.googleapis.com/auth/userinfo.email',
+	'https://www.googleapis.com/auth/userinfo.profile',
+]
+
 
 # This is a basic about me apge
 @app.route('/about')
@@ -112,7 +119,7 @@ def login():
 
 		flow = Flow.from_client_config(
 			client_config,
-			scopes=['openid', 'email', 'profile'],
+			scopes=SCOPES,
 			redirect_uri=redirect_uri,
 		)
 
@@ -137,7 +144,7 @@ def authorize():
 		client_config = _build_google_client_config()
 		flow = Flow.from_client_config(
 			client_config,
-			scopes=['openid', 'email', 'profile'],
+			scopes=SCOPES,
 			state=state,
 			redirect_uri=url_for('authorize', _external=True),
 		)

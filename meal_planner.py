@@ -153,7 +153,11 @@ def authorize():
 		creds = flow.credentials
 
 		# verify the ID token and extract user info
-		idinfo = id_token.verify_oauth2_token(creds.id_token, grequests.Request(), client_config['web']['client_id'])
+		id_token_str = getattr(creds, 'id_token', None)
+		if not id_token_str:
+			flash('ID token not found in credentials. Cannot complete sign-in.', 'error')
+			return redirect(url_for('user_page'))
+		idinfo = id_token.verify_oauth2_token(id_token_str, grequests.Request(), client_config['web']['client_id'])
 		google_sub = idinfo.get('sub')
 		email = idinfo.get('email')
 		name = idinfo.get('name')

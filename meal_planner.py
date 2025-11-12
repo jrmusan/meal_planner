@@ -157,8 +157,6 @@ def authorize():
 		flow.fetch_token(authorization_response=request.url)
 		creds = flow.credentials
 
-		logger.info('Google credentials obtained: token=%s, id_token=%s', bool(creds.token), bool(creds.id_token))
-
 		# verify the ID token and extract user info
 		idinfo = id_token.verify_oauth2_token(creds.id_token, grequests.Request(), client_config['web']['client_id'])
 		google_sub = idinfo.get('sub')

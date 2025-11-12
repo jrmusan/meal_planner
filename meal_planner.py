@@ -12,6 +12,12 @@ from services.recipe import Recipe
 from services.user import User
 from dotenv import load_dotenv
 
+# OAuth setup using google-auth-oauthlib (server-side flow)
+from google_auth_oauthlib.flow import Flow
+from google.oauth2 import id_token
+from google.auth.transport import requests as grequests
+from flask import session
+
 from database import Database
 
 db_obj = Database()
@@ -29,11 +35,7 @@ logger = logging.getLogger(__name__)
 if os.environ.get('DEBUG'):
 	logger.setLevel(logging.DEBUG)
 
-# OAuth setup using google-auth-oauthlib (server-side flow)
-from google_auth_oauthlib.flow import Flow
-from google.oauth2 import id_token
-from google.auth.transport import requests as grequests
-from flask import session
+
 
 # helper to build client config from env vars (works without a client_secrets.json)
 def _build_google_client_config():
@@ -136,6 +138,9 @@ def login():
 @app.route('/authorize')
 def authorize():
 	try:
+
+		logger.info('Google authorize callback received')
+
 		state = session.pop('oauth_state', None)
 		if not state:
 			flash('Missing OAuth state in session; try logging in again.', 'error')
@@ -151,6 +156,8 @@ def authorize():
 		# exchange the authorization code for credentials
 		flow.fetch_token(authorization_response=request.url)
 		creds = flow.credentials
+
+		logger.info('Google credentials obtained: token=%s, id_token=%s', bool(creds.token), bool(creds.id_token))
 
 		# verify the ID token and extract user info
 		idinfo = id_token.verify_oauth2_token(creds.id_token, grequests.Request(), client_config['web']['client_id'])

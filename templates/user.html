@@ -33,6 +33,45 @@
                             .fp-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); background: rgba(200,224,137,1); }
                             .fp-btn:focus { outline: 3px solid rgba(212,234,157,0.25); transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); outline-offset: 2px; }
 
+                            /* Google Sign-in Button */
+                            .google-btn {
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                background-color: #fff;
+                                color: #757575;
+                                border: 1px solid #dadce0;
+                                border-radius: 4px;
+                                font-family: 'Roboto', sans-serif;
+                                font-size: 14px;
+                                font-weight: 500;
+                                padding: 0 12px;
+                                height: 40px;
+                                text-decoration: none;
+                                transition: background-color .3s, box-shadow .3s;
+                                box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+                            }
+                            .google-btn:hover {
+                                box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+                                background-color: #f8f9fa;
+                                border-color: #c6c9ce;
+                                color: #202124;
+                            }
+                            .google-btn:focus {
+                                outline: none;
+                                box-shadow: 0 0 0 3px rgba(66,133,244,0.4);
+                            }
+                            .google-btn .google-icon-wrapper {
+                                margin-right: 12px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            }
+                            .google-btn .google-icon {
+                                width: 18px;
+                                height: 18px;
+                            }
+
                             /* enter arrow button + image */
                             .enter-btn { background: transparent; border: none; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
                 .enter-btn img { width: 72px; height: 72px; object-fit: contain; display: block; transform: translateY(0); }
@@ -88,11 +127,13 @@
                               <div style="text-align:center;">
                                  <span class="or-pill" aria-hidden="true">OR</span>
                               </div>
-                              <div class="stack-gap-create" style="text-align:center;">
-                                 <button class="fp-btn" name="submit_button" type="submit" value="new">Create new Meal Plan ID</button>
-                              </div>
                               <div style="text-align:center; margin-top:8px;">
-                                 <a class="fp-btn" href="{{ url_for('login') }}" role="button" aria-label="Sign in with Google">Sign in with Google</a>
+                                 <a href="{{ url_for('login') }}" class="google-btn" role="button" aria-label="Sign in with Google">
+                                     <div class="google-icon-wrapper">
+                                         <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px"><path fill="#4285F4" d="M24 9.5c3.9 0 6.9 1.6 9.1 3.7l6.9-6.9C35.4 2.1 30.1 0 24 0 14.9 0 7.3 5.5 4.1 13.3l7.4 5.8C13.4 13.3 18.2 9.5 24 9.5z"/><path fill="#34A853" d="M46.2 25.1c0-1.6-.1-3.2-.4-4.7H24v9h12.5c-.6 3-2.2 5.6-4.8 7.3l7.3 5.7c4.3-4 6.9-9.8 6.9-16.8.1-.1 0-.2 0-.5z"/><path fill="#FBBC05" d="M11.5 28.6c-.4-1.2-.7-2.5-.7-3.9s.3-2.7.7-3.9l-7.4-5.8C1.4 18.8 0 22.3 0 26.3s1.4 7.5 3.9 10.5l7.6-5.7z"/><path fill="#EA4335" d="M24 48c6.5 0 11.9-2.1 15.9-5.7l-7.3-5.7c-2.1 1.4-4.8 2.3-7.9 2.3-5.8 0-10.7-3.8-12.5-9l-7.4 5.8C7.3 42.5 14.9 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+                                     </div>
+                                     <span>Sign in with Google</span>
+                                 </a>
                               </div>
                            </div>
          </form>

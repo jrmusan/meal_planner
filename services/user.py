@@ -9,16 +9,6 @@ class User:
         self.user_id = user_id
 
     @staticmethod
-    def insert_user(user_id):
-        """
-        Inserts a user into the user_id database
-
-        Args:
-			user_id (int): Id of the user to add into database
-        """
-        User.db_obj.execute("INSERT INTO user_table(user_id) VALUES (?)", (user_id,))
-
-    @staticmethod
     def get_backend_id(user_id):
         """
         Gets the backend id of a user from the database

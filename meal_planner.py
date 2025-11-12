@@ -48,6 +48,24 @@ def _build_google_client_config():
 		}
 	}
 
+
+# Helper to build a Flow instance (centralizes redirect_uri and state handling)
+def _build_flow(state=None, redirect_endpoint='authorize'):
+	"""Return a configured google_auth_oauthlib.flow.Flow.
+
+	Args:
+		state: Optional OAuth state string (used on the callback).
+		redirect_endpoint: Flask endpoint name for the OAuth redirect URI.
+	"""
+	client_config = _build_google_client_config()
+	redirect_uri = url_for(redirect_endpoint, _external=True)
+	# pass state through when provided (used by the callback)
+	kwargs = { 'scopes': SCOPES, 'redirect_uri': redirect_uri }
+	if state is not None:
+		kwargs['state'] = state
+
+	return Flow.from_client_config(client_config, **kwargs)
+
 # Use the full OAuth scope URLs — google will expand short names like 'email' to these
 SCOPES = [
 	'openid',
@@ -87,19 +105,6 @@ def user_page():
 			else:
 				flash(f"Meal Plan ID {user_id} does not exist", "error")
 
-		# Lets user pick a new Meal plan id, writes it to the db
-		elif request.form.get('submit_button') == 'new':
-
-			# Check if this user id is already being used
-			if User.get_backend_id(user_id):
-				flash(f"Meal Plan ID {user_id} already exists. Be more creative", "error")
-			else:
-				flash(f"Your Meal Plan Id is {user_id} please save this somewhere")
-				User.insert_user(user_id)
-				session['user_id'] = user_id
-				session.permanent = True
-				return redirect(url_for('selected_recipes'))
-
 	return render_template('user.html')
 
 
@@ -112,22 +117,17 @@ def login():
 		return redirect(url_for('user_page'))
 
 	redirect_uri = url_for('authorize', _external=True)
-	logger.info('Starting Google OAuth login. client_id present=%s, redirect_uri=%s', bool(client_id), redirect_uri)
 	try:
 		client_config = _build_google_client_config()
 		if not client_config['web']['client_id']:
 			flash('Google OAuth CLIENT_ID not configured', 'error')
 			return redirect(url_for('user_page'))
 
-		flow = Flow.from_client_config(
-			client_config,
-			scopes=SCOPES,
-			redirect_uri=redirect_uri,
-		)
+		# Build the Flow using the centralized helper
+		flow = _build_flow()
 
 		authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes='true', prompt='consent')
 		session['oauth_state'] = state
-		logger.info('Google authorize URL: %s', authorization_url)
 		return redirect(authorization_url)
 	except Exception as err:
 		logger.exception('Failed to start google oauth flow')
@@ -139,20 +139,15 @@ def login():
 def authorize():
 	try:
 
-		logger.info('Google authorize callback received')
-
 		state = session.pop('oauth_state', None)
 		if not state:
 			flash('Missing OAuth state in session; try logging in again.', 'error')
 			return redirect(url_for('user_page'))
 
 		client_config = _build_google_client_config()
-		flow = Flow.from_client_config(
-			client_config,
-			scopes=SCOPES,
-			state=state,
-			redirect_uri=url_for('authorize', _external=True),
-		)
+		# Build the Flow using the centralized helper (ensures consistent redirect_uri/state)
+		flow = _build_flow(state)
+
 		# exchange the authorization code for credentials
 		flow.fetch_token(authorization_response=request.url)
 		creds = flow.credentials
@@ -162,13 +157,13 @@ def authorize():
 		google_sub = idinfo.get('sub')
 		email = idinfo.get('email')
 		name = idinfo.get('name')
-		logger.info('Google userinfo received: sub=%s, email=%s', google_sub, email)
 	except Exception as err:
 		logger.exception('Google authorize callback processing failed')
 		flash(f'Error completing Google sign-in: {str(err)}', 'error')
 		return redirect(url_for('user_page'))
 
 	# Try find a local user by google_sub
+	# This is the safe approach since its an immutable identifier
 	local_user = User.get_by_google_sub(google_sub)
 	if not local_user:
 		# Try find by email and associate

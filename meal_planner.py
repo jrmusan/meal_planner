@@ -116,13 +116,7 @@ def login():
 		flash('Google OAuth is not configured: GOOGLE_CLIENT_ID is missing in the environment.', 'error')
 		return redirect(url_for('user_page'))
 
-	redirect_uri = url_for('authorize', _external=True)
 	try:
-		client_config = _build_google_client_config()
-		if not client_config['web']['client_id']:
-			flash('Google OAuth CLIENT_ID not configured', 'error')
-			return redirect(url_for('user_page'))
-
 		# Build the Flow using the centralized helper
 		flow = _build_flow()
 

@@ -12,16 +12,18 @@
 
     console.log('~~~~~~~EDIT_RECIPE~~~~~~')
 
+    window.createPage = {
+        all_ingredients: []
+    };
+
     // This loop makes us a list of ingredient dicts
     let ing_json = {};
-    let all_ingredients = [];
     {% for ingredient in ingredients %}
-        //console.log({{ ingredient.json | tojson | safe  }})
         ing_json = {{ ingredient.json | tojson | safe  }}
-        all_ingredients.push(ing_json)
+        window.createPage.all_ingredients.push(ing_json)
     {% endfor %}
 
-    console.log(all_ingredients)
+    console.log(window.createPage.all_ingredients)
 
     // This will gather the ingredient unit/quantities and post them
     // NEED TO FIND A WAY TO PUT THIS BACK IN UNIT_SCIRPTS.JS

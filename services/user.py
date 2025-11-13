@@ -1,4 +1,5 @@
 from database import Database
+from services.recipe import Recipe
 
 class User:
 
@@ -86,4 +87,10 @@ class User:
             maxid = 1000
         new_user_id = maxid + 1
         User.db_obj.execute("INSERT INTO user_table(user_id, google_sub, email, name) VALUES (?, ?, ?, ?)", (new_user_id, google_sub, email, name))
+        
+        # Add default recipes for the new user
+        default_recipe_ids = [3, 93, 86]
+        for recipe_id in default_recipe_ids:
+            Recipe.copy_recipe_for_user(recipe_id, new_user_id)
+            
         return new_user_id

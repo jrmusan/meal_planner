@@ -243,6 +243,28 @@ class Recipe:
 		Recipe.db_obj.execute(f"DELETE FROM recipes where id = {self.id}")
 
 	@staticmethod
+	def copy_recipe_for_user(recipe_id, new_user_id):
+		"""
+		Copies a recipe and its ingredients for a new user.
+
+		Args:
+			recipe_id (int): The ID of the recipe to copy.
+			new_user_id (int): The ID of the user to copy the recipe to.
+		"""
+		# Get the template recipe object
+		template_recipe = Recipe.get_recipe(recipe_id)
+
+		# Create a new recipe for the new user using the template recipe's data
+		new_recipe_id = Recipe.instert_recipe(
+			name=template_recipe.name,
+			ingredients=template_recipe.ingredients,
+			user_id=new_user_id,
+			notes="\\n".join(template_recipe.notes),
+			cuisine=template_recipe.cuisine
+		)
+		return new_recipe_id
+
+	@staticmethod
 	def list_all_recipes(user_id):
 		"""
 		This will list all recipes in the databse reguardless of the user id

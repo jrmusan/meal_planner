@@ -9,16 +9,6 @@ class User:
         self.user_id = user_id
 
     @staticmethod
-    def insert_user(user_id):
-        """
-        Inserts a user into the user_id database
-
-        Args:
-			user_id (int): Id of the user to add into database
-        """
-        User.db_obj.execute("INSERT INTO user_table(user_id) VALUES (?)", (user_id,))
-
-    @staticmethod
     def get_backend_id(user_id):
         """
         Gets the backend id of a user from the database
@@ -65,3 +55,35 @@ class User:
         """
         
         User.db_obj.execute(f"DELETE FROM selected_meals where user_id = {user_id}")
+
+    @staticmethod
+    def get_by_google_sub(google_sub):
+        """Return the user_id for a given google_sub, or None"""
+        row = User.db_obj.execute("SELECT user_id FROM user_table WHERE google_sub = ?", (google_sub,)).fetchone()
+        return row['user_id'] if row else None
+
+    @staticmethod
+    def get_by_email(email):
+        row = User.db_obj.execute("SELECT user_id FROM user_table WHERE email = ?", (email,)).fetchone()
+        return row['user_id'] if row else None
+
+    @staticmethod
+    def set_google_for_user(user_id, google_sub, email=None, name=None):
+        """Associate an existing local user_id with a Google account"""
+        User.db_obj.execute("UPDATE user_table SET google_sub = ?, email = ?, name = ? WHERE user_id = ?", (google_sub, email, name, user_id))
+
+    @staticmethod
+    def create_with_google(google_sub, email=None, name=None):
+        """Create a new local user and associate Google info. Generates a new numeric user_id.
+
+        Returns the new user_id.
+        """
+        # generate a new numeric user_id: max(user_id)+1 or 1000
+        row = User.db_obj.execute("SELECT MAX(user_id) as maxid FROM user_table").fetchone()
+        try:
+            maxid = int(row['maxid']) if row and row['maxid'] is not None else 1000
+        except Exception:
+            maxid = 1000
+        new_user_id = maxid + 1
+        User.db_obj.execute("INSERT INTO user_table(user_id, google_sub, email, name) VALUES (?, ?, ?, ?)", (new_user_id, google_sub, email, name))
+        return new_user_id

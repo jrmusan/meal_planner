@@ -87,7 +87,7 @@
 
 
     <!--This is for the dynamic boxes-->
-    <select name='ingredients' id='ingredients' class="selectpicker" multiple data-live-search="true">
+    <select name='ingredients' id='ingredients' class="form-control" multiple="multiple">
         {% for ingredient in ingredients %}
 
             {% if ingredient in recipe.ingredients %}
@@ -127,5 +127,14 @@
     </div>
 
 </form>
+
+<script>
+    $(document).ready(function() {
+        $('#ingredients').select2({
+            placeholder: "Select ingredients",
+            allowClear: true
+        });
+    });
+</script>
 
 {% endblock %}

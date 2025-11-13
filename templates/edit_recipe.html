@@ -48,6 +48,12 @@
             post_data[pair.name] = pair.value
         })
 
+        // Handle cuisine - if "other" is selected, use the custom input value
+        if (post_data["cuisine"] === "other") {
+            post_data["cuisine"] = post_data["cuisine-other"] || "";
+        }
+        delete post_data["cuisine-other"];
+
         // Add ingredients in to the post_data
         post_data["selected_ingredients"] = ing_qt_dict_list
         // Remove un-nedded key/val
@@ -77,8 +83,19 @@
     
     <div class="form-group">
         <label for="content">Cuisine</label>
-        <textarea name="cuisine" placeholder="Cuisine type"
-            class="form-control">{{ recipe.cuisine }}</textarea>
+        <select name="cuisine" id="cuisine-select" class="form-control">
+            <option value="">Select a cuisine...</option>
+            <option value="American" {% if recipe.cuisine == 'American' %}selected{% endif %}>American</option>
+            <option value="Asian" {% if recipe.cuisine == 'Asian' %}selected{% endif %}>Asian</option>
+            <option value="Chinese" {% if recipe.cuisine == 'Chinese' %}selected{% endif %}>Chinese</option>
+            <option value="Indian" {% if recipe.cuisine == 'Indian' %}selected{% endif %}>Indian</option>
+            <option value="Italian" {% if recipe.cuisine == 'Italian' %}selected{% endif %}>Italian</option>
+            <option value="Mexican" {% if recipe.cuisine == 'Mexican' %}selected{% endif %}>Mexican</option>
+            <option value="other" {% if recipe.cuisine and recipe.cuisine not in ['American', 'Asian', 'Chinese', 'Indian', 'Italian', 'Mexican'] %}selected{% endif %}>Other (type your own)</option>
+        </select>
+        <input type="text" id="cuisine-other" name="cuisine-other" class="form-control mt-2" placeholder="Enter custom cuisine" 
+               value="{% if recipe.cuisine and recipe.cuisine not in ['American', 'Asian', 'Chinese', 'Indian', 'Italian', 'Mexican'] %}{{ recipe.cuisine }}{% endif %}"
+               style="{% if recipe.cuisine and recipe.cuisine not in ['American', 'Asian', 'Chinese', 'Indian', 'Italian', 'Mexican'] %}display: block;{% else %}display: none;{% endif %}">
     </div>
 
     <!-- The fancy stuff with the |join is used to combine the notes list so it can be on new lines! -->
@@ -135,6 +152,15 @@
         $('#ingredients').select2({
             placeholder: "Select ingredients",
             allowClear: true
+        });
+
+        // Handle cuisine dropdown "Other" option
+        $('#cuisine-select').on('change', function() {
+            if ($(this).val() === 'other') {
+                $('#cuisine-other').show().focus();
+            } else {
+                $('#cuisine-other').hide().val('');
+            }
         });
     });
 </script>

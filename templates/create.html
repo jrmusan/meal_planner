@@ -34,7 +34,17 @@
 
             <div class="form-group col-12 col-md-6">
               <label for="cuisine">Cuisine</label>
-              <textarea name="cuisine" placeholder="Cuisine type" class="form-control">{{ request.form['cuisine'] }}</textarea>
+              <select name="cuisine" id="cuisine-select" class="form-control">
+                <option value="">Select a cuisine...</option>
+                <option value="American">American</option>
+                <option value="Asian">Asian</option>
+                <option value="Chinese">Chinese</option>
+                <option value="Indian">Indian</option>
+                <option value="Italian">Italian</option>
+                <option value="Mexican">Mexican</option>
+                <option value="other">Other (type your own)</option>
+              </select>
+              <input type="text" id="cuisine-other" name="cuisine-other" class="form-control mt-2" placeholder="Enter custom cuisine" style="display: none;">
             </div>
           </div>
 
@@ -91,6 +101,15 @@
         $('#ingredients').select2({
             placeholder: "Select ingredients",
             allowClear: true
+        });
+
+        // Handle cuisine dropdown "Other" option
+        $('#cuisine-select').on('change', function() {
+            if ($(this).val() === 'other') {
+                $('#cuisine-other').show().focus();
+            } else {
+                $('#cuisine-other').hide().val('');
+            }
         });
     });
 </script>

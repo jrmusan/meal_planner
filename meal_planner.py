@@ -29,6 +29,10 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 # Load environment variables from .env file
 load_dotenv()
 
+# Lets get some env vars
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+
 # configure logging for easier oauth debugging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -36,13 +40,12 @@ if os.environ.get('DEBUG'):
 	logger.setLevel(logging.DEBUG)
 
 
-
 # helper to build client config from env vars (works without a client_secrets.json)
 def _build_google_client_config():
 	return {
 		"web": {
-			"client_id": os.getenv('GOOGLE_CLIENT_ID'),
-			"client_secret": os.getenv('GOOGLE_CLIENT_SECRET'),
+			"client_id": GOOGLE_CLIENT_ID,
+			"client_secret": GOOGLE_CLIENT_SECRET,
 			"auth_uri": "https://accounts.google.com/o/oauth2/v2/auth",
 			"token_uri": "https://oauth2.googleapis.com/token",
 		}
@@ -111,8 +114,7 @@ def user_page():
 @app.route('/login')
 def login():
 	# Basic sanity check so we don't forward a malformed request to Google
-	client_id = os.getenv('GOOGLE_CLIENT_ID')
-	if not client_id:
+	if not GOOGLE_CLIENT_ID:
 		flash('Google OAuth is not configured: GOOGLE_CLIENT_ID is missing in the environment.', 'error')
 		return redirect(url_for('user_page'))
 
@@ -138,7 +140,6 @@ def authorize():
 			flash('Missing OAuth state in session; try logging in again.', 'error')
 			return redirect(url_for('user_page'))
 
-		client_config = _build_google_client_config()
 		# Build the Flow using the centralized helper (ensures consistent redirect_uri/state)
 		flow = _build_flow(state)
 
@@ -151,7 +152,7 @@ def authorize():
 		if not id_token_str:
 			flash('ID token not found in credentials. Cannot complete sign-in.', 'error')
 			return redirect(url_for('user_page'))
-		idinfo = id_token.verify_oauth2_token(id_token_str, grequests.Request(), client_config['web']['client_id'])
+		idinfo = id_token.verify_oauth2_token(id_token_str, grequests.Request(), GOOGLE_CLIENT_ID)
 		google_sub = idinfo.get('sub')
 		email = idinfo.get('email')
 		name = idinfo.get('name')

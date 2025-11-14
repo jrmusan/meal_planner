@@ -88,9 +88,11 @@ class User:
         new_user_id = maxid + 1
         User.db_obj.execute("INSERT INTO user_table(user_id, google_sub, email, name) VALUES (?, ?, ?, ?)", (new_user_id, google_sub, email, name))
         
-        # Add default recipes for the new user
+        # Add default recipes for the new user and add them to their meal plan
         default_recipe_ids = [3, 93, 86]
         for recipe_id in default_recipe_ids:
-            Recipe.copy_recipe_for_user(recipe_id, new_user_id)
+            new_recipe_id = Recipe.copy_recipe_for_user(recipe_id, new_user_id)
+            # Also add the copied recipe to their meal plan
+            Recipe.add_to_meal_plan(new_recipe_id, new_user_id)
             
         return new_user_id

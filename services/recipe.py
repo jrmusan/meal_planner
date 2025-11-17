@@ -52,7 +52,7 @@ class Recipe:
 		)
 
 	@staticmethod
-	def instert_recipe(name, ingredients, user_id, notes="", cuisine="", quantity=1, unit="cup"):
+	def insert_recipe(name, ingredients, user_id, notes="", cuisine="", quantity=1, unit="cup"):
 		"""
 		This will insert an recipe into our database
 
@@ -255,7 +255,7 @@ class Recipe:
 		template_recipe = Recipe.get_recipe(recipe_id)
 
 		# Create a new recipe for the new user using the template recipe's data
-		new_recipe_id = Recipe.instert_recipe(
+		new_recipe_id = Recipe.insert_recipe(
 			name=template_recipe.name,
 			ingredients=template_recipe.ingredients,
 			user_id=new_user_id,
@@ -300,4 +300,5 @@ class Recipe:
 		"""
 
 		# To make this simple lets just call insert recipe with the current users id
-		new_id = Recipe.instert_recipe(recipe_obj.name, recipe_obj.ingredients, user_id, '\n'.join(recipe_obj.notes), recipe_obj.cuisine)
+		new_id = Recipe.insert_recipe(recipe_obj.name, recipe_obj.ingredients, user_id, '\n'.join(recipe_obj.notes), recipe_obj.cuisine)
+		return new_id

@@ -42,11 +42,11 @@ class TestRecipe:
     def test_insert_recipe(self, db_with_data):
         """Test inserting a new recipe."""
         ingredients = [
-            {"id": 1, "quantity": 1, "unit": "pound"},
-            {"id": 2, "quantity": 2, "unit": "cup"}
+            {"id": 1, "qt": 1, "unit": "pound"},
+            {"id": 2, "qt": 2, "unit": "cup"}
         ]
         
-        recipe_id = Recipe.instert_recipe(
+        recipe_id = Recipe.insert_recipe(
             name="Test Recipe",
             ingredients=ingredients,
             user_id=1000,

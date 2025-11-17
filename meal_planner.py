@@ -282,7 +282,7 @@ def create():
 		elif profanity.contains_profanity(name):
 			return jsonify({'error': 'Profanity is not allowed...'}), 400
 		else:
-			recipe_id = Recipe.instert_recipe(name.strip(), selected_ingredients, session['user_id'], notes, cuisine)
+			recipe_id = Recipe.insert_recipe(name.strip(), selected_ingredients, session['user_id'], notes, cuisine)
 			redirect_url = url_for('recipe', recipe_id=recipe_id)
 
 			# This will return data back to the jquery method, which will then redirect. 

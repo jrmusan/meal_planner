@@ -11,12 +11,12 @@
                 <form method="post">
                     <div class="form-group">
                         <label for="recipes-select" class="sr-only">Recipes</label>
-                        <select id="recipes-select" name="recipes" class="selectpicker form-control" multiple data-live-search="true" data-width="100%">
+                        <select id="recipes-select" name="recipes" class="form-control" multiple>
                             {% for recipe in recipes %}
                                 {% if recipe.selected %}
-                                    <option selected>{{ recipe.name }}</option>
+                                    <option value="{{ recipe.name }}" selected>{{ recipe.name }}</option>
                                 {% else %}
-                                    <option>{{ recipe.name }}</option>
+                                    <option value="{{ recipe.name }}">{{ recipe.name }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>
@@ -32,5 +32,14 @@
         </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#recipes-select').select2({
+        placeholder: "Search and select recipes",
+        allowClear: true
+    });
+});
+</script>
     
 {% endblock %}

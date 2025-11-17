@@ -1,14 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Below is all the user recipes which you don't have {% endblock %}</h1>
-    
-<!--Using a jinja for loop, this will loop over each item returned from app.py-->
+
+<div class="text-center" style="font-family: 'Comic Sans MS', cursive; margin-bottom: 2rem;">
+  <h3><b>Available Recipes to Copy</b></h3>
+</div>
+
+<div class="container mb-4">
+  <div class="row justify-content-center">
     {% for recipe in recipes %}
-        <a href="{{ url_for('copy_recipe', recipe_id=recipe.id) }}">
-            <h2>{{ recipe.name }}</h2>
-        </a>
-        <span class="badge badge-primary">{{ recipe.cuisine }}</span>
-        <hr>
+      <div class="col-12 col-md-6 col-lg-4 mb-3">
+        <div class="card h-100 shadow-sm" style="border-radius: 12px; border: 1px solid rgba(0,0,0,0.08);">
+          <div class="card-body text-center">
+            <a href="{{ url_for('copy_recipe', recipe_id=recipe.id) }}" style="text-decoration: none; color: inherit;">
+              <h4 class="card-title mb-2" style="color: #2c3e50; font-weight: 600;">{{ recipe.name }}</h4>
+              <span class="badge" style="background-color: #3498db; color: white; font-size: 0.85rem; padding: 5px 10px; border-radius: 20px;">{{ recipe.cuisine }}</span>
+            </a>
+          </div>
+        </div>
+      </div>
     {% endfor %}
+  </div>
+</div>
+
 {% endblock %}

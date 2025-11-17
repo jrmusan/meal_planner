@@ -1,16 +1,56 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  /* Responsive adjustments for the recipe page */
+  .recipe-card-title {
+    font-size: 1.9rem; /* Slightly smaller base size */
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .ingredients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .ingredient-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+  }
+
+  .ingredient-name {
+    font-weight: 500;
+  }
+
+  .ingredient-quantity {
+    color: #6c757d;
+  }
+
+  @media (min-width: 768px) {
+    .recipe-card-title {
+      font-size: 2.5rem; /* Larger size for desktop */
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container py-4">
   <div class="card shadow-sm">
     <div class="card-body">
-      <div class="row mb-4">
+      <div class="row mb-3">
         <div class="col">
-          <div class="d-flex justify-content-between align-items-start mb-2">
-            <h1 class="card-title mb-0" style="font-size:2.1rem;">{{ recipe.name }}</h1>
-            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('usage') }}">View usage</a>
-          </div>
-          <div class="d-flex align-items-center gap-2 mb-3">
+          <h1 class="card-title mb-3 recipe-card-title">{{ recipe.name }}</h1>
+          <div class="d-flex justify-content-center align-items-center flex-wrap gap-2 mb-3">
             {% if recipe.cuisine %}
             <span class="badge bg-primary">{{ recipe.cuisine }}</span>
             {% endif %}
@@ -31,35 +71,21 @@
 
       <div class="row">
         <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title mb-3">Ingredients</h5>
-              <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                  <thead class="table-light">
-                    <tr>
-                      <th scope="col">Amount</th>
-                      <th scope="col">Ingredient</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for ingredient in ingredients %}
-                    <tr>
-                      <td style="width: 30%">{{ ingredient.quantity }} {% if ingredient.unit != "item" %}{{ ingredient.unit }}{% endif %}</td>
-                      <td>{{ ingredient.name }}</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
+          <h5 class="card-title mb-3">Ingredients</h5>
+          <div class="ingredients-grid">
+            {% for ingredient in ingredients %}
+            <div class="ingredient-item">
+              <span class="ingredient-name">{{ ingredient.name }}</span>
+              <span class="ingredient-quantity">{{ ingredient.quantity }} {% if ingredient.unit != "item" %}{{ ingredient.unit }}{% endif %}</span>
             </div>
+            {% endfor %}
           </div>
         </div>
       </div>
 
       <form method="post" class="mt-4">
-        <div class="d-flex justify-content-center gap-2">
-          <button class="btn btn-primary" name="submit_button" type="submit" value="edit">
+        <div class="d-flex justify-content-center">
+          <button class="btn btn-primary" name="submit_button" type="submit" value="edit" style="margin-right: 10px;">
             <i class="fas fa-edit me-1"></i> Edit Recipe
           </button>
           <button class="btn btn-danger" name="submit_button" type="submit" value="delete" 

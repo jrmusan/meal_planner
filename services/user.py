@@ -1,4 +1,5 @@
 from database import Database
+from services.recipe import Recipe
 
 class User:
 
@@ -78,12 +79,17 @@ class User:
 
         Returns the new user_id.
         """
-        # generate a new numeric user_id: max(user_id)+1 or 1000
+        # Generate a new numeric user_id: max(user_id) + 1
         row = User.db_obj.execute("SELECT MAX(user_id) as maxid FROM user_table").fetchone()
-        try:
-            maxid = int(row['maxid']) if row and row['maxid'] is not None else 1000
-        except Exception:
-            maxid = 1000
-        new_user_id = maxid + 1
+        new_user_id = int(row['maxid']) + 1 if row and row['maxid'] is not None else 1000
+        
         User.db_obj.execute("INSERT INTO user_table(user_id, google_sub, email, name) VALUES (?, ?, ?, ?)", (new_user_id, google_sub, email, name))
+        
+        # Add default recipes for the new user and add them to their meal plan
+        default_recipe_ids = [3, 93, 86]
+        for recipe_id in default_recipe_ids:
+            new_recipe_id = Recipe.copy_recipe_for_user(recipe_id, new_user_id)
+            # Also add the copied recipe to their meal plan
+            Recipe.add_to_meal_plan(new_recipe_id, new_user_id)
+            
         return new_user_id

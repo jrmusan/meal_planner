@@ -12,16 +12,18 @@
 
     console.log('~~~~~~~EDIT_RECIPE~~~~~~')
 
+    window.createPage = {
+        all_ingredients: []
+    };
+
     // This loop makes us a list of ingredient dicts
     let ing_json = {};
-    let all_ingredients = [];
     {% for ingredient in ingredients %}
-        //console.log({{ ingredient.json | tojson | safe  }})
         ing_json = {{ ingredient.json | tojson | safe  }}
-        all_ingredients.push(ing_json)
+        window.createPage.all_ingredients.push(ing_json)
     {% endfor %}
 
-    console.log(all_ingredients)
+    console.log(window.createPage.all_ingredients)
 
     // This will gather the ingredient unit/quantities and post them
     // NEED TO FIND A WAY TO PUT THIS BACK IN UNIT_SCIRPTS.JS
@@ -45,6 +47,12 @@
         form_data.forEach(function(pair) {
             post_data[pair.name] = pair.value
         })
+
+        // Handle cuisine - if "other" is selected, use the custom input value
+        if (post_data["cuisine"] === "other") {
+            post_data["cuisine"] = post_data["cuisine-other"] || "";
+        }
+        delete post_data["cuisine-other"];
 
         // Add ingredients in to the post_data
         post_data["selected_ingredients"] = ing_qt_dict_list
@@ -75,8 +83,19 @@
     
     <div class="form-group">
         <label for="content">Cuisine</label>
-        <textarea name="cuisine" placeholder="Cuisine type"
-            class="form-control">{{ recipe.cuisine }}</textarea>
+        <select name="cuisine" id="cuisine-select" class="form-control">
+            <option value="">Select a cuisine...</option>
+            <option value="American" {% if recipe.cuisine == 'American' %}selected{% endif %}>American</option>
+            <option value="Asian" {% if recipe.cuisine == 'Asian' %}selected{% endif %}>Asian</option>
+            <option value="Chinese" {% if recipe.cuisine == 'Chinese' %}selected{% endif %}>Chinese</option>
+            <option value="Indian" {% if recipe.cuisine == 'Indian' %}selected{% endif %}>Indian</option>
+            <option value="Italian" {% if recipe.cuisine == 'Italian' %}selected{% endif %}>Italian</option>
+            <option value="Mexican" {% if recipe.cuisine == 'Mexican' %}selected{% endif %}>Mexican</option>
+            <option value="other" {% if recipe.cuisine and recipe.cuisine not in ['American', 'Asian', 'Chinese', 'Indian', 'Italian', 'Mexican'] %}selected{% endif %}>Other (type your own)</option>
+        </select>
+        <input type="text" id="cuisine-other" name="cuisine-other" class="form-control mt-2" placeholder="Enter custom cuisine" 
+               value="{% if recipe.cuisine and recipe.cuisine not in ['American', 'Asian', 'Chinese', 'Indian', 'Italian', 'Mexican'] %}{{ recipe.cuisine }}{% endif %}"
+               style="{% if recipe.cuisine and recipe.cuisine not in ['American', 'Asian', 'Chinese', 'Indian', 'Italian', 'Mexican'] %}display: block;{% else %}display: none;{% endif %}">
     </div>
 
     <!-- The fancy stuff with the |join is used to combine the notes list so it can be on new lines! -->
@@ -87,7 +106,7 @@
 
 
     <!--This is for the dynamic boxes-->
-    <select name='ingredients' id='ingredients' class="selectpicker" multiple data-live-search="true">
+    <select name='ingredients' id='ingredients' class="form-control" multiple="multiple">
         {% for ingredient in ingredients %}
 
             {% if ingredient in recipe.ingredients %}
@@ -127,5 +146,23 @@
     </div>
 
 </form>
+
+<script>
+    $(document).ready(function() {
+        $('#ingredients').select2({
+            placeholder: "Select ingredients",
+            allowClear: true
+        });
+
+        // Handle cuisine dropdown "Other" option
+        $('#cuisine-select').on('change', function() {
+            if ($(this).val() === 'other') {
+                $('#cuisine-other').show().focus();
+            } else {
+                $('#cuisine-other').hide().val('');
+            }
+        });
+    });
+</script>
 
 {% endblock %}

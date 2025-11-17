@@ -34,7 +34,17 @@
 
             <div class="form-group col-12 col-md-6">
               <label for="cuisine">Cuisine</label>
-              <textarea name="cuisine" placeholder="Cuisine type" class="form-control">{{ request.form['cuisine'] }}</textarea>
+              <select name="cuisine" id="cuisine-select" class="form-control">
+                <option value="">Select a cuisine...</option>
+                <option value="American">American</option>
+                <option value="Asian">Asian</option>
+                <option value="Chinese">Chinese</option>
+                <option value="Indian">Indian</option>
+                <option value="Italian">Italian</option>
+                <option value="Mexican">Mexican</option>
+                <option value="other">Other (type your own)</option>
+              </select>
+              <input type="text" id="cuisine-other" name="cuisine-other" class="form-control mt-2" placeholder="Enter custom cuisine" style="display: none;">
             </div>
           </div>
 
@@ -45,7 +55,7 @@
 
           <div class="form-group">
             <label for="ingredients">Ingredients</label>
-            <select name='ingredients' id='ingredients' class="selectpicker form-control" multiple data-live-search="true" data-width="100%">
+            <select name='ingredients' id='ingredients' class="form-control" multiple="multiple" style="width: 100%;">
                 {% for ingredient in ingredients %}
                     <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
                 {% endfor %}
@@ -85,6 +95,24 @@
     </div>
   </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('#ingredients').select2({
+            placeholder: "Select ingredients",
+            allowClear: true
+        });
+
+        // Handle cuisine dropdown "Other" option
+        $('#cuisine-select').on('change', function() {
+            if ($(this).val() === 'other') {
+                $('#cuisine-other').show().focus();
+            } else {
+                $('#cuisine-other').hide().val('');
+            }
+        });
+    });
+</script>
 
 {% endblock %}
 

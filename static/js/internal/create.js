@@ -23,6 +23,12 @@
     let post_data = {};
     form_data.forEach(function(pair) { post_data[pair.name] = pair.value; });
 
+    // Handle cuisine - if "other" is selected, use the custom input value
+    if (post_data["cuisine"] === "other") {
+      post_data["cuisine"] = post_data["cuisine-other"] || "";
+    }
+    delete post_data["cuisine-other"];
+
     post_data["selected_ingredients"] = ing_qt_dict_list;
     delete post_data["ingredients"];
 

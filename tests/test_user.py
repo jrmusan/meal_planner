@@ -40,21 +40,62 @@ class TestUser:
     
     def test_create_with_google_first_user(self, test_db):
         """Test creating first user with Google."""
-        user_id = User.create_with_google("google_new", "new@example.com", "New User")
-        assert user_id == 1000
+        # For this test, we need to temporarily override the default recipe behavior
+        # since recipes 3, 93, 86 don't exist in test DB
+        # We'll just verify the user is created correctly
         
-        # Verify user was created
-        found = User.get_by_google_sub("google_new")
-        assert found == 1000
+        # Temporarily patch Recipe methods to not fail on missing recipes
+        from services.recipe import Recipe
+        original_copy = Recipe.copy_recipe_for_user
+        original_add = Recipe.add_to_meal_plan
+        
+        def mock_copy(recipe_id, new_user_id):
+            # Don't actually copy in this test, just return a fake ID
+            return recipe_id
+        
+        def mock_add(id, user_id):
+            pass
+        
+        Recipe.copy_recipe_for_user = mock_copy
+        Recipe.add_to_meal_plan = mock_add
+        
+        try:
+            user_id = User.create_with_google("google_new", "new@example.com", "New User")
+            assert user_id == 1000
+            
+            # Verify user was created
+            found = User.get_by_google_sub("google_new")
+            assert found == 1000
+        finally:
+            Recipe.copy_recipe_for_user = original_copy
+            Recipe.add_to_meal_plan = original_add
     
     def test_create_with_google(self, db_with_data):
         """Test creating user with Google when users exist."""
-        user_id = User.create_with_google("google_new", "new@example.com", "New User")
-        assert user_id == 1001  # Next ID after 1000
+        # Mock the recipe copying since test recipes 3, 93, 86 don't exist
+        from services.recipe import Recipe
+        original_copy = Recipe.copy_recipe_for_user
+        original_add = Recipe.add_to_meal_plan
         
-        # Verify user was created
-        found = User.get_by_google_sub("google_new")
-        assert found == 1001
+        def mock_copy(recipe_id, new_user_id):
+            return recipe_id
+        
+        def mock_add(id, user_id):  # Match exact parameter names
+            pass
+        
+        Recipe.copy_recipe_for_user = mock_copy
+        Recipe.add_to_meal_plan = mock_add
+        
+        try:
+            user_id = User.create_with_google("google_new", "new@example.com", "New User")
+            assert user_id == 2001  # Next ID after 2000 (max in fixture)
+            
+            # Verify user was created
+            found = User.get_by_google_sub("google_new")
+            assert found == 2001
+        finally:
+            Recipe.copy_recipe_for_user = original_copy
+            Recipe.add_to_meal_plan = original_add
     
     def test_set_google_for_user(self, db_with_data):
         """Test setting Google info for existing user."""

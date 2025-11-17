@@ -5,3 +5,5 @@ google-api-python-client
 authlib
 google-auth
 google-auth-oauthlib
+pytest
+pytest-cov

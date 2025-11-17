@@ -2,9 +2,7 @@ name: Ensure VERSION file updated
 
 on:
   pull_request:
-    branches:
-      - main
-      - master
+    branches: [ master ]
 
 jobs:
   version-check:

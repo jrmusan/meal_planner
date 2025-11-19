@@ -85,8 +85,8 @@ function getSelected(ing_dict) {
         unit_ingredient = getQuantityForIngredient(ing_id, ing_dict);
         selected_unit_ingredient = getUnitForIngredient(unit_ingredient);
         table += '<tr class="ing-qty-row" data-ing-id="' + unitless_ingredient.id + '"> <td>' + unitless_ingredient.name + '</td>'
-        table += '<td>' + '<input type="number" value=' + unit_ingredient.quantity + '></td>'
-        table += '<td> <select id=' + unitless_ingredient.id + '_unit' + '>' + selected_unit_ingredient + ' </select> </td>'
+        table += '<td>' + '<input type="number" value=' + unit_ingredient.quantity + ' style="width: 70px; max-width: 70px;" class="form-control form-control-sm"></td>'
+        table += '<td> <select id=' + unitless_ingredient.id + '_unit' + ' class="form-control form-control-sm">' + selected_unit_ingredient + ' </select> </td>'
         table += '</tr>'
     });
     table += '</tbody> </table>'

@@ -6,6 +6,11 @@ so they can sign up again as a "new" user.
 """
 
 import sys
+import os
+
+# Add parent directory to path so we can import database module
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from database import Database
 
 def delete_user(email):

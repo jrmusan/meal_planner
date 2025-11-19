@@ -1,6 +1,28 @@
 // Extracted JS for create recipe page
 (function(){
   console.log("create.js loaded");
+  // --- UNSAVED CHANGES ---
+  let isSubmitting = false; // Flag to prevent prompt on successful save
+
+  function hasUnsavedData() {
+    // Check for any input that would count as "unsaved"
+    if ($('#name').val().trim() !== '') return true;
+    if ($('#notes').val().trim() !== '') return true;
+    if ($('#ingredients').val() && $('#ingredients').val().length > 0) return true;
+    if ($('#cuisine-select').val() !== '') return true;
+    if ($('#cuisine-other').val().trim() !== '') return true;
+    return false;
+  }
+
+  window.addEventListener('beforeunload', function (e) {
+    // If we are not submitting and there is unsaved data, show the prompt
+    if (!isSubmitting && hasUnsavedData()) {
+      e.preventDefault(); // For legacy browsers
+      e.returnValue = ''; // For modern browsers
+    }
+  });
+  // --- END UNSAVED CHANGES ---
+
   const cfg = window.createPage || {};
   var table = '';
   var ingredients_list = [];
@@ -35,6 +57,7 @@
 
     const post_data_string = JSON.stringify(post_data);
 
+    isSubmitting = true; // Set flag to prevent "are you sure" prompt
     $.ajax({
       type: "POST",
       url: cfg.createUrl || window.location.pathname,
@@ -44,6 +67,7 @@
         window.location.href = response.url;
       },
       error: function(response) {
+        isSubmitting = false; // Reset flag on error
         let error = (response && response.responseJSON && response.responseJSON.error) || 'Unknown error';
         alert(error);
       }

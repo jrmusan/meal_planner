@@ -79,6 +79,11 @@ class User:
 
         Returns the new user_id.
         """
+        # Check if user already exists (prevent duplicate creation during race conditions)
+        existing_user = User.get_by_google_sub(google_sub)
+        if existing_user:
+            return existing_user
+        
         # Generate a new numeric user_id: max(user_id) + 1
         row = User.db_obj.execute("SELECT MAX(user_id) as maxid FROM user_table").fetchone()
         new_user_id = int(row['maxid']) + 1 if row and row['maxid'] is not None else 1000

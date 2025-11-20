@@ -98,3 +98,21 @@ class User:
             Recipe.add_to_meal_plan(new_recipe_id, new_user_id)
             
         return new_user_id
+
+    @staticmethod
+    def get_user_email(user_id):
+        """Get the email address for a user"""
+        row = User.db_obj.execute("SELECT email FROM user_table WHERE user_id = ?", (user_id,)).fetchone()
+        return row['email'] if row else None
+
+    @staticmethod
+    def get_recipe_count(user_id):
+        """Gets the total number of recipes for a user."""
+        row = User.db_obj.execute("SELECT COUNT(*) as count FROM recipe WHERE user_id = ?", (user_id,)).fetchone()
+        return row['count'] if row else 0
+
+    @staticmethod
+    def get_meal_plan_count(user_id):
+        """Gets the total number of times a user has planned meals."""
+        row = User.db_obj.execute("SELECT COUNT(*) as count FROM meal_plan WHERE user_id = ?", (user_id,)).fetchone()
+        return row['count'] if row else 0

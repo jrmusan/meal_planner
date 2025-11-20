@@ -428,6 +428,23 @@ def update_ingredient(ingredient_id):
 
 	return redirect(url_for('selected_recipes'))
 
+@app.route('/account')
+def account():
+	if "user_id" not in session:
+		return redirect(url_for('user_page'))
+	
+	user_id = session['user_id']
+	user_email = User.get_user_email(user_id)
+	recipe_count = User.get_recipe_count(user_id)
+	meal_plan_count = User.get_meal_plan_count(user_id)
+	
+	return render_template(
+		'account.html',
+		user_email=user_email,
+		recipe_count=recipe_count,
+		meal_plan_count=meal_plan_count
+	)
+
 
 if __name__ == "__main__":
 	app.run()

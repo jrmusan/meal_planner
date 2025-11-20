@@ -23,6 +23,7 @@
     <div class="card shadow-sm mb-4">
       <div class="card-body">
         <h2 class="card-title mb-3">{% block title %}Create a New Recipe{% endblock %}</h2>
+        <div id="notification-area" class="mb-3"></div>
 
         <form method="post">
 
@@ -63,14 +64,15 @@
             <small class="form-text text-muted">Can't find an ingredient? <a href="{{url_for('add_ingredient')}}">Create one here.</a></small>
           </div>
 
-          <div class="d-flex align-items-center mb-3">
-            <button type="button" id="add-quantities-btn" class="btn btn-outline-secondary mr-2" data-toggle="modal" data-target="#unitModal">Add quantities</button>
-            <button type="button" id="create" class="btn btn-primary ml-auto" style="font-size:1rem;" disabled>Create Recipe</button>
-          </div>
+          <!-- Notification placeholder -->
+          <div id="create-recipe-alert-placeholder" class="mb-3"></div>
 
-          <!-- Modal -->
+  <div class="d-flex align-items-center mb-3">
+      <button type="button" id="add-quantities-btn" class="btn btn-outline-secondary mr-2" data-toggle="modal" data-target="#unitModal">Add quantities</button>
+      <button type="button" id="create" class="btn btn-primary ml-auto" style="font-size:1rem;">Create Recipe</button>
+  </div>          <!-- Modal -->
           <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document" style="max-width: 95%; margin: 1.75rem auto;">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLongTitle">Input Quantity</h5>
@@ -78,12 +80,12 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
                   <p id="ingredients_list"></p>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                  <button type="button" id="save-quantities-btn" class="btn btn-primary" data-dismiss="modal">Save</button>
                 </div>
               </div>
             </div>

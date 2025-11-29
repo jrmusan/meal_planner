@@ -77,6 +77,31 @@ SCOPES = [
 ]
 
 
+# --- Global Error Handlers ---
+@app.errorhandler(500)
+def handle_internal_error(e):
+	"""Handle 500 Internal Server Error"""
+	logger.error(f"Internal Server Error: {str(e)}", exc_info=True)
+	flash("An unexpected error occurred. We've been notified and are looking into it.", "error")
+	if "user_id" in session:
+		return redirect(url_for('selected_recipes'))
+	return redirect(url_for('user_page'))
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+	"""Catch-all handler for any unhandled exceptions"""
+	# Don't catch HTTP exceptions (like 404, 403, etc.)
+	if hasattr(e, 'code'):
+		return e
+	
+	logger.error(f"Unhandled Exception: {str(e)}", exc_info=True)
+	flash("Something went wrong. Please try again.", "error")
+	if "user_id" in session:
+		return redirect(url_for('selected_recipes'))
+	return redirect(url_for('user_page'))
+# --- End Global Error Handlers ---
+
+
 # This is a basic about me apge
 @app.route('/about')
 def about():

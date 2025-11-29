@@ -98,6 +98,11 @@ def user_page():
 			flash("You need to enter a Meal Plan Id - If you don't have one, enter a number you will remember")
 			return render_template('user.html')
 
+		# Validate that user_id is numeric only
+		if not user_id.isdigit():
+			flash("Meal Plan ID must be a number", "error")
+			return render_template('user.html')
+
 		# Check if we were given a user ID
 		if request.form.get('submit_button') == 'enter':
 			# Check if this id exists

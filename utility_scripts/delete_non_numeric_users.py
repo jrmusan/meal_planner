@@ -43,8 +43,7 @@ def delete_non_numeric_users():
         
         try:
             # Delete from all related tables
-            db.execute("DELETE FROM recipe WHERE user_id = ?", (user_id,))
-            db.execute("DELETE FROM meal_plan WHERE user_id = ?", (user_id,))
+            db.execute("DELETE FROM recipes WHERE user_id = ?", (user_id,))
             db.execute("DELETE FROM selected_meals WHERE user_id = ?", (user_id,))
             db.execute("DELETE FROM user_cart_mapping WHERE user_id = ?", (user_id,))
             db.execute("DELETE FROM user_table WHERE user_id = ?", (user_id,))
